@@ -11,7 +11,7 @@ Why action counts and not the aggregate: RHAE is
 `min((human_baseline / agent_actions) ** 2, 1.15)` per level, so the ONLY input an
 agent could manipulate in its favour is the action count. A score is inflated iff
 the scorecard believes the agent spent fewer actions than the ledger records. The
-aggregate itself is the toolkit's business — and empirically its formula for
+aggregate itself is the toolkit's business, and empirically its formula for
 *unfinished* games does not reduce to a single closed form we can restate here,
 so re-deriving it would test our guess rather than their arithmetic.
 
@@ -38,7 +38,9 @@ Usage:  python3 scripts/verify_scores.py
 
 from __future__ import annotations
 
+import argparse
 import glob
+import gzip
 import json
 from collections import Counter
 from pathlib import Path
@@ -62,46 +64,86 @@ def scored_actions_per_level(events: list[dict]) -> Counter:
     return per
 
 
+def check_result(result: dict, events: list[dict], rel: str,
+                 counts: dict[str, int], bad: list[str]) -> bool:
+    """Compare one result row with its ledger; return whether levels were checked."""
+    reported = result.get("level_actions")
+    if not reported:
+        return False
+    counted = scored_actions_per_level(events)
+    for level in range(min(result.get("levels_completed", 0), len(reported))):
+        timeline, scorecard = counted.get(level, 0), reported[level]
+        if scorecard == timeline:
+            counts["exact"] += 1
+        elif scorecard > timeline:
+            counts["conservative"] += 1
+        else:
+            counts["inflated"] += 1
+            bad.append(
+                f"{rel} L{level}: scorecard {scorecard} < timeline {timeline}")
+    return True
+
+
 def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument(
+        "--traces-dir",
+        help="exported trace dataset containing runs.jsonl and events/**/*.jsonl.gz; "
+             "when omitted, inspect local runs*/ workspaces",
+    )
+    args = ap.parse_args()
+
     exact = conservative = inflated = 0
     runs = 0
     bad: list[str] = []
 
-    for ev_path in sorted(glob.glob(str(ROOT / "runs*/*/*/events.jsonl"))):
-        ws = Path(ev_path).parent
-        rj = ws / "result.json"
-        if not rj.exists():
-            continue
-        result = json.loads(rj.read_text())
-        rep = result.get("level_actions")
-        if not rep:
-            continue
-        runs += 1
-        events = [json.loads(l) for l in open(ev_path) if l.strip()]
-        counted = scored_actions_per_level(events)
-        rel = str(ws.relative_to(ROOT))
+    counts = {"exact": 0, "conservative": 0, "inflated": 0}
+    if args.traces_dir:
+        traces = Path(args.traces_dir)
+        index = traces / "runs.jsonl"
+        if not index.exists():
+            print(f"VACUOUS: {index} is missing; no exported traces were checked.")
+            return 2
+        for line in index.read_text().splitlines():
+            if not line.strip():
+                continue
+            result = json.loads(line)
+            event_path = traces / result["events_file"]
+            if not event_path.exists():
+                bad.append(f"{event_path.relative_to(traces)}: event ledger missing")
+                continue
+            with gzip.open(event_path, "rt", encoding="utf-8") as handle:
+                events = [json.loads(event) for event in handle if event.strip()]
+            rel = f"{result.get('model')}/{result.get('game')}"
+            if check_result(result, events, rel, counts, bad):
+                runs += 1
+    else:
+        for ev_path in sorted(glob.glob(str(ROOT / "runs*/*/*/events.jsonl"))):
+            ws = Path(ev_path).parent
+            rj = ws / "result.json"
+            if not rj.exists():
+                continue
+            result = json.loads(rj.read_text())
+            events = [json.loads(line) for line in open(ev_path) if line.strip()]
+            rel = str(ws.relative_to(ROOT))
+            if check_result(result, events, rel, counts, bad):
+                runs += 1
 
-        for i in range(min(result.get("levels_completed", 0), len(rep))):
-            timeline, scorecard = counted.get(i, 0), rep[i]
-            if scorecard == timeline:
-                exact += 1
-            elif scorecard > timeline:
-                conservative += 1
-            else:
-                inflated += 1
-                bad.append(f"{rel} L{i}: scorecard {scorecard} < timeline {timeline}")
+    exact = counts["exact"]
+    conservative = counts["conservative"]
+    inflated = counts["inflated"]
 
     total = exact + conservative + inflated
     if runs == 0 or total == 0:
-        print("VACUOUS: no scored runs found under runs*/ — this check verified NOTHING.\n"
-              "Fetch the trace dataset first (see README > Traces), or run a game.")
+        print("VACUOUS: no scored runs were found; this check verified nothing.\n"
+              "Download the trace dataset and pass --traces-dir, or run a game.")
         return 2
     print(f"{runs} scored runs, {total} completed levels checked\n")
     print(f"  exact match to the ledger          {exact}")
     print(f"  scorecard charged MORE (costs us)  {conservative}")
     print(f"  scorecard charged FEWER (inflates) {inflated}")
     if bad:
-        print("\nINFLATED — a published score is not supported by its own timeline:")
+        print("\nINFLATED, a published score is not supported by its own timeline:")
         for b in bad:
             print("   ", b)
         return 1

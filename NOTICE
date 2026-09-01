@@ -1,4 +1,4 @@
-Kepler — an open-source agent harness for ARC-AGI-3
+Kepler, an open-source agent harness for ARC-AGI-3
 
 This project adapts, with gratitude and attribution, design ideas from:
 
@@ -8,20 +8,22 @@ This project adapts, with gratitude and attribution, design ideas from:
   idea: have the model build
   an executable world model of the game rather than play it.
 
-- Retrodict (Ryan Brown) — sparse expected-cell predictions, the escalation ladder
+- Retrodict (Ryan Brown), sparse expected-cell predictions, the escalation ladder
   (300-action / 2-reset tiers, escalation-only anti-pruning text), prediction
   discipline and search-cost prose, objects() segmentation.
   https://github.com/ryanbbrown/Retrodict
 
-- Tycho (NIMI-research; Aioanei, Lehmann, Vahdati et al., arXiv:2607.28287) —
+- Tycho (NIMI-research; Aioanei, Lehmann, Vahdati et al., arXiv:2607.28287) -
   partial (UNKNOWN-cell) predictions and vacuous-coverage rejection, threaded
   hidden-state planning, the 5x-baseline level cutoff, the consecutive-RESET
   zero-cost guard, the hedged no-op message, and the Brahe/Kepler framing this
   project's name completes. Apache-2.0.
   https://github.com/NIMI-research/Tycho
 
-- ARC Prize Foundation — ARC-AGI-3, the arc-agi toolkit and the official RHAE
+- ARC Prize Foundation, ARC-AGI-3, the arc-agi toolkit and the official RHAE
   scorecard implementation. https://arcprize.org
 
-Their licenses permit this reuse; this file exists because permission is not the
-same as credit.
+Kepler independently implements the credited research ideas. No third-party
+source code is copied into this repository unless a file says so explicitly.
+Research attribution is not a claim that every cited repository grants a reuse
+license.

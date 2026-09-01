@@ -73,7 +73,7 @@ for model, game, score, total, ff in rows:
               f"{'event %d (level %d, %d actions, %d resets, %d more actions followed on that level)' % ff if ff else 'NEVER'}")
 # A fire on a perfect game is acceptable where the learning attempt on that level
 # genuinely ran long afterward (the directive would have SHORTENED it). It is only
-# a tax if it fires when the level was about to complete — fewer than MIN_ACTIONS
+# a tax if it fires when the level was about to complete, fewer than MIN_ACTIONS
 # (the tiny-level floor) actions remaining.
 harmful = [(m, g, f) for m, g, f in fires_on_100 if f[4] < escalation.MIN_ACTIONS]
 for m, g, f in fires_on_100:
@@ -88,4 +88,4 @@ print(f"PASS 2b: gpt sp80 thrash would have escalated at event {sp80[4][0]} inst
 bp = json.loads((ROOT / "runs-v5/gpt-max/bp35/result.json").read_text())
 assert bp["levels_completed"] == bp["win_levels"] - 1 and bp["note"] == "wall clock exhausted"
 print("PASS 3: bp35 was on its final level when killed at "
-      f"{bp['elapsed_hours']}h — v6 grants {4.0}h more instead of stopping")
+      f"{bp['elapsed_hours']}h, v6 grants {4.0}h more instead of stopping")

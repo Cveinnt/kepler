@@ -1,0 +1,58 @@
+{
+  "name": "Kepler",
+  "version": "1.0.0",
+  "release_date": "2026-09-01",
+  "paper_title": "Kepler: 100.00 at Median-Human-or-Better Action Efficiency on Every ARC-AGI-3 Public Level",
+  "repository": "https://github.com/Cveinnt/kepler",
+  "project_page": "https://kepler-harness.vercel.app",
+  "trace_dataset": null,
+  "public_set_only": true,
+  "opus": {
+    "model": "Claude Opus 5",
+    "score": 100.0,
+    "scorecard": "https://arcprize.org/scorecards/91aa2f10-5dc3-4471-80e5-9e8895db5de1",
+    "games": 25,
+    "games_at_100": 25,
+    "actions_learning_included": 8256,
+    "actions_scored_attempts": 7292,
+    "resource_accounting": {
+      "uncached_input_tokens": 21844,
+      "cache_read_input_tokens": 1594379011,
+      "cache_write_input_tokens_1h": 26573523,
+      "output_tokens": 20218538,
+      "total_tokens": 1641192916,
+      "cache_read_fraction": 0.9715,
+      "list_equivalent_usd": 1568.50,
+      "pricing_basis": "Anthropic Opus 5 standard API rates on 2026-09-01: $5/M uncached input, $0.50/M cache reads, $10/M one-hour cache writes, $25/M output",
+      "actual_billing_basis": "Claude subscription quota; dollar value is API list-equivalent"
+    }
+  },
+  "gpt": {
+    "model": "GPT-5.6 Sol (max)",
+    "score": 95.9672,
+    "scorecard": "https://arcprize.org/scorecards/c9f087f3-b9de-452d-9520-d4d0597b0685",
+    "games": 25,
+    "games_at_100": 23,
+    "actions_learning_included": 35896,
+    "actions_scored_attempts": 8400,
+    "resource_accounting": {
+      "uncached_input_tokens": 39262504,
+      "cache_read_input_tokens": 2379659648,
+      "output_tokens": 10161281,
+      "total_tokens": 2429083433,
+      "list_equivalent_usd": 1312.14,
+      "pricing_basis": "OpenAI GPT-5.6 Sol promotional API rates on 2026-09-01: $4/M uncached input, $0.40/M cached input, $20/M output",
+      "actual_billing_basis": "Codex subscription quota; dollar value is API list-equivalent"
+    }
+  },
+  "comparisons": {
+    "first_time_human_actions": 17135,
+    "avo_actions": 6624,
+    "vista_actions": 7542,
+    "tycho_cost_usd": 2986,
+    "retrodict_score": 99.86,
+    "retrodict_actions": 7703,
+    "retrodict_measured_tokens": 659900000,
+    "retrodict_cost_usd": 654
+  }
+}

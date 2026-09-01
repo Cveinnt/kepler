@@ -1,8 +1,7 @@
 cff-version: 1.2.0
 message: >-
-  If you use this software, please cite this repository (and the published
-  prior work credited in NOTICE).
-title: "Kepler: an open-source agent harness for ARC-AGI-3"
+  If you use this software, please cite this release record.
+title: "Kepler: 100.00 at Median-Human-or-Better Action Efficiency on Every ARC-AGI-3 Public Level"
 type: software
 authors:
   - family-names: Wu
@@ -10,24 +9,23 @@ authors:
     alias: Cveinnt
     email: contact@wensenwu.com
 license: MIT
-version: "2.0.0"
-date-released: "2026-08-08"
+version: "1.0.0"
+date-released: "2026-09-01"
 repository-code: "https://github.com/Cveinnt/kepler"
 url: "https://kepler-harness.vercel.app"
 abstract: >-
-  Kepler is an open-source agent harness for ARC-AGI-3. Final boards:
-  single-configuration 100.00 RHAE with Claude Opus 5 (v7, visual mode, all 25
-  public games, every level at the efficiency cap) and 95.97 with GPT-5.6 Sol
-  (v6, server-verified exact, 20.7M measured tokens). The model encodes its
-  theory of each game as an executable world model, certifies it against the
-  recorded interaction history, and a fail-closed mechanical replayer plays the
-  scored attempt. Ships with append-only per-action ledgers for every run
-  (failures included), adversarial audits, per-game token and action
-  accounting, a CI-enforced zero-game-priors gate, and a controlled modality
-  ablation. Public-set scores are not a measure of AGI progress; see the
-  ARC-AGI-3 technical report.
+  Kepler is an open-source agent harness that reaches a server-verified exact
+  100.00 RHAE on all 25 public ARC-AGI-3 games with one frozen Claude Opus 5
+  configuration and no score-conditioned reruns. Every level meets or exceeds
+  median-human action efficiency. The board uses 7,292 scored actions and costs
+  $1,568.50 at current API list-equivalent rates. The release includes complete
+  provider-side resource accounting, score-lineage tools, an enforced
+  zero-game-priors check, negative results, and incident reports for two
+  integrity failures caught in our own experiments. The full trace dataset is
+  a required companion artifact and remains marked pending until its public URL
+  appears in release.json.
 keywords:
   - ARC-AGI-3
   - world models
   - LLM agents
-  - benchmark reproduction
+  - agent evaluation

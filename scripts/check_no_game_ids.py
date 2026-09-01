@@ -2,9 +2,8 @@
 """Enforce the no-game-secrets invariant: zero game IDs in agent-visible surfaces.
 
 The strongest answer to "your harness smuggles in knowledge about specific games"
-is an invariant a reviewer can re-run, not a promise. Tycho and Retrodict both
-keep their prompts game-agnostic in practice, but neither ships an automated
-check (see docs/release-comparison.md). This is ours.
+is an invariant a reviewer can re-run, not a promise. Kepler makes that boundary
+a release gate rather than a prose claim.
 
 Agent-visible surfaces = everything the game-playing agent can read inside its
 workspace: the directive (copied in as AGENTS.md/CLAUDE.md) and every file under

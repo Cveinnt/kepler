@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Data-free smoke tests for every workspace tool.
 
-Born of two bugs no outcome-audit could see: bfs.py crashed with
-UnboundLocalError on every invocation from v2 to v8.0 (agents silently wrote
+Born of two bugs no outcome audit could see: bfs.py crashed with
+UnboundLocalError across five experimental stages (agents silently wrote
 their own searches), and a cleanrun.py helper landed below the __main__ guard
 (NameError at the exact moment a board is scored). Rule: every tool must at
 minimum survive being invoked, and no module may reference a name defined

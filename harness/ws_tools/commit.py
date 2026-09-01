@@ -384,7 +384,7 @@ def main() -> None:
     if not isinstance(raw, list) or not raw:
         raise SystemExit("actions must be a non-empty JSON list")
     plan = build_plan(raw)
-    # Transport safety (v8): the local engine CLIPS an off-grid ACTION6, but the
+    # Transport safety: the local engine clips an off-grid ACTION6, but the
     # competition API rejects it with a 400 — so an off-grid click makes the whole
     # trace non-replayable. Refuse it here, before anything is charged. (Found the
     # hard way: two otherwise-perfect board traces replayed at 33/27 because of

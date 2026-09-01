@@ -37,7 +37,7 @@ def main() -> None:
     ap.add_argument("--max-hours", type=float, default=8.0)
     ap.add_argument("--max-sessions", type=int, default=None)
     ap.add_argument("--visual", action="store_true",
-                    help="pass --visual to every run_game lane (v7 boards)")
+                    help="pass --visual to every run_game lane")
     ap.add_argument("--baseline", action="store_true",
                     help="ablation control: no methodology. Point --runs-root OUTSIDE "
                          "the repo so the agent cannot find harness/ws_tools and "

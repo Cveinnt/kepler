@@ -134,7 +134,7 @@ class GameSession:
             "grid": grid,
             "prev_grid_changed_cells": self._diff_count(self.prev_grid, grid),
         }
-        # Visual mode (v7 ablation): persist EVERY frame -- animation frames
+        # Visual-observation mode: persist every frame, including animation frames.
         # included -- as PNGs the agent can look at. The text ledger keeps only
         # the settled grid; mechanisms that live in transient frames are
         # invisible to a text-only agent (KEPLER_VISUAL=1 gates the ablation).

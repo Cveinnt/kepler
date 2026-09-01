@@ -1,87 +1,126 @@
-# Kepler — Design
+# Kepler design
 
-> Historical note: Kepler began as an independent implementation of the
-> executable-world-model approach and has since diverged substantially (v5 certify-then-replay,
-> v7 visual mode, v8 transport safety). Sections below describe the v1-era
-> design; see RESULTS.md for the current architecture ladder.
+Kepler treats each ARC-AGI-3 game as experimental science. The agent observes
+the environment, writes an executable theory, tests that theory against the
+entire recorded history, and certifies an action program. A mechanical executor
+then plays the scored attempt without a model in the loop.
 
-An independently designed harness that has frontier
-models play ARC-AGI-3 like physicists — encode the game mechanism as an executable
-`step()` program, certify it against the full recorded interaction history, plan inside
-it with BFS, and act only through a single guarded channel.
+This document describes **Kepler 1.0.0**. Earlier experiments are named stages
+in [`RESULTS.md`](RESULTS.md), not separate public software releases.
 
-Targets (self-reported on the 25 public games, RHAE):
-- Claude Opus + Fable fallback pairing: **98.98**
-- GPT-5.6 Sol xhigh + max fallback pairing: **95.35**
-- Fallback rule: primary model runs every game; games scoring < 80 are rerun with the
-  secondary model; the higher per-game score is retained (= `max` across runs, which is
-  exactly how the local scorecard aggregates multiple runs of one game).
+## Release contract
+
+- One frozen configuration per model.
+- One retained run per game. No score-conditioned reruns.
+- Zero game-specific priors in every agent-visible source file, enforced in CI.
+- Append-only action ledgers and adversarial session-log audits.
+- Exact official replay scorecards for both release boards.
+- Public-set results only. No held-out or private-set claim.
+
+Canonical scores, cards, action counts, and token totals live in
+[`release.json`](release.json). The trace dataset is a required part of the
+release contract but is not public yet.
 
 ## Environment
 
-`arc-agi` PyPI toolkit (same one `arcprize/ARC-AGI-3-Agents` v0.9.3 uses):
-- Runs all 25 public games **locally** (`LocalEnvironmentWrapper`), anonymous API key OK.
-- `env.step(GameAction, data={x,y})`, `env.reset()` → `FrameDataRaw`
-  (`frame`: list of 64×64 grids (animation), `state`, `levels_completed`, `win_levels`,
-  `available_actions`).
-- Official RHAE scoring implemented locally in `arc_agi.scorecard`
-  (per-level `min((baseline/actions)² × 100, 115)`, level-index weights 1..n,
-  completion cap, per-game max across runs). Human `baseline_actions` per level ship in
-  environment metadata.
+Kepler uses the `arc-agi` Python toolkit to run the 25 public ARC-AGI-3 games.
+Each environment exposes a 64 by 64 grid, legal actions, animation frames,
+level state, and human baseline action counts. RHAE scores completed levels by
+relative action efficiency, weights later levels more heavily, and applies a
+completion cap.
+
+The games run locally after a disclosed startup handshake by the toolkit. The
+agent's only HTTP traffic is to Kepler's localhost daemon.
 
 ## Architecture
 
-```
+```text
 harness/
-  daemon.py      # per-run HTTP daemon: owns the env + append-only events.jsonl timeline
-  run_game.py    # outer loop: workspace setup, daemon, CLI-agent sessions, result.json
-  score.py       # cross-game RHAE aggregation + fallback pairing
-  directive.md   # the agent's system directive
-  ws_tools/      # tools copied into each workspace
-    observe.py   # current grid (hex render), diff vs previous, status  [read-only]
-    backtest.py  # replay world_model.simulate over the ENTIRE events.jsonl
-    bfs.py       # search inside the certified model (simulate + is_goal)
-    commit.py    # THE ONLY channel to the env; per-step predict-check; voids plan on
-                 # first mismatch and reports the counterexample
-workspace/<game>-<model>/   # the CLI agent's cwd
-  world_model.py  # agent-edited theory: simulate(grid, action) -> {grid, level_up, ...}
-  notes.md        # agent-edited lab notebook ("the agent's weights")
-  events.jsonl    # append-only ground truth (written only by the daemon)
-  tools/ -> ws_tools copied in
+  daemon.py        owns the environment and append-only event ledger
+  run_game.py      creates workspaces and drives agent sessions
+  sweep.py         schedules a full board
+  score.py         aggregates official per-game scorecards
+  directive.md     agent method and behavioral contract
+  ws_tools/
+    observe.py     reads state without acting
+    render.py      exposes saved visual and animation frames
+    backtest.py    replays the world model against recorded history
+    bfs.py         searches inside the executable model
+    commit.py      prediction-checks every real action
+    cleanrun.py    certifies and mechanically executes the scored program
+    escalation.py detects stuck learning attempts
+
+workspace/<game>/
+  world_model.py   agent-authored executable theory
+  notes.md         checked claims, assumptions, and experiment record
+  cleanrun.json    certified per-level action programs
+  events.jsonl     append-only environment ground truth
+  sessions/        raw agent session record
+  tools/           frozen copy of the workspace tools
 ```
 
-### The core loop (as enforced here)
+## Core loop
 
-- **observe → deliberate → execute → record**: the CLI agent (codex exec / claude -p)
-  runs inside the workspace. It edits `world_model.py` + `notes.md`, runs
-  `python tools/backtest.py` (certify), `python tools/bfs.py` (plan), and
-  `python tools/commit.py` (execute). The daemon appends every real transition to
-  `events.jsonl` — the agent cannot alter history.
-- **Reality outranks the model**: `commit.py` predicts each next grid with the current
-  `world_model.py` before sending the action; on the first mismatched cell set, the
-  remaining plan is discarded and the mismatch is returned as a counterexample.
-- **Backtest semantics** (matches the site): exact grid match on non-terminal steps;
-  `level_up` / `game_over` / `win` flags on every step; level-transition and reset steps
-  compare flags only (the model cannot know the next level's layout).
+1. **Observe.** `observe.py` returns current state and ledger-derived diffs.
+   Visual mode also preserves every animation frame as a rendered image.
+2. **Model.** The agent records checked and assumed claims in `notes.md` and
+   implements the current theory in `world_model.py`.
+3. **Retrodict.** `backtest.py` replays the theory over the recorded history.
+   A green backtest means the claimed model reproduces those transitions. It
+   does not prove the model is complete.
+4. **Plan.** The agent searches the executable model with `bfs.py` or its own
+   bounded search.
+5. **Act.** `commit.py` predicts each proposed transition, sends the real
+   action, and voids the remaining plan at the first mismatch.
+6. **Certify.** After learning, the agent writes full per-level programs to
+   `cleanrun.json`.
+7. **Replay.** `cleanrun.py` checks the program and executes it mechanically.
+   A mismatch stops the run rather than allowing the model to improvise inside
+   the scored attempt.
 
-### World-model contract (documented in the directive)
+## World-model contract
 
 ```python
-def simulate(grid, action) -> {"grid": g2, "level_up": bool, "game_over": bool, "win": bool}
-def is_goal(grid) -> bool            # optional; default BFS goal = predicted level_up
-def candidate_actions(grid) -> [..] # optional; needed for click (ACTION6) games
+def simulate(grid, action) -> {
+    "grid": next_grid,
+    "level_up": bool,
+    "game_over": bool,
+    "win": bool,
+}
+
+def is_goal(grid) -> bool
+def candidate_actions(grid) -> list[dict]
 ```
 
-### Model driver
+`is_goal` and `candidate_actions` are optional. Models with hidden state can
+expose the threaded-state interface documented in `harness/directive.md`.
+Partial pixel predictions are allowed, but vacuous coverage is rejected.
 
-- GPT: `codex exec -m gpt-5.6-sol -c model_reasoning_effort=xhigh` (fallback: `max`),
-  sessions continued with `codex exec resume`.
-- Claude: `claude -p --model opus / fable`, continued with `--continue`.
-- One long-lived session per game; the outer loop re-invokes with current status until
-  WIN or budget (actions / wall-clock / sessions) is exhausted.
+## Integrity boundaries
 
-### Scoring
+- The daemon alone writes `events.jsonl`.
+- Agent-visible files contain no public game IDs or per-game hints.
+- Environment implementations live outside the agent workspace.
+- Mutating actions must pass through `commit.py` or the certified mechanical
+  executor.
+- `scripts/audit_integrity.py` scans session records for source reads, direct
+  daemon mutation, score writes, tool edits, ledger anomalies, and external
+  network use.
+- `scripts/verify_scores.py` recomputes scored action counts from the ledger and
+  rejects any level charged fewer actions than its history records.
+- `tests/test_tool_smoke.py` invokes every workspace tool. This exists because
+  a broken planner was previously masked by agents that wrote replacement
+  searches and continued winning.
 
-Per-run scorecards come from the local `arc_agi` ScorecardManager (official formula).
-`score.py` merges runs per game (max), applies the <80 fallback rule, and reports the
-benchmark average across all 25 games for each pairing.
+Outcome integrity and tool integrity are separate claims. Kepler checks both.
+
+## Reproduction boundary
+
+Official replay establishes that the recorded action programs still produce
+the reported public-set scores on ARC Prize's replay path. It is not an
+independent rerun of stochastic agent learning. Fresh agent campaigns may vary
+because models, providers, and sampling drift.
+
+See [`reproduction.md`](reproduction.md) for exact commands and
+[`INTEGRITY.md`](INTEGRITY.md) for the threat model, incidents, and known
+limits.

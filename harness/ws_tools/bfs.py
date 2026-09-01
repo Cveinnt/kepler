@@ -94,7 +94,7 @@ def main() -> None:
         return has_goal and bool(mod.is_goal([r[:] for r in grid]))
 
     root = state0 if threaded else start
-    # NOTE: this fallback was broken from v2 through v8.0 — the nested `def key`
+    # This fallback was broken across five experimental stages: the nested `def key`
     # made `key` function-local, so the first `key(root)` raised UnboundLocalError
     # and bfs.py crashed on every invocation. Agents routed around it by writing
     # their own searches. Fixed by binding the fallback to a distinct name.

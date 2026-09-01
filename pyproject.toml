@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kepler-harness"
-version = "2.0.0"
-description = "Kepler: an open-source, audited agent harness for ARC-AGI-3"
+version = "1.0.0"
+description = "Kepler: an audited, single-configuration 100.00 on ARC-AGI-3"
 readme = "README.md"
 license = { text = "MIT" }
 # arc-agi>=0.9.9 itself requires Python >=3.13, so anything lower cannot
@@ -21,7 +21,8 @@ dependencies = [
 ]
 
 [project.urls]
-"Original write-up" = "https://github.com/Cveinnt/kepler/"
+"Project page" = "https://kepler-harness.vercel.app/"
+"Source" = "https://github.com/Cveinnt/kepler/"
 
 [tool.setuptools]
 packages = []

@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Upload the traces/ dataset (built by export_traces.py) to a HuggingFace dataset repo.
 
-Prepared ahead of HF auth being available — this script is NOT run as part of
+Prepared ahead of HF auth being available, this script is NOT run as part of
 the repo build. It needs:
   - `pip install huggingface_hub`
   - an HF token with write access in the HF_TOKEN environment variable
-  - traces/ already built (python3 scripts/export_traces.py)
+  - traces/ already built
+    (python3 scripts/export_traces.py --release --with-agent-logs)
 
 Usage:
   HF_TOKEN=hf_... python3 scripts/upload_hf.py --repo <user>/<dataset-name>
@@ -35,18 +36,18 @@ def main() -> None:
 
     token = os.environ.get("HF_TOKEN")
     if not token:
-        sys.exit("HF_TOKEN not set — export a write token first "
+        sys.exit("HF_TOKEN not set, export a write token first "
                  "(https://huggingface.co/settings/tokens)")
 
     traces = Path(args.traces_dir)
     if not (traces / "runs.jsonl").exists() or not (traces / "README.md").exists():
         sys.exit(f"{traces} does not look like an export "
-                 f"(runs.jsonl / README.md missing) — run scripts/export_traces.py first")
+                 f"(runs.jsonl / README.md missing), run scripts/export_traces.py first")
 
     try:
         from huggingface_hub import HfApi
     except ImportError:
-        sys.exit("huggingface_hub not installed — pip install huggingface_hub")
+        sys.exit("huggingface_hub not installed, pip install huggingface_hub")
 
     api = HfApi(token=token)
     api.create_repo(args.repo, repo_type="dataset", private=args.private, exist_ok=True)

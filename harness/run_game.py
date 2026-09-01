@@ -253,7 +253,7 @@ def main() -> int:
                     help="reuse an interrupted workspace (keeps world_model/notes/timeline; "
                          "the environment and scorecard restart fresh)")
     ap.add_argument("--visual", action="store_true",
-                    help="v7 ablation: daemon saves every frame (incl. animation) as PNG; directive tells the agent to LOOK")
+                    help="visual-observation mode: save every frame, including animation, as PNG")
     args = ap.parse_args()
 
     if args.visual:
