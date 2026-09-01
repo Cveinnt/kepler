@@ -1,0 +1,28 @@
+{
+  "game": "ft09",
+  "game_id": "ft09-0d8bbf25",
+  "model": "gpt-xhigh",
+  "state": "WIN",
+  "levels_completed": 6,
+  "win_levels": 6,
+  "actions": 75,
+  "note": "win",
+  "elapsed_hours": 0.51,
+  "score": 100.0,
+  "level_scores": [
+    115.0,
+    115.0,
+    115.0,
+    115.0,
+    115.0,
+    115.0
+  ],
+  "level_actions": [
+    4,
+    7,
+    14,
+    16,
+    21,
+    13
+  ]
+}

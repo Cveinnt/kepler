@@ -1,0 +1,61 @@
+name: ci
+
+# Everything here runs offline against the committed example trace and the
+# shipped run data. No API keys, no model calls, no network.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Tool smoke tests
+        run: python tests/test_tool_smoke.py
+      - name: Install
+        run: pip install -e .
+
+      - name: Replay a bundled winning trace through the real backtest
+        run: python3 scripts/verify.py
+
+      # Needs recorded timelines, which ship as a separate dataset. When they are
+      # absent the "fail loudly on empty input" step below asserts the correct
+      # behaviour instead.
+      - name: Grind guard regression (silent on winners, fires on grinders)
+        if: hashFiles('runs*/**/events.jsonl') != ''
+        run: python3 tests/test_grind_guard.py
+
+      - name: Byte-compile the harness
+        run: python3 -m compileall -q harness scripts
+
+      # The site build reads real run data (runs/), which is gitignored and shipped
+      # as a separate dataset — so this step can only run where that data exists.
+      # Gate it rather than let CI go red for a missing artifact by design.
+      - name: Site build reproduces
+        if: hashFiles('runs*/**/events.jsonl') != ''
+        run: |
+          pip install pillow
+          python3 blog/build_site.py
+          git diff --exit-code --stat -- blog/site/index.html \
+            || (echo "::error::blog/site/index.html is stale — run blog/build_site.py and commit"; exit 1)
+
+      # The integrity scripts must refuse to bluff. With no run data they exit 2
+      # and print VACUOUS; assert that, so a green CI can never mean "we checked
+      # zero runs and everything was fine".
+      - name: Integrity scripts fail loudly on empty input
+        if: hashFiles('runs/**/events.jsonl') == ''
+        run: |
+          set +e
+          for s in scripts/audit_integrity.py scripts/verify_scores.py tests/test_grind_guard.py; do
+            out=$(python3 "$s" 2>&1); code=$?
+            echo "$s -> exit $code"
+            if [ "$code" -ne 2 ] || ! echo "$out" | grep -q VACUOUS; then
+              echo "::error::$s must exit 2 with VACUOUS when no runs are present"; exit 1
+            fi
+          done

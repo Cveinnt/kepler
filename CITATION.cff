@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software, please cite this repository (and the published
+  prior work credited in NOTICE).
+title: "Kepler: an open-source agent harness for ARC-AGI-3"
+type: software
+authors:
+  - family-names: Wu
+    given-names: Wensen
+    alias: Cveinnt
+    email: contact@wensenwu.com
+license: MIT
+version: "2.0.0"
+date-released: "2026-08-08"
+repository-code: "https://github.com/Cveinnt/kepler"
+url: "https://kepler-harness.vercel.app"
+abstract: >-
+  Kepler is an open-source agent harness for ARC-AGI-3. Final boards:
+  single-configuration 100.00 RHAE with Claude Opus 5 (v7, visual mode, all 25
+  public games, every level at the efficiency cap) and 95.97 with GPT-5.6 Sol
+  (v6, server-verified exact, 20.7M measured tokens). The model encodes its
+  theory of each game as an executable world model, certifies it against the
+  recorded interaction history, and a fail-closed mechanical replayer plays the
+  scored attempt. Ships with append-only per-action ledgers for every run
+  (failures included), adversarial audits, per-game token and action
+  accounting, a CI-enforced zero-game-priors gate, and a controlled modality
+  ablation. Public-set scores are not a measure of AGI progress; see the
+  ARC-AGI-3 technical report.
+keywords:
+  - ARC-AGI-3
+  - world models
+  - LLM agents
+  - benchmark reproduction

@@ -1,0 +1,287 @@
+{
+  "tu93": {
+    "events": "runs/gpt-max/tu93/events.jsonl",
+    "source": "runs/gpt-max",
+    "local_score": 100.0,
+    "attempt_pool": 3,
+    "all_attempts": [
+      "runs/gpt-max: 100.0",
+      "runs/gpt-xhigh: 100.0",
+      "runs/opus: 100.0"
+    ]
+  },
+  "ar25": {
+    "events": "runs/gpt-max/ar25/events.jsonl",
+    "source": "runs/gpt-max",
+    "local_score": 100.0,
+    "attempt_pool": 3,
+    "all_attempts": [
+      "runs/gpt-max: 100.0",
+      "runs/gpt-xhigh: 100.0",
+      "runs/opus: 100.0"
+    ]
+  },
+  "re86": {
+    "events": "runs/gpt-max/re86/events.jsonl",
+    "source": "runs/gpt-max",
+    "local_score": 100.0,
+    "attempt_pool": 3,
+    "all_attempts": [
+      "runs/gpt-max: 100.0",
+      "runs/gpt-xhigh: 100.0",
+      "runs/opus: 100.0"
+    ]
+  },
+  "su15": {
+    "events": "runs/opus/su15/events.jsonl",
+    "source": "runs/opus",
+    "local_score": 100.0,
+    "attempt_pool": 3,
+    "all_attempts": [
+      "runs/gpt-max: 81.19",
+      "runs/gpt-xhigh: 46.91",
+      "runs/opus: 100.0"
+    ]
+  },
+  "m0r0": {
+    "events": "runs/gpt-max/m0r0/events.jsonl",
+    "source": "runs/gpt-max",
+    "local_score": 100.0,
+    "attempt_pool": 3,
+    "all_attempts": [
+      "runs/gpt-max: 100.0",
+      "runs/gpt-xhigh: 100.0",
+      "runs/opus: 100.0"
+    ]
+  },
+  "cn04": {
+    "events": "runs/gpt-max/cn04/events.jsonl",
+    "source": "runs/gpt-max",
+    "local_score": 100.0,
+    "attempt_pool": 3,
+    "all_attempts": [
+      "runs/gpt-max: 100.0",
+      "runs/gpt-xhigh: 100.0",
+      "runs/opus: 100.0"
+    ]
+  },
+  "ft09": {
+    "events": "runs/gpt-max/ft09/events.jsonl",
+    "source": "runs/gpt-max",
+    "local_score": 100.0,
+    "attempt_pool": 5,
+    "all_attempts": [
+      "runs-competition/gpt-xhigh: 100.0",
+      "runs-free/kimi: 47.62",
+      "runs/gpt-max: 100.0",
+      "runs/gpt-xhigh: 100.0",
+      "runs/opus: 100.0"
+    ]
+  },
+  "tr87": {
+    "events": "runs/gpt-max/tr87/events.jsonl",
+    "source": "runs/gpt-max",
+    "local_score": 100.0,
+    "attempt_pool": 3,
+    "all_attempts": [
+      "runs/gpt-max: 100.0",
+      "runs/gpt-xhigh: 100.0",
+      "runs/opus: 100.0"
+    ]
+  },
+  "sc25": {
+    "events": "runs-v2/fable/sc25/events.jsonl",
+    "source": "runs-v2/fable",
+    "local_score": 100.0,
+    "attempt_pool": 5,
+    "all_attempts": [
+      "runs-v2/fable: 100.0",
+      "runs/fable: 87.91",
+      "runs/gpt-max: 97.11",
+      "runs/gpt-xhigh: 68.55",
+      "runs/opus: 74.92"
+    ]
+  },
+  "lp85": {
+    "events": "runs/gpt-max/lp85/events.jsonl",
+    "source": "runs/gpt-max",
+    "local_score": 100.0,
+    "attempt_pool": 3,
+    "all_attempts": [
+      "runs/gpt-max: 100.0",
+      "runs/gpt-xhigh: 100.0",
+      "runs/opus: 100.0"
+    ]
+  },
+  "dc22": {
+    "events": "runs/gpt-max/dc22/events.jsonl",
+    "source": "runs/gpt-max",
+    "local_score": 100.0,
+    "attempt_pool": 3,
+    "all_attempts": [
+      "runs/gpt-max: 100.0",
+      "runs/gpt-xhigh: 71.43",
+      "runs/opus: 100.0"
+    ]
+  },
+  "sp80": {
+    "events": "runs/opus/sp80/events.jsonl",
+    "source": "runs/opus",
+    "local_score": 82.16,
+    "attempt_pool": 4,
+    "all_attempts": [
+      "runs/fable: 0.0",
+      "runs/gpt-max: 39.84",
+      "runs/gpt-xhigh: 5.5",
+      "runs/opus: 82.16"
+    ]
+  },
+  "ka59": {
+    "events": "runs/gpt-max/ka59/events.jsonl",
+    "source": "runs/gpt-max",
+    "local_score": 100.0,
+    "attempt_pool": 3,
+    "all_attempts": [
+      "runs/gpt-max: 100.0",
+      "runs/gpt-xhigh: 95.8",
+      "runs/opus: 100.0"
+    ]
+  },
+  "g50t": {
+    "events": "runs/gpt-max/g50t/events.jsonl",
+    "source": "runs/gpt-max",
+    "local_score": 100.0,
+    "attempt_pool": 3,
+    "all_attempts": [
+      "runs/gpt-max: 100.0",
+      "runs/gpt-xhigh: 100.0",
+      "runs/opus: 100.0"
+    ]
+  },
+  "sb26": {
+    "events": "runs/gpt-max/sb26/events.jsonl",
+    "source": "runs/gpt-max",
+    "local_score": 100.0,
+    "attempt_pool": 4,
+    "all_attempts": [
+      "runs-v2/opus: 100.0",
+      "runs/gpt-max: 100.0",
+      "runs/gpt-xhigh: 98.63",
+      "runs/opus: 100.0"
+    ]
+  },
+  "lf52": {
+    "events": "runs/gpt-max/lf52/events.jsonl",
+    "source": "runs/gpt-max",
+    "local_score": 100.0,
+    "attempt_pool": 3,
+    "all_attempts": [
+      "runs/gpt-max: 100.0",
+      "runs/gpt-xhigh: 97.71",
+      "runs/opus: 100.0"
+    ]
+  },
+  "bp35": {
+    "events": "runs/gpt-max/bp35/events.jsonl",
+    "source": "runs/gpt-max",
+    "local_score": 100.0,
+    "attempt_pool": 3,
+    "all_attempts": [
+      "runs/gpt-max: 100.0",
+      "runs/gpt-xhigh: 42.66",
+      "runs/opus: 97.43"
+    ]
+  },
+  "s5i5": {
+    "events": "runs/opus/s5i5/events.jsonl",
+    "source": "runs/opus",
+    "local_score": 100.0,
+    "attempt_pool": 3,
+    "all_attempts": [
+      "runs/gpt-max: 58.33",
+      "runs/gpt-xhigh: 100.0",
+      "runs/opus: 100.0"
+    ]
+  },
+  "r11l": {
+    "events": "runs/opus/r11l/events.jsonl",
+    "source": "runs/opus",
+    "local_score": 100.0,
+    "attempt_pool": 3,
+    "all_attempts": [
+      "runs/gpt-max: 86.99",
+      "runs/gpt-xhigh: 100.0",
+      "runs/opus: 100.0"
+    ]
+  },
+  "sk48": {
+    "events": "runs/gpt-max/sk48/events.jsonl",
+    "source": "runs/gpt-max",
+    "local_score": 100.0,
+    "attempt_pool": 3,
+    "all_attempts": [
+      "runs/gpt-max: 100.0",
+      "runs/gpt-xhigh: 77.78",
+      "runs/opus: 100.0"
+    ]
+  },
+  "wa30": {
+    "events": "runs/opus/wa30/events.jsonl",
+    "source": "runs/opus",
+    "local_score": 100.0,
+    "attempt_pool": 3,
+    "all_attempts": [
+      "runs/gpt-max: 96.02",
+      "runs/gpt-xhigh: 25.01",
+      "runs/opus: 100.0"
+    ]
+  },
+  "vc33": {
+    "events": "runs/gpt-max/vc33/events.jsonl",
+    "source": "runs/gpt-max",
+    "local_score": 100.0,
+    "attempt_pool": 3,
+    "all_attempts": [
+      "runs/gpt-max: 100.0",
+      "runs/gpt-xhigh: 100.0",
+      "runs/opus: 100.0"
+    ]
+  },
+  "ls20": {
+    "events": "runs/gpt-max/ls20/events.jsonl",
+    "source": "runs/gpt-max",
+    "local_score": 100.0,
+    "attempt_pool": 3,
+    "all_attempts": [
+      "runs/gpt-max: 100.0",
+      "runs/gpt-xhigh: 100.0",
+      "runs/opus: 100.0"
+    ]
+  },
+  "cd82": {
+    "events": "runs/gpt-max/cd82/events.jsonl",
+    "source": "runs/gpt-max",
+    "local_score": 100.0,
+    "attempt_pool": 4,
+    "all_attempts": [
+      "runs-competition/gpt-xhigh: 100.0",
+      "runs/gpt-max: 100.0",
+      "runs/gpt-xhigh: 100.0",
+      "runs/opus: 100.0"
+    ]
+  },
+  "tn36": {
+    "events": "runs-v2/superseded/tn36-20260814-operator-cleanrun/events.jsonl",
+    "source": "runs-v2/opus",
+    "local_score": 100.0,
+    "attempt_pool": 4,
+    "all_attempts": [
+      "runs-v2/opus: 100.0",
+      "runs/gpt-max: 81.39",
+      "runs/gpt-xhigh: 75.0",
+      "runs/opus: 90.04"
+    ],
+    "note": "superseded for single-config reporting (operator-triggered clean run, see RESULTS.md policy #5); remains valid as a best-of ceiling candidate \u2014 the actions are real and the card is server-scored"
+  },
+  "_disclosure": "best-of selection: per game, the highest-scoring clean run across all published sweeps was replayed. attempt_pool is the number of candidate runs (k in pass@k); 83 candidate runs total across 25 games. Every candidate's ledger is published, including the losers. For single-configuration numbers, see the README hero table."
+}

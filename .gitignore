@@ -1,0 +1,57 @@
+# Live experiment data — never committed, see AGENTS.md
+runs/
+runs-baseline/
+runs-retry/
+
+# Generated trace exports (scripts/export_traces.py output)
+traces/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+
+# Reference clones (vendored read-only for study, not part of this repo)
+reference/
+
+# Local ARC-AGI environment cache (downloaded by the arc-agi toolkit)
+environment_files/
+.arc/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+
+# Env / secrets
+.env
+*.env.local
+
+# Editor
+.vscode/
+.idea/
+
+# Claude Code runtime state (session-local, not repo content)
+.claude/
+.arc-private/
+quarantine/
+blog/site/.vercel/
+runs-free/
+runs-competition/
+runs-v2/
+runs-v3/
+runs-v5/
+*.aux
+*.log
+*.bbl
+*.blg
+*.out
+docs/paper/latex/main.pdf
+runs-v6/
+runs-v6-validation/
+runs-v7/
+runs-v8/
+launch/
+docs/paper/kepler-latex-overleaf.zip

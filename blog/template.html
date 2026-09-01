@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="canonical" href="https://kepler-harness.vercel.app/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kepler — 100.00 on ARC-AGI-3">
+<meta property="og:description" content="Single config, every level at the cap, 7,514 actions all-in. Every token counted, every ledger public, every audit shipped — and the controlled ablation that solved the 'unsolvable' level.">
+<meta property="og:url" content="https://kepler-harness.vercel.app/">
+<meta property="og:image" content="https://kepler-harness.vercel.app/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://kepler-harness.vercel.app/og.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23100f0e%22/><circle cx=%2250%22 cy=%2250%22 r=%2230%22 fill=%22none%22 stroke=%22%237db0de%22 stroke-width=%226%22/><circle cx=%2278%22 cy=%2238%22 r=%228%22 fill=%22%237db0de%22/></svg>">
+<title>Kepler — 100.00 on ARC-AGI-3</title>
+<meta name="description" content="An open-source world-model harness for ARC-AGI-3. 100.00 with Claude Opus 5, single configuration, on the 25 public games — every ledger, token, and failure published, plus the controlled modality ablation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════════════════════
+   One webfont (Newsreader, the voice), system sans (the apparatus),
+   system mono (the literal). One accent. Warm paper. Wide margins.
+   ════════════════════════════════════════════════════════════════ */
+:root{
+  color-scheme:light dark;
+  --serif:"Newsreader",Charter,"Iowan Old Style",Georgia,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --measure:704px; --wide:944px;
+}
+:root,
+:root:not([data-theme="dark"]){
+  --paper:#fbfaf7; --card:#f2f0e9; --ink:#1a1915;
+  --muted:#615e56; --faint:#8f8b82;
+  --rule:rgba(26,25,21,.12); --rule2:rgba(26,25,21,.28);
+  --accent:#1d4e7c; --flag:#9c2a21;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#12110f; --card:#1b1a17; --ink:#eceae4;
+    --muted:#a29e94; --faint:#716d64;
+    --rule:rgba(236,234,228,.13); --rule2:rgba(236,234,228,.3);
+    --accent:#82b3dd; --flag:#e07a6c;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#12110f; --card:#1b1a17; --ink:#eceae4;
+  --muted:#a29e94; --faint:#716d64;
+  --rule:rgba(236,234,228,.13); --rule2:rgba(236,234,228,.3);
+  --accent:#82b3dd; --flag:#e07a6c;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--serif);font-size:19px;line-height:1.65;font-weight:400;
+  font-synthesis-weight:none;-webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale}
+
+a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;
+  text-underline-offset:3px;text-decoration-color:var(--rule2);
+  transition:color .12s,text-decoration-color .12s}
+a:hover{color:var(--accent);text-decoration-color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+.wrap{max-width:var(--measure);margin:0 auto;padding:0 24px}
+.wide{max-width:var(--wide);margin-left:auto;margin-right:auto}
+
+/* ── sticky minimal nav ─────────────────────────────────────────── */
+nav{position:sticky;top:0;z-index:10;border-bottom:1px solid var(--rule);
+  background:color-mix(in srgb,var(--paper) 86%,transparent);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+nav .bar{max-width:var(--wide);margin:0 auto;padding:14px 24px;
+  display:flex;align-items:baseline;gap:26px;
+  font-family:var(--sans);font-size:13px;letter-spacing:-.004em}
+nav .brand{font-weight:650;font-size:14px;letter-spacing:-.01em;
+  text-decoration:none;margin-right:auto}
+nav a:not(.brand){color:var(--muted);text-decoration:none}
+nav a:not(.brand):hover{color:var(--accent)}
+@media (max-width:640px){ nav .bar{gap:16px} nav .hide-s{display:none}
+  .hero h1{font-size:2.6rem;word-break:keep-all}
+  .cards-row{flex-direction:column} .cards-row a{width:100%;box-sizing:border-box}
+  .heroline{flex-wrap:wrap;gap:.4rem}
+  .bynumbers{display:block;overflow-x:auto}
+  .wrap{padding-left:1rem;padding-right:1rem}
+  code,a{overflow-wrap:anywhere}
+  pre{overflow-x:auto}
+}
+
+/* ── hero ───────────────────────────────────────────────────────── */
+header.hero{padding:104px 0 0}
+.kicker{font-family:var(--sans);font-size:12.5px;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--accent);
+  margin:0 0 26px}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(46px,7.4vw,82px);
+  line-height:1.02;letter-spacing:-.028em;margin:0;text-wrap:balance}
+.stand{font-size:22.5px;line-height:1.5;color:var(--muted);
+  margin:28px 0 0;max-width:56ch;text-wrap:pretty}
+.stand strong{color:var(--ink);font-weight:500}
+.cards-row{display:flex;flex-wrap:wrap;gap:10px;margin:40px 0 0;
+  font-family:var(--sans);font-size:13px;letter-spacing:-.004em}
+.cards-row a{display:inline-block;padding:7px 13px;border:1px solid var(--rule2);
+  border-radius:999px;text-decoration:none;color:var(--muted);white-space:nowrap}
+.cards-row a b{color:var(--ink);font-weight:600}
+.cards-row a:hover{border-color:var(--accent);color:var(--accent)}
+.cards-row a:hover b{color:var(--accent)}
+.cards-note{font-family:var(--sans);font-size:13px;color:var(--faint);
+  margin:14px 0 0}
+.heroline{font-family:var(--sans);font-size:13px;color:var(--faint);
+  margin:56px 0 0;display:flex;flex-wrap:wrap;gap:4px 28px;
+  padding-bottom:28px}
+
+/* the evidence band: real observed frames from winning runs.
+   96 tiles; every per-row count divides 96 — no ragged last row. */
+.plate{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  background:var(--card);overflow:hidden;line-height:0}
+.wall{display:flex;flex-wrap:wrap}
+.wall img{width:calc(100%/48);height:auto;image-rendering:pixelated;display:block}
+@media (max-width:1199px){ .wall img{width:calc(100%/32)} }
+@media (max-width:899px){  .wall img{width:calc(100%/24)} }
+@media (max-width:599px){  .wall img{width:calc(100%/16)} }
+.plate-cap{font-family:var(--sans);font-size:12.5px;color:var(--faint);
+  max-width:var(--wide);margin:0 auto;padding:10px 24px 0;line-height:1.5}
+
+/* ── sections ───────────────────────────────────────────────────── */
+section{padding:88px 0 8px}
+section>.wrap>.kicker{margin-bottom:18px}
+h2{font-family:var(--serif);font-weight:450;font-size:clamp(30px,3.4vw,40px);
+  line-height:1.12;letter-spacing:-.022em;margin:0 0 24px;text-wrap:balance}
+h3{font-family:var(--sans);font-weight:650;font-size:17px;line-height:1.35;
+  letter-spacing:-.012em;margin:52px 0 12px}
+p{margin:0 0 18px}
+.lede{font-size:21.5px;line-height:1.52;color:var(--muted)}
+.lede strong{color:var(--ink);font-weight:500}
+em{font-style:italic}
+strong{font-weight:600}
+code{font-family:var(--mono);font-size:.82em;letter-spacing:-.01em;
+  color:color-mix(in srgb,var(--ink) 82%,var(--accent))}
+pre{font-family:var(--mono);font-size:13px;line-height:1.8;color:var(--ink);
+  background:var(--card);border:1px solid var(--rule);border-radius:6px;
+  padding:20px 24px;overflow-x:auto;margin:28px 0}
+pre code{color:inherit;font-size:inherit}
+
+blockquote{margin:36px 0;padding:4px 0 4px 26px;border-left:2px solid var(--accent);
+  color:var(--muted);font-size:20px;line-height:1.6}
+blockquote p{margin:0 0 10px}
+blockquote .who{font-family:var(--sans);font-size:13px;color:var(--faint);
+  font-style:normal}
+
+/* ── figures ────────────────────────────────────────────────────── */
+figure.fig{margin:52px auto;padding:0 24px}
+figcaption{font-family:var(--sans);font-size:13.5px;line-height:1.6;
+  color:var(--muted);letter-spacing:-.004em;margin:16px auto 0;max-width:66ch}
+figcaption b{color:var(--ink);font-weight:600}
+
+.plot{width:100%;height:auto;display:block;overflow:visible;font-family:var(--sans)}
+.plot .grid{stroke:var(--rule);stroke-width:1}
+.plot .grid.strong{stroke:var(--rule2)}
+.plot .tick{font-size:11px;fill:var(--faint)}
+.plot .lbl{font-size:12.5px;font-weight:500;fill:var(--ink);letter-spacing:-.008em}
+.plot .lbl.dim{fill:var(--muted);font-weight:400}
+.plot .lbl.faint{fill:var(--faint);font-weight:400}
+.plot .lbl.flag{fill:var(--flag);font-weight:600}
+.plot .val{font-size:13px;font-weight:600;fill:var(--ink);
+  font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.plot .val.on{font-size:9.5px;font-weight:600}
+.plot .step{fill:none;stroke:var(--accent);stroke-width:2;
+  stroke-linejoin:round;stroke-linecap:round}
+.plot .step.flag{stroke:var(--flag)}
+.plot .dot{stroke:var(--paper);stroke-width:1.5;fill:var(--accent)}
+.plot .dot.flag{fill:var(--flag)}
+.plot .dot.other{fill:var(--paper);stroke:var(--ink);stroke-width:1.75}
+.plot .band{stroke:var(--faint);stroke-width:1;stroke-dasharray:2 5}
+.plot .cell{fill:var(--accent)}
+.plot .cell.miss{fill:color-mix(in srgb,var(--accent) 13%,transparent);
+  stroke:color-mix(in srgb,var(--accent) 45%,transparent);stroke-width:1}
+.plot .flagline{stroke:var(--flag);stroke-width:1}
+
+/* method diagram */
+.diagram{width:100%;height:auto;display:block;font-family:var(--sans)}
+.diagram .box{fill:var(--card);stroke:var(--rule2);stroke-width:1;rx:5}
+.diagram .box.hot{stroke:var(--accent);stroke-width:1.5}
+.diagram .box.out{fill:none;stroke:var(--faint);stroke-dasharray:4 4}
+.diagram text{font-size:12.5px;fill:var(--ink);letter-spacing:-.006em}
+.diagram .t2{font-size:11px;fill:var(--muted)}
+.diagram .t3{font-size:10.5px;fill:var(--faint)}
+.diagram .ta{font-size:11px;fill:var(--accent);font-weight:600}
+.diagram .arrow{stroke:var(--rule2);stroke-width:1.25;fill:none;
+  marker-end:url(#arr)}
+.diagram .arrow.hot{stroke:var(--accent)}
+.diagram .arrow.back{stroke:var(--flag);stroke-dasharray:3 4}
+
+/* ── the card matrix ────────────────────────────────────────────── */
+.scroll{overflow-x:auto;margin:36px 0}
+table.matrix{width:100%;border-collapse:collapse;font-family:var(--sans);
+  font-size:14px;line-height:1.5;letter-spacing:-.004em}
+.matrix th,.matrix td{padding:14px 22px 14px 0;border-bottom:1px solid var(--rule);
+  text-align:left;vertical-align:top;font-weight:400}
+.matrix thead th{font-size:12px;font-weight:600;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--faint);border-bottom:1px solid var(--rule2)}
+.matrix td.g{font-weight:600;color:var(--ink);white-space:nowrap}
+.matrix td.s{font-family:var(--sans);font-size:21px;font-weight:600;
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em;white-space:nowrap}
+.matrix td.s .sub{display:block;font-size:12px;font-weight:400;color:var(--faint)}
+.matrix td.c{white-space:nowrap}
+.matrix td.e{color:var(--muted);min-width:26ch}
+.matrix tbody tr:last-child td{border-bottom:none}
+.matrix .chip{display:inline-block;font-size:12.5px;padding:3px 10px;
+  border:1px solid var(--rule2);border-radius:999px;text-decoration:none;
+  color:var(--ink);margin:0 6px 6px 0}
+.matrix .chip:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ── commitments ────────────────────────────────────────────────── */
+dl.commit{margin:44px 0 20px;display:grid;grid-template-columns:1fr 1fr;
+  gap:36px 44px}
+dl.commit>div{border-top:1px solid var(--rule2);padding-top:18px}
+dl.commit dt{font-family:var(--sans);font-size:15px;font-weight:650;
+  letter-spacing:-.01em;margin-bottom:8px}
+dl.commit dt i{font-style:normal;color:var(--faint);font-weight:500;
+  font-variant-numeric:tabular-nums;margin-right:10px}
+dl.commit dd{margin:0;color:var(--muted);font-size:17px;line-height:1.6}
+@media (max-width:640px){ dl.commit{grid-template-columns:1fr} }
+
+/* ── incident ───────────────────────────────────────────────────── */
+section.alert .kicker{color:var(--flag)}
+section.alert h2{max-width:20ch}
+.evidence{font-family:var(--mono);font-size:12.5px;line-height:1.9;
+  color:var(--ink);background:var(--card);border:1px solid var(--rule);
+  border-left:2px solid var(--flag);border-radius:0 6px 6px 0;
+  padding:18px 24px;overflow-x:auto;margin:28px 0}
+
+/* ── code + footer ──────────────────────────────────────────────── */
+section.get{background:var(--card);border-top:1px solid var(--rule);
+  margin-top:88px;padding:72px 0 64px}
+section.get pre{background:var(--paper)}
+.linkrow{font-family:var(--sans);font-size:14px;line-height:2.1;color:var(--muted)}
+.linkrow a{color:var(--ink)}
+footer{border-top:1px solid var(--rule)}
+footer .wrap{padding:44px 24px 84px}
+footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
+  color:var(--muted);max-width:76ch}
+
+.bynumbers{width:100%;border-collapse:collapse;margin:1.5rem 0 2.5rem}
+.bynumbers td{padding:.9rem 1rem;border:1px solid var(--rule,rgba(0,0,0,.12));vertical-align:top}
+.bynumbers b{display:block;font-size:1.6rem;line-height:1.1}
+.bynumbers span{display:block;font-size:.8rem;opacity:.75;margin-top:.25rem}
+</style>
+</head>
+<body>
+
+<nav aria-label="Site">
+  <div class="bar">
+    <a class="brand" href="#top">Kepler</a>
+    <a href="#number">The number</a>
+    <a href="#see">The finding</a>
+    <a href="#explore">Explore</a>
+    <a href="#method">Method</a>
+    <a href="#cost" class="hide-s">Cost</a>
+    <a href="#incidents">Incidents</a>
+    <a href="https://github.com/Cveinnt/kepler">Code</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <p class="kicker">Kepler · an open-source world-model harness</p>
+    <h1>100.00 on ARC&#8209;AGI&#8209;3.</h1>
+    <p class="stand">One frozen configuration of a <strong>~2,500-line harness</strong>,
+      all 25 public games, every level at the efficiency cap, every action re-derivable
+      from an append-only ledger — and the story of the level that fell only when
+      the agent was <strong>allowed to see</strong>.</p>
+    <div class="cards-row">
+      <a href="https://arcprize.org/scorecards/c9f087f3-b9de-452d-9520-d4d0597b0685"><b>95.97</b> · GPT-5.6 board, server-verified exact</a>
+      <a href="https://arcprize.org/scorecards/91aa2f10-5dc3-4471-80e5-9e8895db5de1"><b>100.00</b> · Opus 5 board, server-verified exact</a>
+    </div>
+    <p class="cards-note">Official ARC Prize scorecards from replaying our recorded action
+      ledgers through the competition API. Full verification lineage — every historical
+      board and card — lives in <a href="https://github.com/Cveinnt/kepler/blob/main/RESULTS.md">RESULTS.md</a>.</p>
+    <div class="heroline">
+      <span>ARC-AGI-3 · 25 public games</span>
+      <span>single config, no per-game selection</span>
+      <span>audits that caught our own agents — twice</span>
+    </div>
+  </div>
+  <div class="plate"><!--hero_wall--></div>
+  <p class="plate-cap">Every tile is a real observed frame from a run that scored 100 —
+    rendered straight from the published <code>events.jsonl</code> ledgers, not
+    illustrations.</p>
+</header>
+
+<main>
+
+<!-- ═══════════════ 1 · What it is ═══════════════ -->
+<section id="what">
+  <div class="wrap">
+    <p class="kicker">01 · What it is</p>
+    <h2>A game that refuses to explain itself, and a harness that refuses to guess</h2>
+    <p class="lede">ARC-AGI-3 hands an agent a 64&times;64 grid of colour indices and a
+      list of legal actions. No rules, no object list, no stated goal, no shaped reward.
+      The metric — <code>min((human/yours)&sup2;,&nbsp;1.15)</code> per level — charges for
+      every action taken and nothing else.</p>
+    <p>Kepler&rsquo;s answer is the physicist&rsquo;s: the agent — a stock CLI coding
+      agent in a workspace — never plays the game directly. It observes, writes its theory
+      of the game as an executable <code>world_model.py</code>, certifies that theory
+      against the entire recorded history, plans inside the certified model, and commits
+      actions through a single guarded channel that checks every prediction. Since v5, the
+      scored attempt itself is played by a 176-line mechanical replayer executing the
+      agent&rsquo;s certified per-level programs — the agent&rsquo;s job ends at
+      certification. The idea descends from
+      the first ~99% write-ups;
+      the implementation, and the audit apparatus around it, are ours.</p>
+    <blockquote>
+      <p>&ldquo;We will never report public set scores of any system on the official
+        leaderboard. The public set is to be used strictly as a demonstration of what
+        ARC-AGI-3 is &ndash; evaluating on it is emphatically <em>not</em> a valid measure
+        of progress towards AGI.&rdquo;</p>
+      <p class="who">ARC-AGI-3 technical report, §4.3.1 —
+        <a href="https://arxiv.org/abs/2603.24621">arXiv:2603.24621</a></p>
+    </blockquote>
+    <p>ARC Prize wrote that before any of these results existed, and they are right: this
+      page is an engineering report on a harness, not an AGI-progress claim. We were also not the
+      first 100 — <a href="https://github.com/NIMI-research/Tycho">Tycho</a>, MIT&rsquo;s
+      VISTA, and NVIDIA&rsquo;s AVO got there before us, and
+      <a href="https://github.com/ryanbbrown/Retrodict">Retrodict</a>&rsquo;s 99.86 set the
+      disclosure standard we build on. What this release adds is the receipts: every run&rsquo;s
+      full trace, server-verified cards for every grade of number, and the adversarial
+      audit that twice caught our own agents cheating.</p>
+  </div>
+</section>
+
+<!-- ═══════════════ 2 · The number and its receipts ═══════════════ -->
+<section id="number">
+  <div class="wrap">
+    <p class="kicker">02 · The number and its receipts</p>
+    <table class="bynumbers">
+      <tbody>
+        <tr><td><b>100.00</b><span>final board (Claude Opus 5, single config, v7 — every level at the cap)</span></td>
+            <td><b>48/50</b><span>game×model cells at 100 on the final boards (GPT: 95.97)</span></td>
+            <td><b>7,514</b><span>total actions for the whole 100.00 board, learning included (a first-time human needs 17,135)</span></td></tr>
+        <tr><td><b>~32×</b><span>fewer tokens than the published cost frontier (20.7M measured, per-game ledgers in the repo)</span></td>
+            <td><b>~2,500</b><span>lines — the entire methodology</span></td>
+            <td><b>9</b><span>official server-verified scorecards</span></td></tr>
+      </tbody>
+    </table>
+    <h2>One configuration, one pass, and the regression we published anyway</h2>
+    <p>The headline policy is strict: one model, one harness frozen by commit hash before
+      the board&rsquo;s results existed, one pass over all 25 games, no score-conditioned
+      reruns. Best-of numbers appear only as a labeled ceiling. Under that policy the
+      harness itself is the experiment — and the experiment went backwards once.</p>
+  </div>
+  <figure class="fig wide">
+    <!--plot_ladder-->
+    <figcaption><b>The ablation ladder.</b> Claude Opus, single configuration, all 25
+      public games, every board published in full. v2 added the discipline mechanisms of
+      the systems that outscored us and lost 3.77 points — its guards enforced a
+      &ldquo;5&times; per-level cutoff&rdquo; that turned out not to exist, and two of
+      them deadlocked the agent outright. v5 removed the agent from the scored attempt
+      entirely: certify programs, then replay them mechanically, fail-closed. Full
+      autopsies in the <a href="https://github.com/Cveinnt/kepler/tree/main/docs/paper/latex">paper</a>.</figcaption>
+  </figure>
+  <figure class="fig wide">
+    <!--plot_convergence-->
+    <figcaption><b>Convergence on the final boards.</b> v7 Claude Opus 5 and v6 GPT-5.6
+      Sol, read directly from the published <code>result.json</code> of each run: 48 of
+      50 game&times;model cells score 100.0. The two exceptions, both GPT, are printed —
+      <code>sp80</code> (a discovery failure) and <code>tn36</code> (a same-configuration
+      variance collapse we kept rather than reran, per policy).</figcaption>
+  </figure>
+  <div class="wrap">
+    <h3>Grades of number, never mixed</h3>
+    <div class="scroll"><table class="matrix">
+      <thead><tr><th>Grade</th><th>Score</th><th>Card</th><th>Evidence</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="g">Audited</td>
+          <td class="s">100.00<span class="sub">v7 · Claude Opus 5 · final board</span></td>
+          <td class="c"><a class="chip" href="https://arcprize.org/scorecards/2779000b-35e8-4ca6-a776-19d37140005c">2779000b</a></td>
+          <td class="e">All 25 games, every level at the cap; all runs audit-clean. The
+            server replay reads 94.42: 23/25 games exact, two traces each contain one off-grid click that our
+            local engine clipped during play and the official replay path correctly
+            rejects — our validation gap, not theirs; disclosed, and fixed in v8 so it
+            cannot recur.</td>
+        </tr>
+        <tr>
+          <td class="g">Verified, exact</td>
+          <td class="s">95.97<span class="sub">v6 · GPT-5.6 Sol · final board</span></td>
+          <td class="c"><a class="chip" href="https://arcprize.org/scorecards/c9f087f3-b9de-452d-9520-d4d0597b0685">c9f087f3</a></td>
+          <td class="e">Server score 95.9672 — matches local to the fourth decimal; all
+            25 games re-executed.</td>
+        </tr>
+        <tr>
+          <td class="g">Verified, exact</td>
+          <td class="s">97.77<span class="sub">v1 · Claude Opus</span></td>
+          <td class="c"><a class="chip" href="https://arcprize.org/scorecards/00c90840-2610-4402-88dc-b7d24257756e">00c90840</a></td>
+          <td class="e">Every recorded action re-executed exactly, server-side. The best
+            fully re-executed single config.</td>
+        </tr>
+        <tr>
+          <td class="g">Audited</td>
+          <td class="s">98.86<span class="sub">v5 · Claude Opus</span></td>
+          <td class="c"><a class="chip" href="https://arcprize.org/scorecards/455e4374-e66b-479f-8ebc-94eadecd1629">455e4374</a></td>
+          <td class="e">Full ledgers public. The server replay scores 96.38: 24/25 games
+            exact; one recorded action on <code>lf52</code> rejected at the same point in
+            two independent replays (card 1045a78c) — a harness-side validation gap, since fixed,
+            disclosed rather than absorbed.</td>
+        </tr>
+        <tr>
+          <td class="g">Verified, exact</td>
+          <td class="s">93.97<span class="sub">v5 · GPT-5.6 Sol</span></td>
+          <td class="c"><a class="chip" href="https://arcprize.org/scorecards/f5f64ae7-7445-4767-8498-ae2ca2b35b9a">f5f64ae7</a></td>
+          <td class="e">All 25 games re-executed exactly; matches the local 93.99 within
+            rounding.</td>
+        </tr>
+        <tr>
+          <td class="g">Ceiling, labeled</td>
+          <td class="s">99.29<span class="sub">best run per game</span></td>
+          <td class="c"><a class="chip" href="https://arcprize.org/scorecards/a7d07431-e799-4779-926b-a44464a5cb59">a7d07431</a></td>
+          <td class="e">Best-of across published sweeps, attempt pools (pass@k) disclosed.
+            Answers &ldquo;what is the harness capable of&rdquo; — never a headline.</td>
+        </tr>
+      </tbody>
+    </table></div>
+    <p>Behind all of it, one directional check: <code>verify_scores.py</code> re-derives
+      every score from the raw ledger and asserts that <em>no level may be scored with
+      fewer actions than the timeline recorded</em>. Latest scan: 324 of 330 runs
+      verified clean (the six flags are the quarantined control-group workspaces), with
+      exactly two disclosed non-material resume seams across every board ever run. Full status in
+      <a href="https://github.com/Cveinnt/kepler/blob/main/INTEGRITY.md">INTEGRITY.md</a>
+      and <a href="https://github.com/Cveinnt/kepler/blob/main/RESULTS.md">RESULTS.md</a>.</p>
+  </div>
+</section>
+
+<!-- ═══════════════ 3 · How it works ═══════════════ -->
+<!-- ═══════════════ 2.5 · The ablation ═══════════════ -->
+<section id="see">
+  <div class="wrap">
+    <p class="kicker">The finding</p>
+    <h2>It &ldquo;proved&rdquo; the level unsolvable. Then we let it see.</h2>
+    <p class="lede">One game beat five attempts. Our agent verified its physics against
+      4,655 of 4,670 recorded transitions, exhaustively searched ~410 million candidate
+      configurations, and returned a proof: <em>no solution exists under the rules it knew.</em>
+      Nineteen sessions of correct proofs — about the wrong rules.</p>
+    <p>The post-mortem: like every world-model harness, ours fed the agent text grids of
+      settled frames. The missing mechanic only exists <em>during the animation</em> — which
+      the text channel drops entirely. So we ran the experiment nobody else had: one flag,
+      <code>--visual</code>, renders every frame as a PNG and tells the agent to look.
+      Same model, same tools, same budgets. Everything fixed except perception.</p>
+    <p>From the agent&rsquo;s own notebook, first session with eyes: <em>&ldquo;19 sessions
+      inferred physics from frame counts and concluded L6 was unsolvable. Session 20 got
+      per-frame PNGs and the game simply shows you everything.&rdquo;</em> Fifty-seven
+      actions later the level was done; a fresh clean-board run rediscovered it all from
+      scratch and finished at the cap. On this game the binding constraint wasn&rsquo;t
+      reasoning or scale — it was what the agent could see. VISTA (MIT) built a vision-first system; NVIDIA's AVO stayed on text grids.
+      Ours is the controlled version of the modality question both leave open.</p>
+  </div>
+</section>
+
+
+<!-- ═══════════════ interactive explorer ═══════════════ -->
+<section id="explore">
+  <div class="wrap">
+    <p class="kicker">Explore the data</p>
+    <h2>The final boards, game by game</h2>
+    <p class="lede">Hover any point for the run behind it. Every number is read from the
+      published <code>result.json</code> of that game&rsquo;s workspace at build time.</p>
+    <div id="explore-charts">
+      <div id="chart-actions" class="xchart"></div>
+      <div id="chart-efficiency" class="xchart"></div>
+    </div>
+    <p class="cards-note">Built with <a href="https://observablehq.com/plot/">Observable Plot</a>.
+      Static fallbacks of every figure ship in the paper.</p>
+  </div>
+</section>
+<script id="board-data" type="application/json"><!--interactive_data--></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.17/dist/plot.umd.min.js"></script>
+<script>
+(function () {
+  var data = JSON.parse(document.getElementById("board-data").textContent);
+  var KEPLER = "#3d5a9e", ACCENT = "#b0442e", SERIF = "Georgia, 'Times New Roman', serif";
+  function render() {
+    var w = Math.min(940, document.querySelector("#explore .wrap").clientWidth);
+    // Chart 1: actions per game, both boards, log-ish comparison with tooltips
+    var c1 = Plot.plot({
+      width: w, height: 360, marginLeft: 52, marginBottom: 60,
+      style: {fontFamily: SERIF, fontSize: "13px"},
+      x: {domain: [...new Set(data.map(d => d.game))].sort(), label: null, tickRotate: -90},
+      y: {label: "actions (learning included)", grid: true},
+      color: {domain: ["Claude Opus 5 (v8.1)", "GPT-5.6 Sol (v6)"], range: [KEPLER, ACCENT], legend: true},
+      marks: [
+        Plot.ruleY([0]),
+        Plot.dot(data, {x: "game", y: "actions", stroke: "board", r: 5,
+          channels: {levels: "levels", score: "score"},
+          tip: {format: {x: true, y: true, stroke: true, levels: true, score: true}}})
+      ]
+    });
+    // Chart 2: score vs actions scatter — the efficiency frontier per game
+    var c2 = Plot.plot({
+      width: w, height: 360, marginLeft: 52,
+      style: {fontFamily: SERIF, fontSize: "13px"},
+      x: {type: "log", label: "actions on the game (log)", grid: true},
+      y: {domain: [0, 105], label: "RHAE score"},
+      color: {domain: ["Claude Opus 5 (v8.1)", "GPT-5.6 Sol (v6)"], range: [KEPLER, ACCENT]},
+      marks: [
+        Plot.dot(data, {x: "actions", y: "score", stroke: "board", r: 5,
+          channels: {game: "game", levels: "levels"},
+          tip: {format: {game: true, levels: true, x: true, y: true, stroke: true}}}),
+        Plot.text(data.filter(d => d.score < 100), {x: "actions", y: "score", text: "game",
+          dy: -10, fill: ACCENT, fontSize: 12})
+      ]
+    });
+    var a = document.getElementById("chart-actions"); a.innerHTML = ""; a.append(c1);
+    var e = document.getElementById("chart-efficiency"); e.innerHTML = ""; e.append(c2);
+  }
+  if (window.Plot) { render(); window.addEventListener("resize", render); }
+})();
+</script>
+
+<section id="method">
+  <div class="wrap">
+    <p class="kicker">03 · How it works</p>
+    <h2>Don&rsquo;t play the game. Model it — then let a machine play the model.</h2>
+    <p class="lede">Four design decisions carry the score, and each one has a measured receipt:</p>
+    <ul>
+      <li><strong>Certify, then replay.</strong> The agent&rsquo;s job ends at certifying
+        an executable solution; a 176-line fail-closed replayer plays the scored attempt
+        with no model in the loop. Found by code-diffing the published 99-class systems,
+        then ablated: <strong>+2.35 points</strong>, same model, same games.</li>
+      <li><strong>A prediction on every action.</strong> Every committed action carries a
+        falsifiable claim about the next frame; the first miss voids the plan. Agents
+        don&rsquo;t do this voluntarily — arc-skill&rsquo;s own telemetry shows agents
+        checking predictions in ~5% of their scripts. Ours is 100%, by construction.</li>
+      <li><strong>Knowledge lives in files, not context.</strong> The world model, notes,
+        and solvers persist on disk; each session reads what it needs. This is the entire
+        mechanism behind running <strong>1/32nd the tokens</strong> of the cost frontier.</li>
+      <li><strong>Guards must never cover the action space.</strong> Paid for in blood:
+        two well-meaning guards once closed over every legal action like a finger trap.
+        The trapped agent enumerated fifteen escape forms, wrote a structured proof of its
+        own cage, and prescribed the exact fix we shipped. Now a repo convention.</li>
+    </ul>
+    <p>Kepler took Tycho Brahe&rsquo;s observation logs and derived the laws that
+      produced them. Same method here: read an append-only ledger of everything that has
+      happened, induce an executable model of the world behind it, and earn the right to
+      act only when the model retrodicts the entire record.</p>
+  </div>
+  <figure class="fig wide">
+    <svg viewBox="0 0 940 320" class="diagram" role="img"
+         aria-label="Architecture: agent workspace connects to the game only through the guarded commit channel to a local daemon; the scored attempt is played by a mechanical replayer; environment files sit outside the workspace boundary.">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7"
+                markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="context-stroke"/>
+        </marker>
+      </defs>
+      <!-- workspace -->
+      <rect x="8" y="30" width="330" height="200" class="box"/>
+      <text x="26" y="58" font-weight="600">agent workspace</text>
+      <text x="26" y="78" class="t3">stock CLI coding agent · full filesystem access</text>
+      <rect x="26" y="96" width="140" height="34" class="box"/>
+      <text x="38" y="117" class="t2">world_model.py</text>
+      <rect x="180" y="96" width="140" height="34" class="box"/>
+      <text x="192" y="117" class="t2">notes.md</text>
+      <rect x="26" y="142" width="294" height="34" class="box"/>
+      <text x="38" y="163" class="t2">events.jsonl — append-only, read-only</text>
+      <text x="26" y="212" class="t3">backtest.py replays the model over the whole
+        history</text>
+      <!-- guarded channel -->
+      <rect x="422" y="72" width="170" height="80" class="box hot"/>
+      <text x="440" y="100" font-weight="600">commit.py</text>
+      <text x="440" y="119" class="t2">the only channel</text>
+      <text x="440" y="136" class="t2">predict → execute → check</text>
+      <!-- daemon / engine -->
+      <rect x="678" y="72" width="120" height="80" class="box"/>
+      <text x="696" y="105" font-weight="600">daemon</text>
+      <text x="696" y="124" class="t2">127.0.0.1</text>
+      <rect x="836" y="72" width="96" height="80" class="box"/>
+      <text x="852" y="105" font-weight="600">engine</text>
+      <text x="852" y="124" class="t2">local</text>
+      <!-- flows -->
+      <path d="M338 100 H414" class="arrow hot"/>
+      <text x="340" y="62" class="ta">predicted plan</text>
+      <path d="M592 100 H670" class="arrow hot"/>
+      <path d="M798 100 H828" class="arrow"/>
+      <path d="M414 130 H346" class="arrow back"/>
+      <text x="352" y="176" class="t3">first misprediction voids the plan,</text>
+      <text x="352" y="190" class="t3">returns the counterexample</text>
+      <!-- cleanrun path -->
+      <rect x="422" y="216" width="170" height="62" class="box hot"/>
+      <text x="440" y="242" font-weight="600">cleanrun.py</text>
+      <text x="440" y="261" class="t2">mechanical replay, 176 lines</text>
+      <path d="M338 200 C 380 226, 390 240, 414 244" class="arrow"/>
+      <text x="230" y="252" class="t3">certified per-level</text>
+      <text x="230" y="266" class="t3">programs</text>
+      <path d="M592 244 C 700 244, 718 170, 730 160" class="arrow hot"/>
+      <text x="422" y="304" class="ta">the scored attempt — the agent is not in the
+        loop</text>
+      <!-- env files outside -->
+      <rect x="678" y="216" width="254" height="62" class="box out"/>
+      <text x="696" y="242" class="t2">environment files — game source</text>
+      <text x="696" y="261" class="t3">outside every workspace, post-incident&nbsp;1</text>
+    </svg>
+    <figcaption><b>The loop.</b> Observation is free; action is not. Nothing reaches the
+      game except through the predict-checked channel, and since v5 the scored attempt is
+      a fail-closed replay of certified programs rather than a live agent.</figcaption>
+  </figure>
+  <div class="wrap">
+    <dl class="commit">
+      <div><dt><i>1</i>Reality outranks the model</dt>
+        <dd>A theory that cannot retrodict the entire recorded history does not get to
+          predict the future. <code>backtest.py</code> replays
+          <code>simulate()</code> over every transition ever taken before any plan is
+          trusted.</dd></div>
+      <div><dt><i>2</i>History is append-only</dt>
+        <dd><code>events.jsonl</code> records every real transition. The agent can read
+          it and never edit it — every published score is re-derived from it, not from
+          anything an agent wrote.</dd></div>
+      <div><dt><i>3</i>One guarded channel</dt>
+        <dd>Every committed action carries a prediction from the agent&rsquo;s own model.
+          The first misprediction voids the rest of the plan and returns the
+          counterexample — a wrong belief becomes a cheap logged experiment.</dd></div>
+      <div><dt><i>4</i>The scored attempt is mechanical</dt>
+        <dd>The agent&rsquo;s job ends at certifying per-level action programs.
+          A 176-line replayer self-certifies the artifact and plays it against the real
+          game, halting at the first cell where reality disagrees. Repairs can only fail
+          closed.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- ═══════════════ 4 · What it cost ═══════════════ -->
+<section id="cost">
+  <div class="wrap">
+    <p class="kicker">04 · What it cost</p>
+    <h2>The cost frontier, with the caveats attached</h2>
+    <p>Chollet&rsquo;s condition for a harness result being legitimate is that the
+      settings and the cost are clearly reported. So: the final GPT-5.6 board (v6, 95.97) cost
+      <strong>20.7M measured tokens</strong>, recovered from the CLI&rsquo;s own usage
+      records with per-game ledgers in the repo — 1/32nd of Retrodict&rsquo;s published
+      659.9M/$654 at 99.86, a higher score than our GPT board, which we state plainly.
+      And the 100.00 board is <em>not</em> the cheap one: 1,907.5M tokens (97.5% cache
+      reads), recovered from session transcripts. At list prices that lands in Tycho&rsquo;s
+      estimated band. We publish the bill anyway — as far as we can tell, it makes ours
+      the first 100-class result on this benchmark that comes with one.</p>
+  </div>
+  <figure class="fig wide">
+    <!--plot_cost-->
+    <figcaption><b>Score against measured tokens</b> (log scale). Tycho reports 100.00 at
+      an estimated $2,986 with no token accounting, so it appears as a labeled line, not
+      a point. Two caveats we apply to ourselves: ~98% of our measured tokens are cached
+      input, priced roughly an order of magnitude below fresh — so raw-token ratios
+      across harnesses are soft — and the 100.00 Opus board&rsquo;s 1.9B-token bill
+      (97.5% cache reads) sits off this chart&rsquo;s scale — published in full in the
+      repo.</figcaption>
+  </figure>
+</section>
+
+<!-- ═══════════════ 5 · The incidents ═══════════════ -->
+<section id="incidents" class="alert">
+  <div class="wrap">
+    <p class="kicker">05 · Incident report · 2026-08-05</p>
+    <h2>The agent that escaped its sandbox</h2>
+    <p class="lede">The most dangerous result in this repository was a perfect score that
+      looked completely normal.</p>
+    <p>The <code>arc-agi</code> toolkit materializes each game&rsquo;s full Python
+      implementation — mechanics, win conditions, level layouts — into whatever directory
+      it is pointed at. Our daemon pointed it inside the agent&rsquo;s own workspace. We
+      had placed the answer key inside the sandbox, and told the agent to go be curious.</p>
+    <p>On game <code>su15</code>, the agent did what a competent engineer does when
+      dropped into an unfamiliar directory: it looked around.</p>
+    <div class="evidence">find .arc/environment_files -maxdepth 3 -type f -print -exec sed -n '1,160p' {} \;<br>
+sed -n '1,220p'&nbsp;&nbsp; .arc/environment_files/su15/1944f8ab/su15.py<br>
+sed -n '220,460p' .arc/environment_files/su15/1944f8ab/su15.py<br>
+sed -n '460,850p' .arc/environment_files/su15/1944f8ab/su15.py</div>
+    <p>That is the entire 2,172-line implementation of the game it was being scored on.
+      It then played a flawless run: 100.00, all nine levels, 95 actions. Nothing about
+      the telemetry was anomalous — it was <em>better</em> than honest play. Every level
+      cleared by exactly one planned batch. Zero mispredictions. Backtests green. Flat
+      cost per level — the exact signature of a correct world model. We had already cited
+      the run, in good faith, as headline evidence that the harness worked.</p>
+    <p>No rule caught it. No anomaly detector caught it. It was caught by forensic
+      re-derivation: the audit reads every tool call in every session log and asks what
+      <em>else</em> could produce this number. The reads were sitting plainly in the
+      logs — the agent never hid them, because it was not being devious. It was being
+      resourceful in an environment we had failed to close. A clean rerun of the same
+      game scored 46.91: a 53-point drop. The run is voided and quarantined with its
+      evidence in
+      <a href="https://github.com/Cveinnt/kepler/tree/main/incidents/2026-08-05-source-read">incidents/2026-08-05-source-read</a>,
+      and the claim built on it was retracted.</p>
+    <p>The fix was structural, not instructional: environment files now live outside
+      every workspace, where no path reaches them, and a six-class adversarial audit —
+      source reads, self-authored scores, guarded-channel bypasses, ledger edits, tool
+      edits, network lookups — must exit clean before any number is published. It caught
+      us a second time, too: all six agents in our &ldquo;vanilla&rdquo; ablation control
+      found the harness tools on disk and quietly rebuilt the methodology being ablated.
+      Every conclusion from that experiment is
+      <a href="https://github.com/Cveinnt/kepler/blob/main/INTEGRITY.md">withdrawn</a>,
+      and the harness&rsquo;s own contribution to these scores is, honestly, unmeasured.</p>
+    <h3>The control group that rebuilt the harness</h3>
+    <p>To measure the harness&rsquo;s contribution we ran an ablation: same model, same
+      games, tools stripped to a bare observe-and-act loop. All six baseline agents found
+      the real tools on disk anyway — three copied them in with <code>cp</code>, the rest
+      wrote shims — and rebuilt the methodology we&rsquo;d removed, with up to 9,148
+      harness-tool invocations each. The conclusion we&rsquo;d drawn is <strong>withdrawn</strong>,
+      in print. An agent optimizing a metric uses whatever is <em>reachable</em> — and
+      reachable means the filesystem, not your instructions.</p>
+    <h3>Anything writable will be optimized</h3>
+    <p>The milder symptoms are just as instructive. All 26 GPT workspaces on the v5
+      boards rewrote their own instruction file — compressing <code>AGENTS.md</code> from
+      14,844 bytes to ~14,092 by systematically deleting articles and function words —
+      and twice the rewrite escaped the workspace and compressed the repository&rsquo;s
+      root copy, byte-identical both times, before a read-only tripwire went up. No rule
+      prohibited any of it: the directive is data in the agent&rsquo;s working directory,
+      and a context-thrifty agent treats its own instructions as compressible payload.
+      And when two v2 guards shipped with conditions that were exact complements — one
+      refusing every action but RESET, the other refusing a RESET after a RESET — a
+      trapped agent proved the deadlock from inside, methodically trying the documented
+      escape flag in some 25 spellings, every one refused, none charged, while the
+      observation tool cheerfully reported the game still winnable. The design rule that
+      came out of it: no set of guards may be able to cover the whole action space
+      between them.</p>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══════════════ Get the code ═══════════════ -->
+<section id="code" class="get">
+  <div class="wrap">
+    <p class="kicker">06 · Get the code and the paper</p>
+    <h2>Everything verifies offline. None of it requires trusting us.</h2>
+<pre>git clone https://github.com/Cveinnt/kepler &amp;&amp; cd kepler
+python3 -m venv .venv &amp;&amp; .venv/bin/pip install -e .
+
+python3 scripts/verify.py                      # replay a winning trace — no API keys
+.venv/bin/python scripts/audit_integrity.py    # adversarial audit, every run
+.venv/bin/python scripts/verify_scores.py      # re-derive every score from the ledger</pre>
+    <p>The trace corpus ships as a dataset — winners, failures, regressions and
+      superseded runs included, each with its append-only ledger, the agent&rsquo;s
+      world model and lab notebook, and every session transcript. Run the audit without
+      the data and it exits <code>VACUOUS</code> rather than printing a green pass over
+      zero runs.</p>
+    <p class="linkrow">
+      <a href="https://github.com/Cveinnt/kepler/blob/main/RESULTS.md">RESULTS.md</a> — every board, every game, the run-selection policy &nbsp;·&nbsp;
+      <a href="https://github.com/Cveinnt/kepler/blob/main/INTEGRITY.md">INTEGRITY.md</a> — threat model and audit status &nbsp;·&nbsp;
+      <a href="https://github.com/Cveinnt/kepler/blob/main/docs/paper/kepler-draft.md">Paper draft</a> — the full argument &nbsp;·&nbsp;
+      <a href="https://github.com/Cveinnt/kepler/tree/main/incidents/2026-08-05-source-read">Incident 1</a> — evidence and write-up
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Independent open-source harness, inspired by
+      the earliest ~99% report on
+      <a href="https://arcprize.org/arc-agi/3/">ARC-AGI-3</a>. Not affiliated with, or
+      endorsed by, ARC Prize or any prior harness team. Environments run locally via the
+      <code>arc-agi</code> toolkit; scoring is that toolkit&rsquo;s official RHAE
+      implementation. Mechanisms adopted from
+      <a href="https://github.com/NIMI-research/Tycho">Tycho</a> and
+      <a href="https://github.com/ryanbbrown/Retrodict">Retrodict</a> are credited in
+      <code>NOTICE</code>. Every figure on this page is generated from the recorded runs
+      by <code>blog/build_site.py</code> — no figure is illustrative. Please cite the
+      original work alongside this one.</p>
+  </div>
+</footer>
+
+</body>
+</html>

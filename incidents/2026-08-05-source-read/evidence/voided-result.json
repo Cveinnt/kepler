@@ -1,0 +1,48 @@
+{
+  "voided_result": {
+    "game": "su15",
+    "game_id": "su15-1944f8ab",
+    "model": "gpt-xhigh",
+    "state": "WIN",
+    "levels_completed": 9,
+    "win_levels": 9,
+    "actions": 95,
+    "note": "win",
+    "elapsed_hours": 0.41,
+    "score": 100.0,
+    "level_scores": [
+      115.0,
+      115.0,
+      115.0,
+      115.0,
+      115.0,
+      115.0,
+      115.0,
+      115.0,
+      115.0
+    ],
+    "level_actions": [
+      7,
+      11,
+      14,
+      13,
+      10,
+      14,
+      6,
+      8,
+      12
+    ]
+  },
+  "actions_per_level": [
+    7,
+    11,
+    14,
+    13,
+    10,
+    14,
+    6,
+    8,
+    12
+  ],
+  "total_events": 96
+}

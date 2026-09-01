@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kepler-harness"
+version = "2.0.0"
+description = "Kepler: an open-source, audited agent harness for ARC-AGI-3"
+readme = "README.md"
+license = { text = "MIT" }
+# arc-agi>=0.9.9 itself requires Python >=3.13, so anything lower cannot
+# install this package at all. CI caught us advertising 3.11.
+requires-python = ">=3.13"
+dependencies = [
+    # Runs the 25 public ARC-AGI-3 games locally and provides the official
+    # RHAE scorecard implementation (arc-agi pulls in arcengine, flask,
+    # pillow, pydantic, python-dotenv as transitive deps).
+    "arc-agi>=0.9.9",
+    # harness/daemon.py talks HTTP to itself over localhost via urllib; the
+    # workspace tools and any future driver code use requests directly.
+]
+
+[project.urls]
+"Original write-up" = "https://github.com/Cveinnt/kepler/"
+
+[tool.setuptools]
+packages = []
