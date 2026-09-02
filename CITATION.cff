@@ -1,13 +1,12 @@
 cff-version: 1.2.0
 message: >-
   If you use this software, please cite this release record.
-title: "Kepler: 100% on ARC-AGI-3 at About One Quarter of Tycho's Estimated Cost"
+title: "Kepler"
 type: software
 authors:
   - family-names: Wu
     given-names: Wensen
     alias: Cveinnt
-    email: contact@wensenwu.com
 license: MIT
 version: "1.0.0"
 date-released: "2026-09-01"
@@ -16,16 +15,22 @@ url: "https://kepler-harness.vercel.app"
 abstract: >-
   Kepler is an open-source agent harness that reaches a server-verified exact
   100.00 RHAE on all 25 public ARC-AGI-3 games with one frozen Claude Opus 5
-  configuration and no score-conditioned reruns. Every level meets or exceeds
-  median-human action efficiency. The retained board runs use 8,256 environment
-  actions, with 7,292 in scored levels. Complete campaign action accounting is
+  configuration and no score-conditioned reruns. On that board, 181 of 183
+  completed levels use no more actions than the median-human baseline. The
+  retained board runs use 8,256 environment actions, with 7,292 in scored
+  levels. Complete campaign action accounting is
   still pending. The provider record costs $777.72 at current API
   list-equivalent rates. The release includes complete
-  provider-side resource accounting, score-lineage tools, an enforced
+  provider-record resource accounting, score-lineage tools, an enforced
   zero-game-priors check, negative results, and incident reports for two
-  integrity failures caught in our own experiments. The full trace dataset is
-  a required companion artifact and remains marked pending until its public URL
-  appears in release.json.
+  integrity failures caught in our own experiments. A public companion dataset
+  provides 50 final-board run ledgers, human baselines, captured CLI output,
+  and standalone verification programs. Earlier development
+  stages and incidents remain documented separately in the repository.
+identifiers:
+  - type: url
+    value: "https://huggingface.co/datasets/cveinnt/kepler-arc-agi-3-traces"
+    description: "Kepler 1.0 ARC-AGI-3 final-board trace dataset"
 keywords:
   - ARC-AGI-3
   - world models

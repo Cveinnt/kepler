@@ -37,8 +37,8 @@ Kepler does not lead every column. Retrodict and baseline1 report lower bills at
 lower scores. Prime publishes stronger run-to-run variance evidence. Kepler's
 defensible position is the combination:
 
-- exact 100.00, meaning every public level at or above median-human action
-  efficiency, plus a second server-exact board at 95.97 on a different model;
+- exact 100.00 across all 25 public games, plus a second server-exact board at
+  95.97 on a different model;
 - 8,256 actions in retained board runs and 7,292 in scored levels, with at least
   13,688 non-reset campaign actions reported separately;
 - $777.72 at current API list rates, 74.0% below Retrodict's $2,986
@@ -55,7 +55,7 @@ defensible position is the combination:
 | Axis | Kepler release evidence |
 |---|---|
 | Score | Exact 100.00 on official replay |
-| Human-relative performance | Every level at or above median-human action efficiency |
+| Human-relative performance | 181/183 Opus levels at or above median-human action efficiency; two below, with capped gains elsewhere preserving the 100.00 composite |
 | Scored convergence | 7,292 actions in scored levels |
 | Campaign actions | At least 13,688 observed non-reset actions, plus 22 unavailable prefix events |
 | Perfect-score bill | $777.72 current API list-equivalent, 74.0% below Retrodict's $2,986 estimate for Tycho |
@@ -76,10 +76,12 @@ defensible position is the combination:
   are not supported by the full campaign logs. Any ranking of Kepler's action
   counts against AVO, VISTA, Retrodict, or the human reference is withheld until
   the missing campaign prefix events are recovered.
-- "Median-human-or-better action efficiency on every level" is the meaning of
-  exact 100.00 under RHAE. It is not human equivalence or held-out
-  generalization.
+- Exact 100.00 is a capped composite, not a guarantee that every level beats
+  the median-human action count. The Opus board has 181 of 183 levels at or
+  above that threshold. This is not human equivalence or held-out generalization.
 - The rendered-frame result is a single-game within-system intervention, not a
   benchmark-wide modality ablation.
-- Complete traces remain pending. Until the dataset URL is live, the release is
-  not independently auditable end to end from a fresh clone.
+- The public companion dataset contains both final 25-game boards: 50 run
+  records, 58,098 environment events, baselines, final artifacts, captured CLI
+  output, and standalone verifiers. It does not contain
+  the complete historical development archive.

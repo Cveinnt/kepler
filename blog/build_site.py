@@ -315,7 +315,7 @@ def og_image() -> None:
 
     W, H = 1200, 630
     bg, ink, muted = (18, 17, 15), (236, 234, 228), (160, 156, 146)
-    accent, flag, base = (130, 179, 221), (224, 122, 108), (111, 107, 99)
+    accent, flag = (130, 179, 221), (224, 122, 108)
     img = Image.new("RGB", (W, H), bg)
     d = ImageDraw.Draw(img)
 
@@ -327,24 +327,32 @@ def og_image() -> None:
         except Exception:
             return ImageFont.load_default()
 
-    d.text((70, 58), "KEPLER", font=font(28, bold=True), fill=accent)
-    d.text((66, 108), "100.00 on ARC-AGI-3.", font=font(92, bold=True), fill=ink)
-    d.text((70, 232), "Median-human-or-better efficiency on every level",
-           font=font(30), fill=muted)
+    d.text((70, 50), "KEPLER", font=font(28, bold=True), fill=accent)
+    d.text((1015, 53), "OPEN SOURCE", font=font(20, bold=True), fill=muted)
+    d.text((66, 100), "100% ON ARC-AGI-3", font=font(83, bold=True), fill=ink)
+    d.text((70, 205), "ONE FROZEN CONFIG", font=font(29, bold=True), fill=accent)
 
-    rows = [("initial loop", 97.78, base),
-            ("published regression", 94.01, flag),
-            ("guard corrections", 96.51, base),
-            ("certify and replay", 98.86, accent)]
-    y0, bar_x, bar_w = 318, 500, 560
-    for i, (label, v, color) in enumerate(rows):
-        y = y0 + i * 56
-        d.text((70, y + 2), label, font=font(24), fill=muted)
-        d.rectangle([bar_x, y, bar_x + bar_w * (v - 90) / 10, y + 28], fill=color)
-        d.text((bar_x + bar_w * (v - 90) / 10 + 14, y), f"{v:.2f}",
-               font=font(24, bold=True), fill=ink)
-    d.text((70, 570), "one frozen config · 100.00 exact · $777.72 list-equivalent",
-           font=font(22), fill=muted)
+    d.rounded_rectangle([70, 286, 570, 478], radius=12,
+                        outline=(66, 63, 57), width=2)
+    d.text((98, 311), "$777.72", font=font(59, bold=True), fill=ink)
+    d.text((101, 383), "CURRENT API LIST-EQUIVALENT", font=font(18, bold=True),
+           fill=muted)
+    d.text((101, 426), "74% BELOW TYCHO ESTIMATE", font=font(24, bold=True),
+           fill=accent)
+
+    d.rounded_rectangle([606, 286, 1130, 478], radius=12,
+                        outline=flag, width=2)
+    d.text((634, 311), "VOIDED 100", font=font(49, bold=True), fill=flag)
+    d.text((636, 383), "AGENT READ THE ANSWER KEY", font=font(21, bold=True),
+           fill=ink)
+    d.text((636, 426), "AUDIT CAUGHT IT. RESULT WITHDRAWN.", font=font(18),
+           fill=muted)
+
+    d.text((70, 518), "THE SCORE IS REAL. SO ARE THE FAILURES.",
+           font=font(31, bold=True), fill=ink)
+    d.text((70, 578),
+           "25 public games · ARC server replay · Tycho estimate via Retrodict",
+           font=font(17), fill=muted)
     OUT.mkdir(parents=True, exist_ok=True)
     img.save(OUT / "og.png", optimize=True)
     print(f"wrote {OUT/'og.png'}")

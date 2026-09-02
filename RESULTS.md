@@ -19,17 +19,19 @@ RHAE implementation from the `arc-agi` toolkit.
 | Claude Opus 5 | **100.00** | [91aa2f10](https://arcprize.org/scorecards/91aa2f10-5dc3-4471-80e5-9e8895db5de1) | 8,256 | 7,292 | 858.0M, 97.37% cache reads | **$777.72** |
 | GPT-5.6 Sol (max) | **95.97** | [c9f087f3](https://arcprize.org/scorecards/c9f087f3-b9de-452d-9520-d4d0597b0685) | 35,896 | 8,400 | 2,429.1M, 98.0% cached input | $1,312.14 |
 
-The companion trace dataset is not public yet. Statements in the chronological
-archive saying a run “ships,” “stays public,” or is “published in full” describe
-the retention policy and intended release state, not current downloadability.
-Independent corpus-wide verification remains pending until `release.json`
-contains a live dataset URL.
+The [public companion dataset](https://huggingface.co/datasets/cveinnt/kepler-arc-agi-3-traces)
+contains the two final 25-game boards: 50 run records, 58,098 environment
+events, human baselines, final notebooks and world models, captured CLI output,
+and standalone verification programs. It does not contain the
+complete development archive. Historical failures and superseded stages remain
+documented below and under [`incidents/`](incidents/), but their raw ledgers are
+not part of the final-board dataset.
 
 > **On the margins.** Every cell below is **n = 1**. Run-to-run variance on this
 > benchmark is roughly ±1 to 2 points at the pairing level. In our own data `su15` scored
 > 46.91 and 81.19 on two runs of the same configuration. Neither the +0.16 nor the -0.68
 > is distinguishable from noise. Read both pairings as *reproducing* the published
-> published figures, not beating or missing them.
+> figures, not beating or missing them.
 
 Pairing rule (as used in the prior art): the primary model runs every game; a game
 scoring under 80 is rerun with the secondary, and the higher per-game score is kept.
@@ -66,7 +68,7 @@ so they have no single-config number of their own.)
 ## Release resource accounting
 
 Chollet's stated condition for a harness result being legitimate is that *"the settings and
-the cost are clearly reported"*. Release accounting comes from complete provider-side
+the cost are clearly reported"*. Release accounting comes from retained local provider-session
 session records, not workspace CLI footers:
 
 | board | uncached input | cached/read input | cache write | output | raw total | current API list-equivalent |
@@ -81,7 +83,7 @@ Opus execution used Claude subscription quota; the dollar figure is a
 list-equivalent comparison, not a billed charge.
 
 An earlier draft undercounted the GPT release board by summing incomplete
-workspace CLI footer counters. Complete provider sessions show that
+workspace CLI footer counters. The retained provider sessions show that
 the footer path omitted most cached traffic and one long workspace. The earlier
 raw-token comparison and cost estimate are withdrawn. Reproduce the
 corrected release totals with `.venv/bin/python scripts/cost_report.py --release`.
@@ -91,16 +93,20 @@ a separate provider response. Claude Code repeats one provider message across
 its thinking, text, and tool-use content-block rows. The corrected total counts
 each provider message ID once and fails closed if duplicate rows disagree.
 
-**Integrity.** Every number here is backed locally by its own append-only ledger;
-see [`INTEGRITY.md`](INTEGRITY.md). The agent made no external requests in the
-audited logs, while the harness made its disclosed startup handshake. Six
-historical controls are flagged and excluded because they rebuilt the removed
-harness ([`ABLATION.md`](ABLATION.md)). Current independent verification remains
-pending until the trace corpus is downloadable.
+**Integrity.** Every final-board number can be recomputed from the public
+companion dataset; see [`INTEGRITY.md`](INTEGRITY.md). The recorded agent logs
+contain no external requests, while the harness made its disclosed startup
+handshake. Six historical controls are flagged and excluded because they
+rebuilt the removed harness ([`ABLATION.md`](ABLATION.md)). This audit covers
+the records retained by the execution clients; it cannot prove that a client
+retained every event it generated.
 
 ```bash
-.venv/bin/python scripts/audit_integrity.py --traces-dir traces
-.venv/bin/python scripts/verify_scores.py --traces-dir traces
+hf download cveinnt/kepler-arc-agi-3-traces --repo-type dataset \
+  --local-dir kepler-traces
+python3 kepler-traces/score_trajectories.py kepler-traces
+python3 kepler-traces/verify_scores.py --traces-dir kepler-traces
+python3 kepler-traces/audit_integrity.py --traces-dir kepler-traces
 ```
 
 ## Initial-loop GPT pairing: early reports cited 95.35
@@ -176,7 +182,7 @@ selection process is auditable rather than trusted:
    `d37660e`+`6c3a38d` (guard-deadlock fix, automatic clean-run phase).
    `50561e2` landed mid-sweep but changes code comments only; behavior is
    byte-identical. The authoritative tool code for any run is the copy inside
-   its own published workspace, not the repo tip.
+   its own retained workspace, not the repo tip.
 2. **One run per game per config.** No per-game retries, no score-conditioned
    restarts.
 3. **Clean-run rule, uniform.** A WIN scoring below 95 grants exactly one fresh
@@ -187,7 +193,7 @@ selection process is auditable rather than trusted:
    (host restart/sleep, provider outage, provider quota), never because a
    completed score looked bad. Resumes under this rule: `dc22`, `ls20`, `s5i5`,
    `sp80` on 2026-08-15 after a host restart killed all lanes at 01:19.
-5. **Superseded runs are retained for publication.** Anything replaced is moved to
+5. **Superseded runs are retained locally and documented.** Anything replaced is moved to
    `runs-v2/superseded/<game>-<date>-<reason>/` with its full ledger.
    First entry: tn36's initial added-discipline stage run won at 59.31 and was then resumed *by the
    operator, in reaction to the score*, producing a 100.0 clean run. That
@@ -203,7 +209,8 @@ selection process is auditable rather than trusted:
    by `scripts/check_no_game_ids.py` (gates `scripts/verify.py`). Caveat for
    the record: lanes launched before `50561e2` carry a tools copy whose code
    *comments* mentioned one game name in a cost anecdote; no gameplay
-   information, and the copies ship in the traces for inspection.
+   information. Those historical copies remain local and are not part of the
+   public final-board trace dataset.
 7. **Best-of is a ceiling, not a headline.** The best-run-per-game card
    (99.29, `docs/best-of-manifest.json`, attempt pools disclosed) answers "what
    is the harness capable of", never "what does one configuration score".
@@ -452,20 +459,20 @@ per-lane resume preserves the append-only timeline).
 - Sub-100: sp80 33.8 (previously 4.47, wall-clocked at level 4/6) and tn36
   65.38 (previously 100, a same-config variance collapse at 14,344 actions; kept, no
   score-conditioned rerun, per policy).
-Scorecard replay submission pending alongside the pre-release visual stage Opus board's.
+Official replay: [c9f087f3](https://arcprize.org/scorecards/c9f087f3-b9de-452d-9520-d4d0597b0685).
 
 ## Pre-release Opus board: complete (2026-08-29): 100.00
 
 **Single configuration, Claude Opus 5, frozen at dc4e702 with visual mode,
-all 25 public games, fresh workspaces: composite 100.00. Every level
-of every game at the RHAE cap.** First 100 in this project; achieved the run
+all 25 public games, fresh workspaces: composite 100.00.** First 100 in this
+project; achieved the run
 after the modality ablation identified vision as sp80's binding constraint.
 Notes: (1) result.json stamps record docs-only later commits (31afb86/9419db9);
 `git diff dc4e702..HEAD -- harness/` is empty, the harness that played every
 game is the frozen one. (2) The board absorbed provider-quota interruptions and
 one host restart; every resume is a clean abort/append in the ledgers,
-disclosed per policy. (3) Verification stack + official scorecard replay
-submission to follow; the headline remains "audited" until the card closes.
+disclosed per policy. (3) The official scorecard replay is
+[91aa2f10](https://arcprize.org/scorecards/91aa2f10-5dc3-4471-80e5-9e8895db5de1).
 
 ## Verification stack after the pre-release boards (2026-08-29)
 
@@ -562,12 +569,14 @@ resumable abort, driven to completion by the local supervisor); one
 here. The transport gate did its job: the two games whose off-grid clicks sank
 the earlier replay (bp35, lf52) replayed exactly this time. The retained board
 runs used 8,256 environment actions, with 7,292 in scored levels. Under official
-RHAE scoring, exact 100.00 means every completed level met or exceeded
-median-human action efficiency. These are not full-campaign actions: local
+The board completed 183 levels; 181 used no more actions than the median-human
+baseline and two used more. Capped gains elsewhere preserved the 100.00
+composite, so exact 100.00 is not a per-level efficiency guarantee. These are
+not full-campaign actions: local
 ledgers contain at least 13,688 non-reset actions and omit 22 prefix events.
 We do not rank either count against AVO's 6,624
 environment actions, VISTA's 7,542 game actions, or Retrodict's 7,703 campaign
-actions, because those are different denominators. The complete provider record,
+actions, because those are different denominators. The retained provider record,
 deduplicated by provider message ID, totals 858,041,926 raw tokens, 97.37% cache
 reads, or $777.72 at current API list-equivalent rates. That is 74.0% below the $2,986 API-equivalent
 estimate Retrodict published for Tycho; Tycho discloses no cost of its own, and

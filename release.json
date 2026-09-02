@@ -2,10 +2,10 @@
   "name": "Kepler",
   "version": "1.0.0",
   "release_date": "2026-09-01",
-  "paper_title": "Kepler: 100% on ARC-AGI-3 at About One Quarter of Tycho's Estimated Cost",
+  "paper_title": "Kepler: Auditable World Models for ARC-AGI-3",
   "repository": "https://github.com/Cveinnt/kepler",
   "project_page": "https://kepler-harness.vercel.app",
-  "trace_dataset": null,
+  "trace_dataset": "https://huggingface.co/datasets/cveinnt/kepler-arc-agi-3-traces",
   "public_set_only": true,
   "opus": {
     "model": "Claude Opus 5",

@@ -1,12 +1,13 @@
 # Kepler
 
-**100% on ARC-AGI-3. About one quarter of Tycho's estimated cost. One frozen
-configuration.**
+**100% on ARC-AGI-3 at one-fourth the cost. One frozen configuration.**
 
 Kepler is an open-source agent harness for the 25 public ARC-AGI-3 games. One
 frozen Claude Opus 5 configuration scored **100.00**, with every game
 re-executed to 100 by ARC Prize's official server replay. There was no per-game
-model selection and no score-conditioned rerun.
+model selection and no score-conditioned rerun. The cost headline compares
+$777.72 at current standard API list-equivalent rates with Retrodict's $2,986
+API-equivalent estimate for Tycho; Tycho did not publish a bill.
 
 | Model | Score | Evidence | Resource record |
 |---|---:|---|---:|
@@ -20,20 +21,20 @@ evidence, not as competing product versions. Canonical release facts live in
 
 ## What is different
 
-Kepler has nine defensible wedges. None requires combining metrics from
-different boards.
+Three claims define the release:
 
-| Wedge | Measured claim |
-|---|---|
-| Server-verified on two models | Claude Opus 5 at 100.00 and GPT-5.6 Sol at 95.97, both exact on ARC Prize's official replay. Under RHAE, the exact 100.00 means every completed public level met or exceeded median-human action efficiency. |
-| One frozen configuration, no cherry-picking | One model, one commit-frozen harness registered before results existed, one pass over 25 games, no score-conditioned reruns. The GPT board keeps its same-configuration collapse. |
-| Action accounting without a flattering denominator | 8,256 actions in the retained board runs and 7,292 in scored levels. Full campaign logs contain at least 13,688 non-reset actions plus 22 unavailable prefix events, so we do not call 8,256 learning-inclusive or compare it with another system's campaign total. |
-| Lower comparable cost | $777.72 at current Opus 5 API list rates, 74.0% below Retrodict's $2,986 API-equivalent estimate for Tycho. Tycho publishes no cost figure of its own; AVO and VISTA disclose none. |
-| Convergence and durability, with evidence | Certify/replay added 2.35 board points. Across the two release boards, 48 of 50 game-model cells reach 100. This is within-system convergence on the public set, not independent replication. |
-| Audit discipline | Six adversarial checks run over the raw session record before any number is published. A source-reading win and a contaminated control were voided, and a dead planner exposed a separate tool-integrity blind spot. |
-| Reward hacking, disclosed | An agent read 2,172 lines of game source inside its workspace and returned a natural-looking 100.00. That run was voided and quarantined, and it is not part of the release board. |
-| Human-like interaction design | Observe, hypothesize, run a discriminating experiment, revise on the first counterexample, then act. Every belief is executable code, retrodicted against the full history, and every committed action carries a checked prediction. |
-| Saturation points at the evaluator | With 48 of 50 cells at 100, peak RHAE no longer separates systems. Our own hardest game turned on what the observation channel discarded, which suggests observation-channel and evaluator quality now carry the signal. |
+1. **The result was selected before the score.** One model, one commit-frozen
+   harness, one pass over 25 games, no score-conditioned reruns.
+2. **The result has an official receipt.** ARC Prize re-executed every game to
+   100.00. The [public final-board trace release](https://huggingface.co/datasets/cveinnt/kepler-arc-agi-3-traces)
+   includes human baselines and dependency-free scorers so both boards can be
+   recomputed from their action records.
+3. **The audit is allowed to win.** A source-reading 100 and a contaminated
+   control were voided. A dead planner is reported even though agents repaired
+   around it and kept scoring well.
+
+[Inspect the full evidence matrix](#full-evidence-matrix) or
+[run the verification path](#verify-it).
 
 ### One result, selected before the score
 
@@ -104,6 +105,20 @@ bounded-learning track, and replay plus trace evidence beside every community
 result. See
 [`docs/benchmark-observations.md`](docs/benchmark-observations.md).
 
+## Full evidence matrix
+
+| Wedge | Measured claim |
+|---|---|
+| Server-verified on two models | Claude Opus 5 at 100.00 and GPT-5.6 Sol at 95.97, both exact on ARC Prize's official replay. On the Opus board, 181 of 183 completed levels used no more actions than the median-human baseline; two used more, while capped gains elsewhere preserved the 100.00 composite. |
+| One frozen configuration, no cherry-picking | One model, one commit-frozen harness registered before results existed, one pass over 25 games, no score-conditioned reruns. The GPT board keeps its same-configuration collapse. |
+| Action accounting without a flattering denominator | 8,256 actions in the retained board runs and 7,292 in scored levels. Full campaign logs contain at least 13,688 non-reset actions plus 22 unavailable prefix events, so we do not call 8,256 learning-inclusive or compare it with another system's campaign total. |
+| Lower comparable cost | $777.72 at current Opus 5 API list rates, 74.0% below Retrodict's $2,986 API-equivalent estimate for Tycho. Tycho publishes no cost figure of its own; AVO and VISTA disclose none. |
+| Convergence across final boards | Certify/replay added 2.35 board points. Across the two release boards, 48 of 50 game-model cells reach 100. This is within-system convergence on the public set, not independent replication. |
+| Audit discipline | Six adversarial checks run over the retained session record before release. A source-reading win and a contaminated control were voided, and a dead planner exposed a separate tool-integrity blind spot. The audit is evidence-bounded: it cannot detect events the client did not retain. |
+| Reward hacking, disclosed | An agent read 2,172 lines of game source inside its workspace and returned a natural-looking 100.00. That run was voided and quarantined, and it is not part of the release board. |
+| Human-like interaction design | Observe, hypothesize, run a discriminating experiment, revise on the first counterexample, then act. Every belief is executable code, retrodicted against the full history, and every committed action carries a checked prediction. |
+| Saturation points at the evaluator | With 48 of 50 cells at 100, peak RHAE no longer separates systems. Our own hardest game turned on what the observation channel discarded, which suggests observation-channel and evaluator quality now carry the signal. |
+
 ## How it works
 
 The design deliberately follows a human scientific loop: observe, hypothesize,
@@ -131,19 +146,25 @@ python3 scripts/verify.py
 python3 scripts/check_no_game_ids.py
 ```
 
-`scripts/verify.py` replays the bundled worked trace. Full-board verification
-requires the trace dataset:
+`scripts/verify.py` replays the bundled worked trace. To verify both public
+boards from their 50 run ledgers, download the
+[trace dataset](https://huggingface.co/datasets/cveinnt/kepler-arc-agi-3-traces):
 
 ```bash
-python3 scripts/verify_scores.py --traces-dir traces
-python3 scripts/audit_integrity.py --traces-dir traces
+hf download cveinnt/kepler-arc-agi-3-traces --repo-type dataset --local-dir traces
+python3 traces/score_trajectories.py traces
+python3 traces/verify_scores.py --traces-dir traces
+python3 traces/audit_integrity.py --traces-dir traces
 ```
 
-**Dataset status:** publication is pending. Until [`release.json`](release.json)
-contains a `trace_dataset` URL, a fresh clone does not contain the full run
-corpus and both full-board commands intentionally exit `VACUOUS`. We state this
-explicitly because the auditability claim is not complete until the data is
-downloadable.
+The dataset contains the two final 25-game boards: 50 run records and 58,098
+environment events, plus final notebooks, world models, and captured CLI logs.
+The export also includes captured CLI output for every final-board workspace.
+A clean behavioral scan applies to those retained records and its published
+pattern set; it cannot prove that a client retained every event or that every
+possible violation is detectable. Earlier stages, failures, and
+superseded runs remain documented in [`RESULTS.md`](RESULTS.md) and
+[`incidents/`](incidents/); they are not in this final-board dataset.
 
 ## Layout
 

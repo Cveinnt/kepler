@@ -46,3 +46,9 @@ release-runs/
 *.blg
 *.out
 launch/
+traces-raw/
+
+# Local review and double-blind submission artifacts
+/docs/paper/submissions/
+/output/
+/tmp/

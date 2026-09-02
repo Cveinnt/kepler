@@ -4,14 +4,20 @@ A self-reported benchmark score is worth exactly what its audit is worth. This p
 the audit: the threat model, the controls, the two times those controls caught *us*, and
 the commands to check all of it yourself.
 
-Every check here runs offline against local run data. The complete trace dataset is not
-public yet. Until `release.json` contains its URL, independent corpus-wide verification is
-pending. On a clone without run data, the corpus checks exit `VACUOUS` rather than claiming
-success over zero runs.
+Every check here runs offline. The
+[public companion dataset](https://huggingface.co/datasets/cveinnt/kepler-arc-agi-3-traces)
+contains the two final 25-game boards: 50 run records, 58,098 environment events,
+human baselines, final notebooks and world models, captured CLI output, and
+standalone verification programs. It does not contain the complete
+development archive. On a clone without run data, corpus checks exit `VACUOUS`
+rather than claiming success over zero runs.
 
 ```bash
-.venv/bin/python scripts/audit_integrity.py --traces-dir traces
-.venv/bin/python scripts/verify_scores.py --traces-dir traces
+hf download cveinnt/kepler-arc-agi-3-traces --repo-type dataset \
+  --local-dir kepler-traces
+python3 kepler-traces/score_trajectories.py kepler-traces
+python3 kepler-traces/verify_scores.py --traces-dir kepler-traces
+python3 kepler-traces/audit_integrity.py --traces-dir kepler-traces
 python3 scripts/verify.py # replay the bundled fixture, no API keys
 ```
 
@@ -19,11 +25,13 @@ python3 scripts/verify.py # replay the bundled fixture, no API keys
 
 | check | result |
 |---|---|
-| Scores supported by their own ledger | Local ledger recomputation finds exactly two disclosed non-material resume seams; see `RESULTS.md`. |
-| Adversarial audit | Local scan: **324/330 runs clean**. The six flags are quarantined control-group workspaces. |
+| Public release ledgers | **50/50 runs**, **363 levels**, **354 exact**, **9 conservative**, **0 inflating** |
+| Independent RHAE recomputation | **100.00** Opus, **95.9672** GPT-5.6 Sol |
+| Recorded-evidence audit | Final-board records pass; coverage is limited to records retained by the execution clients. |
+| Historical local archive | **324/330 runs clean**. The six flags are quarantined control-group workspaces and are not in the release dataset. |
 | External network access **by the agent** | **0 hits across 123 agent log files** |
 | Unauditable runs (logs missing) | **0** |
-| Independent full-corpus verification | **Pending trace dataset publication** |
+| Independent final-board verification | **Public and reproducible from a fresh dataset download** |
 
 ## Threat model
 
@@ -86,9 +94,11 @@ The telemetry looked *better* than honest play: fewer actions, no mispredictions
 ledger. We had already cited that run as headline evidence that the harness worked. A clean
 rerun of the same game scored **46.91**, a 53-point drop.
 
-The run is voided and quarantined. The fix was structural rather than instructional: the
-environment files now live outside the workspace entirely, where the agent has no path to
-them. Full write-up and evidence:
+The run is voided and quarantined. Environment files now live in a dedicated
+directory outside every workspace, which removes them from ordinary workspace
+discovery. This is not an OS sandbox: the launch CLIs have full host filesystem
+permission. Access to the environment directory is prohibited and audit-flagged,
+so this control remains evidence-bounded rather than access-enforced. Full write-up and evidence:
 [`incidents/2026-08-05-source-read`](incidents/2026-08-05-source-read/README.md).
 
 ### Incident 2, the control group rebuilt the harness

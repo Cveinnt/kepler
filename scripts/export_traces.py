@@ -81,9 +81,11 @@ The canonical release contains two single-configuration boards:
   non-perfect games retained. Scorecard:
   [c9f087f3](https://arcprize.org/scorecards/c9f087f3-b9de-452d-9520-d4d0597b0685).
 
-Complete provider records, deduplicated by provider message ID, put the Opus
-campaign at 858,041,926 raw tokens, 97.37% cache reads, and $777.72 at current
-API list-equivalent rates. That is 74.0% below the $2,986 API-equivalent estimate
+Token and cost accounting was recovered from provider-side session records
+retained locally on the execution host and deduplicated by provider message ID.
+Those provider records are not part of this dataset; only the captured CLI
+session logs above are. They put the Opus campaign at 858,041,926 raw tokens,
+97.37% cache reads, and $777.72 at current API list-equivalent rates. That is 74.0% below the $2,986 API-equivalent estimate
 Retrodict published for Tycho.
 Tycho discloses no cost of its own, and neither do AVO or VISTA, so this is a
 comparison against one third-party estimate and not a ranking of the field.
@@ -112,10 +114,15 @@ published. When historical roots are selected, those runs appear under
 `baseline-*` labels so the contamination is inspectable. **The harness's contribution is currently
 unmeasured**, not small and not large.
 
-The repository also preserves a source-reading incident that produced a
+The source repository separately preserves a source-reading incident that produced a
 natural-looking 100 before scoring 46.91 in a clean rerun, plus evidence that a
 bundled planner was broken across five experimental boards while agents silently
 routed around it. High outcome scores therefore do not establish tool health.
+
+This dataset is narrower than the full development archive. It contains exactly
+the two final 25-game boards. Earlier stages, failed experiments, quarantined
+incidents, and superseded runs remain documented in the source repository and
+are not part of this 50-run export.
 
 ## Layout
 
@@ -124,12 +131,17 @@ routed around it. High outcome scores therefore do not establish tool health.
   transition of that run, in order. This is the append-only ground-truth
   ledger written by the harness daemon; the agent could read but never write
   it.
-- `agent_logs/<label>/<game>/sessions/*.log.gz`, the harness's tee of each CLI
-  agent session: everything the agent thought, ran, and saw.
-- `agent_logs/<label>/<game>/transcripts/*.jsonl.gz`, the same sessions as
-  recorded by the CLIs themselves, recovered after our tees were lost in a
-  disk-full incident. Kept alongside rather than merged: neither is derived from
-  the other.
+- `agent_logs/<label>/<game>/sessions/*.log.gz`, the harness's captured CLI
+  output: @N_LOGS@ gzipped session logs, the only agent behavioural records in
+  this dataset. Across this export, @N_RUNS_WITH_LOGS@ of @N_RUNS@ runs have at
+  least one retained log, but coverage depth is uneven. Some Claude tee files
+  contain only final summaries or quota markers. These are the captured CLI
+  records available on the execution host, not a platform attestation that
+  every event was retained.
+- `arc_agi_3_human_baseline_actions.csv`, the per-level human action baselines
+  used to recompute RHAE.
+- `score_trajectories.py`, `verify_scores.py`, and `audit_integrity.py`,
+  dependency-free verification programs copied into the dataset.
 
 ### Labels
 
@@ -137,17 +149,9 @@ routed around it. High outcome scores therefore do not establish tool health.
 |---|---|
 | `release-opus` | canonical Claude Opus 5 board: 100.00, exact official replay |
 | `release-gpt` | canonical GPT-5.6 Sol board: 95.97, exact official replay |
-| `initial-` | initial-loop development runs from `runs/` |
-| `added-discipline-`, `guard-correction-`, `certify-replay-` | named development stages |
-| `baseline-` | **ablation**: same model, methodology stripped out (no world model, no certification, no planning, no guarded channel) |
-| `retry-` | re-runs kept out of the scored set so they can never inflate a reported number |
 
 Internal run-root names are provenance identifiers, not public release
 versions. The public software and paper have one identity: Kepler 1.0.
-
-Runs that were aborted (provider quota, stopped by hand) are included with
-`score: null` and `complete: false`. Their timelines are real and are part of the
-record; they are simply not scored.
 
 ## `runs.jsonl` schema
 
@@ -199,15 +203,22 @@ One JSON object per line, fields as recorded live by the harness daemon:
 
 ## Verify the export
 
-From a Kepler 1.0 repository checkout:
+From the downloaded dataset directory:
 
 ```bash
-python3 scripts/verify_scores.py --traces-dir /path/to/this/dataset
-python3 scripts/audit_integrity.py --traces-dir /path/to/this/dataset
+python3 score_trajectories.py .
+python3 verify_scores.py --traces-dir .
+python3 audit_integrity.py --traces-dir .
 ```
 
-The integrity audit requires `agent_logs/`. An export without those logs is
-reported as unauditable and exits nonzero.
+`score_trajectories.py` independently recomputes both board scores from the
+event ledgers and the human baselines. `verify_scores.py` checks that no level
+was scored with fewer actions than its ledger records. `audit_integrity.py`
+scans the captured CLI session-log bytes for known leakage signatures.
+A clean result applies to the records present here; it does not prove that the
+client preserved every event or that the pattern set detects every possible
+violation. An export without `agent_logs/` is reported as unauditable and exits
+nonzero.
 
 ## Provenance & license
 
@@ -215,27 +226,29 @@ Produced by `scripts/export_traces.py` in the harness repository from the raw
 run workspaces. Environments are the 25 public ARC-AGI-3 games run locally via
 the [`arc-agi`](https://pypi.org/project/arc-agi/) toolkit. MIT.
 
-Generated: @DATE@. @N_RUNS@ runs, @N_EVENTS@ events, labels: @MODELS@.
+Generated: @DATE@. @N_RUNS@ runs, @N_EVENTS@ events, @N_LOGS@ session logs,
+labels: @MODELS@.
 """
 
 
 def export_agent_logs(run_dir: Path, out_dir: Path) -> dict:
-    """Gzip the agent's own behavioural record next to the timeline.
+    """Gzip captured CLI session output next to the timeline.
 
-    Two sources, both real: sessions/*.log are the harness's tee of each CLI
-    session, transcripts/*.jsonl are what scripts/recover_traces.py pulled back
-    from the CLIs' own session storage after ours were lost in a disk-full
-    incident. Neither is derived from the other, so both ship.
+    Provider-side transcripts stay local. Besides carrying a much broader
+    privacy surface, they are not uniformly available across the release runs.
+    A sessions-only export keeps the published evidence boundary deterministic
+    and consistent with the generated dataset card.
     """
     n_files = n_bytes = 0
-    for sub, pattern in (("sessions", "*.log"), ("transcripts", "*.jsonl")):
-        for src in sorted((run_dir / sub).glob(pattern)) if (run_dir / sub).is_dir() else []:
-            dst = out_dir / sub / (src.name + ".gz")
-            dst.parent.mkdir(parents=True, exist_ok=True)
-            with open(src, "rb") as fi, gzip.open(dst, "wb") as fo:
-                shutil.copyfileobj(fi, fo, length=1 << 20)
-            n_files += 1
-            n_bytes += dst.stat().st_size
+    sources = (sorted((run_dir / "sessions").glob("*.log"))
+               if (run_dir / "sessions").is_dir() else [])
+    for src in sources:
+        dst = out_dir / "sessions" / (src.name + ".gz")
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        with open(src, "rb") as fi, gzip.open(dst, "wb") as fo:
+            shutil.copyfileobj(fi, fo, length=1 << 20)
+        n_files += 1
+        n_bytes += dst.stat().st_size
     return {"n_log_files": n_files, "log_bytes_gz": n_bytes}
 
 
@@ -337,8 +350,8 @@ def main() -> None:
                          "archive; they carry score=null.")
     ap.add_argument("--out", default=str(ROOT / "traces"))
     ap.add_argument("--with-agent-logs", action="store_true",
-                    help="also archive sessions/*.log and recovered transcripts/*.jsonl "
-                         "(gzipped), the agent's own behavioural record")
+                    help="also archive captured sessions/*.log output (gzipped); "
+                         "provider-side transcripts remain local")
     ap.add_argument("--model", action="append", default=None,
                     help="only these models (repeatable; default: all)")
     ap.add_argument("--game", action="append", default=None,
@@ -412,12 +425,30 @@ def main() -> None:
             .replace("@DATE@", date.today().isoformat())
             .replace("@N_RUNS@", str(n_runs))
             .replace("@N_EVENTS@", str(n_events))
-            .replace("@MODELS@", ", ".join(sorted({r["model"] for r in rows}))))
+            .replace("@MODELS@", ", ".join(sorted({r["model"] for r in rows})))
+            .replace("@N_RUNS_WITH_LOGS@", str(sum(
+                1 for row in rows if row.get("n_log_files", 0) > 0)))
+            # Counted from what was actually written, never from intent, so the
+            # card can never again document files the package does not contain.
+            .replace("@N_LOGS@", str(sum(
+                1 for _ in (out_dir / "agent_logs").rglob("sessions/*.log.gz")))))
     (out_dir / "README.md").write_text(card)
-    print(f"\nwrote {out_dir}/runs.jsonl ({n_runs} runs), README.md; "
+    release_files = [
+        (ROOT / "data" / "arc_agi_3_human_baseline_actions.csv",
+         out_dir / "arc_agi_3_human_baseline_actions.csv"),
+        (ROOT / "scripts" / "score_trajectories.py",
+         out_dir / "score_trajectories.py"),
+        (ROOT / "scripts" / "verify_scores.py", out_dir / "verify_scores.py"),
+        (ROOT / "scripts" / "audit_integrity.py", out_dir / "audit_integrity.py"),
+    ]
+    for source, destination in release_files:
+        shutil.copy2(source, destination)
+    print(f"\nwrote {out_dir}/runs.jsonl ({n_runs} runs), README.md, "
+          "human baselines, and standalone verifiers; "
           f"re-read OK ({n_events} events total)")
-    print(f"verify with: python3 scripts/verify_scores.py --traces-dir {out_dir}")
-    print(f"audit with: python3 scripts/audit_integrity.py --traces-dir {out_dir}")
+    print(f"score with: python3 {out_dir}/score_trajectories.py {out_dir}")
+    print(f"verify with: python3 {out_dir}/verify_scores.py --traces-dir {out_dir}")
+    print(f"audit with: python3 {out_dir}/audit_integrity.py --traces-dir {out_dir}")
     print("upload later with: HF_TOKEN=... python3 scripts/upload_hf.py "
           "--repo <user>/<dataset>")
 

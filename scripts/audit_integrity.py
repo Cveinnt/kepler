@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Adversarial integrity audit of every run.
+"""Recorded-evidence integrity audit of each selected run.
 
-Checks each run's session logs and workspace for the ways a score could be
-illegitimate, and prints a per-run verdict. Exit code 1 if anything is flagged.
+Checks each run's available session records and ledger for known ways a score
+could be illegitimate, and prints a per-run verdict. A clean result applies to
+the records present, not to behavior the client may have failed to retain.
+Exit code 1 if anything is flagged.
 
 Checks
   SOURCE_READ  the agent read the local game implementation
@@ -267,7 +269,7 @@ def main() -> int:
             print(f"NOLOGS  {rel}  (score {s}), transcripts deleted, cannot verify")
         else:
             s = f"{score:.2f}" if isinstance(score, (int, float)) else "running"
-            print(f"clean   {rel}  (score {s})")
+            print(f"recorded-evidence clean   {rel}  (score {s})")
     if total == 0:
         # A green PASS that examined nothing is worse than a failure: it tells the
         # exact reader this repo is written for that everything checks out, when
@@ -275,8 +277,10 @@ def main() -> int:
         print("VACUOUS: no runs were found; this audit checked nothing.\n"
               "Download the trace dataset and pass --traces-dir, or run a game.")
         return 2
-    print(f"\n{total - bad - unaud}/{total} runs verified clean, {bad} flagged, "
-          f"{unaud} unauditable (session logs deleted)")
+    print(f"\n{total - bad - unaud}/{total} runs have clean recorded evidence, "
+          f"{bad} flagged, {unaud} unauditable (session logs unavailable)")
+    print("Coverage note: this result applies to the captured session records "
+          "present; it cannot prove that a client retained every event.")
     return 1 if bad else (2 if unaud else 0)
 
 
