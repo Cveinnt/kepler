@@ -78,6 +78,14 @@ workspace/<game>/
    A mismatch stops the run rather than allowing the model to improvise inside
    the scored attempt.
 
+Each agent session runs in its own process group. The outer loop samples the
+aggregate resident memory of the session process tree every 0.5 seconds and
+stops the group if it exceeds the default 8 GB limit. It also stops the whole
+group on timeout. If memory monitoring itself fails, the run aborts without a
+result so an unenforced safety control cannot be mistaken for a working one.
+This protects the host from a repeated runaway search, but it is not OS-level
+containment and does not change the scoring or agent-visible method.
+
 ## World-model contract
 
 ```python

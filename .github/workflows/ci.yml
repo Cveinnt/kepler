@@ -18,6 +18,8 @@ jobs:
 
       - name: Tool smoke tests
         run: python tests/test_tool_smoke.py
+      - name: Session process safety regression
+        run: python tests/test_session_guard.py
       - name: Install
         run: pip install -e .
 

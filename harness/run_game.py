@@ -14,12 +14,14 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import signal
 import shutil
 import socket
 import subprocess
 import sys
 import time
 import urllib.request
+from dataclasses import dataclass
 from pathlib import Path
 
 
@@ -213,6 +215,96 @@ def session_cmd(cfg: dict, ws: Path, prompt: str) -> list[str]:
     ]
 
 
+@dataclass(frozen=True)
+class SessionGuardResult:
+    reason: str
+    returncode: int | None
+    peak_rss_kb: int
+
+
+def _process_group_rss_kb(process_group_id: int) -> int | None:
+    """Return aggregate RSS for an isolated session process group."""
+    try:
+        snap = subprocess.run(
+            ["ps", "-axo", "pid=,pgid=,rss="],
+            capture_output=True, text=True, timeout=5, check=False,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    if snap.returncode != 0:
+        return None
+
+    total = 0
+    for line in snap.stdout.splitlines():
+        parts = line.split()
+        if len(parts) != 3:
+            continue
+        try:
+            _pid, pgid, rss_kb = map(int, parts)
+        except ValueError:
+            continue
+        if pgid == process_group_id:
+            total += rss_kb
+    return total
+
+
+def _terminate_process_group(proc: subprocess.Popen, grace_seconds: float = 2.0) -> None:
+    """Stop the isolated session process group, escalating if it ignores SIGTERM."""
+    try:
+        os.killpg(proc.pid, signal.SIGTERM)
+    except ProcessLookupError:
+        return
+    try:
+        proc.wait(timeout=grace_seconds)
+    except subprocess.TimeoutExpired:
+        pass
+    # The CLI may have exited while leaving a background child in its process
+    # group. Signal the group again rather than assuming proc.wait() cleaned it.
+    try:
+        os.killpg(proc.pid, signal.SIGKILL)
+    except (ProcessLookupError, PermissionError):
+        # macOS can report EPERM after SIGTERM leaves only a zombie in the
+        # group. There is no live process left to escalate in that case.
+        pass
+    if proc.poll() is None:
+        proc.wait(timeout=grace_seconds)
+
+
+def run_guarded_session(
+    cmd: list[str], *, cwd: Path, stdout, timeout_seconds: float,
+    memory_limit_kb: int, poll_seconds: float = 0.5,
+) -> SessionGuardResult:
+    """Run one agent session with aggregate RSS and wall-clock fail-closed guards."""
+    if timeout_seconds <= 0:
+        raise ValueError("timeout_seconds must be positive")
+    if memory_limit_kb <= 0:
+        raise ValueError("memory_limit_kb must be positive")
+    proc = subprocess.Popen(
+        cmd, cwd=cwd, stdout=stdout, stderr=subprocess.STDOUT,
+        start_new_session=True,
+    )
+    deadline = time.monotonic() + timeout_seconds
+    peak_rss_kb = 0
+    while True:
+        rss_kb = _process_group_rss_kb(proc.pid)
+        if rss_kb is None:
+            _terminate_process_group(proc)
+            return SessionGuardResult("monitor-error", proc.returncode, peak_rss_kb)
+        peak_rss_kb = max(peak_rss_kb, rss_kb)
+        returncode = proc.poll()
+        if returncode is not None:
+            if rss_kb > 0:
+                _terminate_process_group(proc)
+            return SessionGuardResult("exited", returncode, peak_rss_kb)
+        if time.monotonic() >= deadline:
+            _terminate_process_group(proc)
+            return SessionGuardResult("timeout", proc.returncode, peak_rss_kb)
+        if rss_kb > memory_limit_kb:
+            _terminate_process_group(proc)
+            return SessionGuardResult("memory", proc.returncode, peak_rss_kb)
+        time.sleep(min(poll_seconds, max(0.0, deadline - time.monotonic())))
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--game", required=True)
@@ -224,8 +316,9 @@ def main() -> int:
     ap.add_argument("--max-actions", type=int, default=None,
                     help="default: 20x total human baseline")
     ap.add_argument("--max-hours", type=float, default=8.0)
-    ap.add_argument("--session-mem-cap-gb", type=int, default=24,
-                    help="address-space cap (GB) for each session subtree; guards the host against a runaway agent search")
+    ap.add_argument("--session-mem-cap-gb", type=float, default=8.0,
+                    help="aggregate RSS limit (GB) for each session process tree; "
+                         "default 8, below the observed 10+ GB runaway")
     ap.add_argument("--final-level-grace-hours", type=float, default=4.0,
                     help="v6: extra wall-clock granted while the run is on its final level")
     ap.add_argument("--max-sessions", type=int, default=12)
@@ -255,6 +348,9 @@ def main() -> int:
     ap.add_argument("--visual", action="store_true",
                     help="visual-observation mode: save every frame, including animation, as PNG")
     args = ap.parse_args()
+
+    if args.session_mem_cap_gb <= 0:
+        raise SystemExit("--session-mem-cap-gb must be positive")
 
     if args.visual:
         os.environ["KEPLER_VISUAL_DIRECTIVE"] = "1"
@@ -491,24 +587,28 @@ def main() -> int:
                 for f in ("world_model.py", "notes.md")
             )
             with open(log_path, "w") as log:
-                try:
-                    # Memory safety: cap the session subtree's address space so an
-                    # agent-spawned exhaustive search cannot OOM the host (an sp80
-                    # search once hit 10GB+ RSS and forced a machine reboot). The cap
-                    # is generous (does not touch scored behavior — an OOM search
-                    # would have crashed anyway) and best-effort (skipped where the
-                    # shell lacks ulimit -v).
-                    _capped = ["/bin/sh", "-c",
-                               f"ulimit -v {args.session_mem_cap_gb * 1024 * 1024} 2>/dev/null; "
-                               'exec "$@"', "sh"] + session_cmd(cfg, ws, prompt)
-                    subprocess.run(
-                        _capped,
-                        cwd=ws, stdout=log, stderr=subprocess.STDOUT,
-                        timeout=min(args.session_timeout, hours_left * 3600),
-                        check=False,
+                guard = run_guarded_session(
+                    session_cmd(cfg, ws, prompt), cwd=ws, stdout=log,
+                    timeout_seconds=min(args.session_timeout, hours_left * 3600),
+                    memory_limit_kb=int(args.session_mem_cap_gb * 1024 * 1024),
+                )
+                if guard.reason != "exited":
+                    log.write(
+                        f"\n[kepler guard] {guard.reason}; peak process-tree RSS "
+                        f"{guard.peak_rss_kb / 1024 / 1024:.2f} GB\n"
                     )
-                except subprocess.TimeoutExpired:
-                    print(f"session {session_i} timed out", flush=True)
+                    log.flush()
+            if guard.reason == "timeout":
+                print(f"session {session_i} timed out; process group stopped", flush=True)
+            elif guard.reason in ("memory", "monitor-error"):
+                detail = (
+                    f"process-tree RSS reached {guard.peak_rss_kb / 1024 / 1024:.2f} GB "
+                    f"above the {args.session_mem_cap_gb:g} GB limit"
+                    if guard.reason == "memory"
+                    else "process-tree RSS monitor failed"
+                )
+                print(f"[{args.game}/{args.model}] {detail}; aborting without a result", flush=True)
+                return 4
 
             if clean_prompt is not None and prompt == clean_prompt:
                 cr = subprocess.run(
