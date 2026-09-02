@@ -330,7 +330,7 @@ def og_image() -> None:
     d.text((70, 50), "KEPLER", font=font(28, bold=True), fill=accent)
     d.text((1015, 53), "OPEN SOURCE", font=font(20, bold=True), fill=muted)
     d.text((66, 100), "100% ON ARC-AGI-3", font=font(83, bold=True), fill=ink)
-    d.text((70, 205), "ONE FROZEN CONFIG", font=font(29, bold=True), fill=accent)
+    d.text((70, 205), "AT ONE-FOURTH THE COST", font=font(29, bold=True), fill=accent)
 
     d.rounded_rectangle([70, 286, 570, 478], radius=12,
                         outline=(66, 63, 57), width=2)
