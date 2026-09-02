@@ -37,20 +37,53 @@ ARC-AGI-3 evaluates agents in interactive environments whose rules and objective
 
 \section{Introduction}\label{sec:intro}
 
-ARC-AGI-3~\citep{arcagi3} evaluates an agent on unseen interactive games: a 64$\times$64 grid of 16 color indices, a set of legal actions, and nothing else; no rule sheet, no object list, no stated goal, no shaped reward. Its metric, Relative Human Action Efficiency (RHAE), scores per completed level $\min((\texttt{human\_baseline}/\texttt{agent\_actions})^2,\, 1.15)$, weighted toward later levels, with a completion cap. It scores \emph{actions}, not tokens or wall-clock: an agent that thinks for an hour and then plays perfectly is rewarded; an agent that flails cheaply is penalized heavily.
+An interactive agent does not emit one answer. It observes, forms hypotheses,
+acts, revises, and may modify the tools and instructions inside its workspace.
+Most benchmarks nevertheless report only whether the final state was correct.
+The same score may therefore describe a valid solution, a lucky trajectory, a
+replay selected after repeated attempts, or an agent that reached information
+outside the intended boundary.
 
-Within months of release, harness-plus-frontier-model systems reported scores from 73.7 (a minimal 11-line scaffold) to 100.00 (Tycho). This spread is the interesting datum: the \emph{same class of models} spans 26 points depending on the process wrapped around them. But it also creates a credibility problem, because most of the spread lives in design decisions that are rarely stated: whether games are rerun on bad scores, whether the reported number is a best-of, whether the scored attempt was played live or replayed from a recording, and whether anyone audited the most obvious failure mode, an agent finding the answer rather than deriving it. Greg Kamradt's criticism of the earliest ${\sim}$99\% claim (a per-game best-of-2 fallback rule, with score feedback: \emph{``the human and environment are injecting knowledge into the process''}~\citep{kamradt2026critique}) applies, in some form, to any published number whose selection and rerun rules are unstated, including our own early ones.
+ARC-AGI-3~\citep{arcagi3} makes this identification problem concrete. An agent
+receives an unfamiliar visual environment, a set of legal actions, and no rule
+sheet or stated objective. Relative Human Action Efficiency (RHAE) depends on
+actions in the final completed attempt, not on the amount of learning,
+reasoning, or model inference that preceded it. Recent systems reach similar
+scores through different observation channels, model-selection rules, and
+replay procedures~\citep{tycho,retrodict,vista,avo,primeagent}. At the top of
+the public set, score alone therefore reveals little about how the system
+learned or whether its trajectory respected the intended experiment.
 
-Kepler is our answer to that problem: an independent implementation of the executable-world-model approach to this benchmark~\citep{tycho,retrodict,thinharness}, developed through a sequence of frozen experimental stages and released as one system. Its loop resembles how a careful human investigates an unfamiliar world: observe, form a falsifiable hypothesis, choose a discriminating experiment, revise on the first counterexample, and plan only inside the model that survives. The distinction is mechanical enforcement. Every belief becomes executable code, is retrodicted against the complete action history, and must predict every committed action. Our approach is verification-first: we treat a self-reported score as credible only to the extent that it can be independently re-derived. Concretely:
+Kepler is an independent implementation of the executable-world-model approach
+to this benchmark~\citep{tycho,retrodict,thinharness}. A coding agent writes a
+transition model, the harness checks that model against the complete prior
+history, and every committed action must carry a prediction that is graded
+against the next observation. A mismatch terminates the remaining plan and
+records the counterexample. The protocol evaluates externally committed beliefs
+and behavior rather than private chain-of-thought.
 
-\begin{itemize}
-  \item \textbf{Single-configuration numbers are the headline.} One model, one frozen harness, one pass over all 25 games, no score-conditioned reruns. Best-of numbers are published only as a labeled capability ceiling.
-  \item \textbf{Every selected final-board run is published}: the append-only per-action ledger, final world model, and notebook for all 50 runs across the two release boards. Failed experiments and superseded stages are documented separately in the repository rather than represented as part of the release corpus.
-  \item \textbf{Every headline is server-verified.} Each single-config number links an official ARC Prize scorecard produced by re-executing the recorded trace; divergences are disclosed, not absorbed (\S\ref{sec:matrix}).
-  \item \textbf{The audits ran against us first.} The same adversarial tooling we ship caught our own agents twice; once reading a game's source, once rebuilding the harness inside a control group; and both incidents are published with evidence (\S\ref{sec:integrity}).
-\end{itemize}
+This paper makes three contributions:
 
-The paper reports four results. First, an exact 100.00 under one frozen configuration, with explicit separation between 8,256 retained-board-run actions, 7,292 scored-level actions, and incomplete full-campaign action accounting. Second, provider-record resource accounting, priced at \$777.72 list-equivalent, which permits direct cost comparison where another system supplies a compatible estimate. Third, a named-stage ablation with a diagnosed regression, a scoped observation intervention, and a prediction-gated reaction loop whose certify/replay stage added 2.35 points. Fourth, an audit record containing reward hacking, a contaminated control, replay seams, and a tool-health failure that outcome audits missed. It does not claim that the harness alone caused the score; the control experiment needed to establish that effect remains unrun (\S\ref{sec:limits}).
+\begin{enumerate}
+  \item We define an executable verification contract for long-horizon agents:
+  append-only evidence, complete-history retrodiction, prediction-gated action,
+  and mechanically certified replay.
+  \item We evaluate this contract through named frozen stages and 330
+  development and evaluation runs. Trajectory audits identify source access,
+  contaminated controls, silent tool replacement, mutable instructions, and
+  replay-transport failures that outcome-only evaluation missed.
+  \item We report capability and resource evidence under explicit selection
+  rules. Two frozen release configurations reach 100.00 and 95.97 RHAE, with
+  actions, tokens, costs, replay status, and limitations reported as separate
+  quantities. A scoped observation intervention further isolates information
+  lost by the text-only interface on one resistant game.
+\end{enumerate}
+
+These results do not establish held-out generalization or isolate the causal
+effect of the harness. Development and evaluation used the same 25 public
+games, the release boards contain one retained run per game, and the intended
+harness control was invalidated by filesystem leakage. Those limits are part of
+the evaluation result rather than qualifications to be deferred.
 
 \begin{figure}[ht]
   \centering
