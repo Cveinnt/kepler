@@ -20,7 +20,7 @@ import argparse
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterator
+from typing import Iterable, Iterator
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -65,11 +65,16 @@ def _objects(path: Path) -> Iterator[dict]:
         return
 
 
-def claude_release_usage() -> Usage:
-    projects = Path.home() / ".claude" / "projects"
-    encoded = str(OPUS_WORKSPACE.resolve()).replace("/", "-").replace("_", "-")
-    session_files = sorted(projects.glob(f"{encoded}-*/*.jsonl"))
+def _claude_release_usage_from_files(session_files: Iterable[Path]) -> Usage:
+    """Sum one billable usage record per provider message.
+
+    Claude Code writes separate transcript rows for thinking, text, and tool-use
+    blocks from one API response. Those rows repeat the same provider message ID
+    and cumulative usage object. Counting rows therefore double-counts requests.
+    """
+    session_files = list(session_files)
     usage = Usage(sessions=len(session_files))
+    seen_messages: dict[str, tuple[int, int, int, int, int]] = {}
     for path in session_files:
         for obj in _objects(path):
             message = obj.get("message")
@@ -78,9 +83,9 @@ def claude_release_usage() -> Usage:
             item = message.get("usage")
             if not isinstance(item, dict):
                 continue
-            usage.records += 1
-            usage.uncached_input += int(item.get("input_tokens", 0) or 0)
-            usage.cached_input += int(item.get("cache_read_input_tokens", 0) or 0)
+            message_id = message.get("id")
+            if not isinstance(message_id, str) or not message_id:
+                raise SystemExit(f"missing provider message ID in {path}")
             cache = item.get("cache_creation") or {}
             one_hour = int(cache.get("ephemeral_1h_input_tokens", 0) or 0)
             five_min = int(cache.get("ephemeral_5m_input_tokens", 0) or 0)
@@ -88,10 +93,35 @@ def claude_release_usage() -> Usage:
             aggregate = int(item.get("cache_creation_input_tokens", 0) or 0)
             if not one_hour and not five_min:
                 one_hour = aggregate
+            record = (
+                int(item.get("input_tokens", 0) or 0),
+                int(item.get("cache_read_input_tokens", 0) or 0),
+                one_hour,
+                five_min,
+                int(item.get("output_tokens", 0) or 0),
+            )
+            previous = seen_messages.get(message_id)
+            if previous is not None:
+                if previous != record:
+                    raise SystemExit(
+                        f"conflicting cumulative usage for provider message {message_id}"
+                    )
+                continue
+            seen_messages[message_id] = record
+            usage.records += 1
+            usage.uncached_input += record[0]
+            usage.cached_input += record[1]
             usage.cache_write_1h += one_hour
             usage.cache_write_5m += five_min
-            usage.output += int(item.get("output_tokens", 0) or 0)
+            usage.output += record[4]
     return usage
+
+
+def claude_release_usage() -> Usage:
+    projects = Path.home() / ".claude" / "projects"
+    encoded = str(OPUS_WORKSPACE.resolve()).replace("/", "-").replace("_", "-")
+    session_files = sorted(projects.glob(f"{encoded}-*/*.jsonl"))
+    return _claude_release_usage_from_files(session_files)
 
 
 def codex_release_usage() -> Usage:

@@ -32,7 +32,7 @@ for tool in TOOLS:
 
 # 2) dynamic: each tool must start as a script without NameError/UnboundLocal/
 #    SyntaxError (argparse exit 2 or clean exit 0/1 are fine; daemon-connection
-#    errors are fine — we assert the interpreter got past module + main setup).
+#    errors are fine; we assert the interpreter got past module + main setup).
 with tempfile.TemporaryDirectory() as td:
     for tool in TOOLS:
         if tool.name.startswith("_") or tool.name == "world_model_template.py":
@@ -64,4 +64,4 @@ if fails:
     print("TOOL SMOKE FAILURES:")
     for f in fails: print(" -", f)
     raise SystemExit(1)
-print(f"PASS: {len(TOOLS)} tools — entry-point ordering clean, all invocable, key fallback sound.")
+print(f"PASS: {len(TOOLS)} tools; entry-point ordering clean, all invocable, key fallback sound.")

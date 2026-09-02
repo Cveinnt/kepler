@@ -56,7 +56,7 @@ def status() -> int:
         return 1
     urls = _service_urls(CONFIG.read_text())
     if not urls:
-        print("no moonshot_search / moonshot_fetch services found — nothing to lock down")
+        print("no moonshot_search / moonshot_fetch services found; nothing to lock down")
         return 0
     for svc, url in urls.items():
         state = "BLOCKED" if url.startswith("http://127.0.0.1:1") else "LIVE (can reach the internet)"

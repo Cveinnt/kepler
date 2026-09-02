@@ -43,7 +43,7 @@ def main() -> int:
                     hits.append(f"{f.relative_to(ROOT)}:{n}: contains game ID "
                                 f"{m.group(0)!r}: {line.strip()[:100]}")
     if hits:
-        print("GAME-SECRETS CHECK FAILED — game IDs in agent-visible surfaces:")
+        print("GAME-SECRETS CHECK FAILED: game IDs in agent-visible surfaces:")
         print("\n".join(hits))
         return 1
     n_files = sum(1 if t.is_file() else sum(1 for f in t.rglob("*") if f.is_file()

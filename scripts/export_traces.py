@@ -81,12 +81,20 @@ The canonical release contains two single-configuration boards:
   non-perfect games retained. Scorecard:
   [c9f087f3](https://arcprize.org/scorecards/c9f087f3-b9de-452d-9520-d4d0597b0685).
 
-Complete provider records put the Opus board at 1,641.2M raw tokens, 97.15%
-cache reads, and $1,568.50 at current API list-equivalent rates. That is 47.5%
-below Tycho's disclosed $2,986 estimate and the lowest disclosed bill among
-the public perfect-score systems reviewed. Retrodict's lower-scoring 99.86
-costs less at $654, so this is not a cheapest-system-overall claim. The GPT
-board is $1,312.14 current API list-equivalent.
+Complete provider records, deduplicated by provider message ID, put the Opus
+campaign at 858,041,926 raw tokens, 97.37% cache reads, and $777.72 at current
+API list-equivalent rates. That is 74.0% below the $2,986 API-equivalent estimate
+Retrodict published for Tycho.
+Tycho discloses no cost of its own, and neither do AVO or VISTA, so this is a
+comparison against one third-party estimate and not a ranking of the field.
+Retrodict's lower-scoring 99.86 costs less at $654. The GPT board is $1,312.14
+current API list-equivalent.
+
+The retained Opus board runs used 8,256 environment actions, with 7,292 in
+scored levels. Full campaign logs contain at least 13,688 non-reset actions and
+omit 22 prefix events, so 8,256 is not labeled learning-inclusive. None of these
+counts is ranked against other systems, whose action counts cover different
+stages and definitions.
 
 **Public-set scores are not a measure of AGI progress.** The ARC-AGI-3
 technical report (§4.3.1) says so explicitly and ships a human-replay harness

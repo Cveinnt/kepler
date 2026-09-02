@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: >-
   If you use this software, please cite this release record.
-title: "Kepler: 100.00 at Median-Human-or-Better Action Efficiency on Every ARC-AGI-3 Public Level"
+title: "Kepler: 100% on ARC-AGI-3 at About One Quarter of Tycho's Estimated Cost"
 type: software
 authors:
   - family-names: Wu
@@ -17,8 +17,10 @@ abstract: >-
   Kepler is an open-source agent harness that reaches a server-verified exact
   100.00 RHAE on all 25 public ARC-AGI-3 games with one frozen Claude Opus 5
   configuration and no score-conditioned reruns. Every level meets or exceeds
-  median-human action efficiency. The board uses 7,292 scored actions and costs
-  $1,568.50 at current API list-equivalent rates. The release includes complete
+  median-human action efficiency. The retained board runs use 8,256 environment
+  actions, with 7,292 in scored levels. Complete campaign action accounting is
+  still pending. The provider record costs $777.72 at current API
+  list-equivalent rates. The release includes complete
   provider-side resource accounting, score-lineage tools, an enforced
   zero-game-priors check, negative results, and incident reports for two
   integrity failures caught in our own experiments. The full trace dataset is

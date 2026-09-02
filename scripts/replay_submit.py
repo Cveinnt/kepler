@@ -4,7 +4,7 @@
 Why this exists
 ---------------
 Live competition runs kept losing their scorecards: cards that stayed open past
-roughly a couple of hours 404'd on close (registered key or not, idle or not —
+roughly a couple of hours 404'd on close (registered key or not, idle or not;
 we measured max action gaps of 9.6m on a run that still failed). The harnesses
 with verified URLs (Tycho, Retrodict) never fight that clock: they play against
 the local engine, then replay the recorded action sequence through the API in
@@ -16,7 +16,7 @@ already has; the replayed segment is exactly "the attempt the scorecard scores"
 (same extraction as scripts/verify_scores.py): the final full-reset-to-end
 segment, opening RESET excluded, mid-level RESETs included.
 
-The resulting scorecard certifies the ACTIONS, not live play — we disclose that
+The resulting scorecard certifies the ACTIONS, not live play. We disclose that
 wherever the URL is published, as the others do.
 
 Usage:
@@ -74,7 +74,7 @@ def _retry(fn, what, tries=6):
             if k == tries - 1:
                 raise
             wait = min(2 ** k * 2, 30)
-            print(f"  {what}: {type(exc).__name__} — retry {k+1}/{tries-1} in {wait}s",
+            print(f"  {what}: {type(exc).__name__}, retry {k+1}/{tries-1} in {wait}s",
                   flush=True)
             time.sleep(wait)
 
@@ -114,7 +114,7 @@ def main() -> int:
                     help="comma-separated game prefixes, or 'all' for the 25-game set")
     ap.add_argument("--runs-root", default=str(ROOT / "runs"))
     ap.add_argument("--manifest",
-                    help="JSON of {game: {events: path, ...}} — replay one explicit "
+                    help="JSON of {game: {events: path, ...}}: replay one explicit "
                          "ledger per game (e.g. best clean run per game); overrides "
                          "--model/--runs-root")
     ap.add_argument("--label", default=None,
@@ -144,7 +144,7 @@ def main() -> int:
         evp = (Path(manifest[g]["events"]) if manifest
                else Path(args.runs_root) / args.model / g / "events.jsonl")
         if not evp.exists():
-            print(f"{g}: NO LEDGER — skipped", flush=True)
+            print(f"{g}: NO LEDGER, skipped", flush=True)
             continue
         acts = final_attempt_actions(evp)
         try:
@@ -153,9 +153,9 @@ def main() -> int:
                   f"({out['seconds']}s)", flush=True)
         except Exception as exc:
             # Keep whatever progress reached the card; a nondeterministic game
-            # (lf52 replays non-exactly — Retrodict documented the same) must
+            # (lf52 replays non-exactly; Retrodict documented the same) must
             # not sink the other 24. Disclosed wherever the URL is published.
-            print(f"{g}: REPLAY DIVERGED ({type(exc).__name__}: {str(exc)[:80]}) — "
+            print(f"{g}: REPLAY DIVERGED ({type(exc).__name__}: {str(exc)[:80]}): "
                   "partial progress kept, continuing", flush=True)
 
     final = arcade.close_scorecard(card)

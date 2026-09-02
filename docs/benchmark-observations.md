@@ -42,11 +42,11 @@ unreported.** Same public set, comparable scores:
 |---|---:|---:|
 | baseline1 | 99.0 | $400 |
 | Retrodict | 99.86 | $654 |
-| Tycho | 100.0 | ~$2,986 (est.) |
+| Tycho | 100.0 | none disclosed; Retrodict estimates ~$2,986 API-equivalent |
 | VISTA | 100.0 | not disclosed |
 | NVIDIA AVO | 100.0 | not disclosed |
 | Kepler, GPT board | 95.97 | $1,312.14 current API list-equivalent |
-| Kepler, Opus board | 100.0 | $1,568.50 current API list-equivalent |
+| Kepler, Opus board | 100.0 | $777.72 current API list-equivalent |
 
 A large cost spread at similar scores, and the figures are self-reported or list-equivalent dollars
 with no shared definition. Some include cached input, some estimate, some omit
@@ -54,10 +54,12 @@ tokens entirely. The leaderboard shows a verified score badge and no cost badge,
 so the axis that now carries all the signal is the one nobody is required to
 report comparably.
 
-Kepler's 100.00 bill is 47.5% below Tycho's disclosed estimate and is the
-lowest disclosed bill among the public perfect-score systems reviewed. That is
-not a claim that Kepler is cheapest at every score: Retrodict and baseline1
-occupy lower-cost, lower-scoring points.
+Kepler's 100.00 bill is 74.0% below the $2,986 API-equivalent estimate that
+Retrodict published for Tycho. Tycho itself discloses no cost, and neither do
+AVO or VISTA, which is the point of this section: the comparison exists only
+because a third party did the estimating. It is not a claim that Kepler is
+cheapest at every score, since Retrodict and baseline1 occupy lower-cost,
+lower-scoring points.
 
 ## 3. Prediction-before-action emerged as a norm nobody specified
 

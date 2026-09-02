@@ -6,7 +6,7 @@ No model calls, no network, no API keys, stdlib only. This does two things:
 1. Replays the trace's final world_model.py over its entire recorded
    events.jsonl using the REAL certification tool (harness/ws_tools/backtest.py,
    staged into a temp workspace exactly as run_game.py stages it into live
-   workspaces) — the same GREEN/RED gate the agent had to pass during the run.
+   workspaces). This is the same GREEN/RED gate the agent had to pass during the run.
 2. Independently cross-checks the append-only ledger against the reported
    result.json (action count, levels completed, terminal state, per-level
    action split, monotonic event indices).
@@ -33,7 +33,7 @@ DEFAULT_TRACE = ROOT / "examples" / "gpt-xhigh" / "ft09"
 
 
 def fail(msg: str) -> None:
-    print(f"VERIFY: FAIL — {msg}")
+    print(f"VERIFY: FAIL: {msg}")
     sys.exit(1)
 
 
@@ -63,7 +63,7 @@ def main() -> None:
             fail(f"{trace / name} not found")
     result = json.loads((trace / "result.json").read_text())
     print(f"trace: {trace}")
-    print(f"claimed: {result['game']} / {result['model']} — state={result['state']}, "
+    print(f"claimed: {result['game']} / {result['model']}, state={result['state']}, "
           f"levels={result['levels_completed']}/{result['win_levels']}, "
           f"actions={result['actions']}, score={result['score']}")
 
@@ -108,7 +108,7 @@ def main() -> None:
         else:
             shutil.rmtree(tmp, ignore_errors=True)
 
-    print("\nVERIFY: PASS — the recorded history is internally consistent, matches the "
+    print("\nVERIFY: PASS. The recorded history is internally consistent, matches the "
           "reported result, and is fully reproduced by the agent's final world model.")
 
 

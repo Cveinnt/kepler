@@ -14,9 +14,9 @@ RHAE implementation from the `arc-agi` toolkit.
 > `runs-v*` strings remain only where they identify an exact internal directory
 > or freeze record. Canonical release facts live in [`release.json`](release.json).
 
-| Kepler 1.0 board | score | exact replay | actions including learning | scored actions | provider-record tokens | current API list-equivalent |
+| Kepler 1.0 board | score | exact replay | retained-board-run actions | scored-level actions | provider-record tokens | current API list-equivalent |
 |---|---:|---|---:|---:|---:|---:|
-| Claude Opus 5 | **100.00** | [91aa2f10](https://arcprize.org/scorecards/91aa2f10-5dc3-4471-80e5-9e8895db5de1) | 8,256 | 7,292 | 1,641.2M, 97.15% cache reads | **$1,568.50** |
+| Claude Opus 5 | **100.00** | [91aa2f10](https://arcprize.org/scorecards/91aa2f10-5dc3-4471-80e5-9e8895db5de1) | 8,256 | 7,292 | 858.0M, 97.37% cache reads | **$777.72** |
 | GPT-5.6 Sol (max) | **95.97** | [c9f087f3](https://arcprize.org/scorecards/c9f087f3-b9de-452d-9520-d4d0597b0685) | 35,896 | 8,400 | 2,429.1M, 98.0% cached input | $1,312.14 |
 
 The companion trace dataset is not public yet. Statements in the chronological
@@ -71,7 +71,7 @@ session records, not workspace CLI footers:
 
 | board | uncached input | cached/read input | cache write | output | raw total | current API list-equivalent |
 |---|---:|---:|---:|---:|---:|---:|
-| Claude Opus 5, 100.00 | 21,844 | 1,594,379,011 | 26,573,523 (1h) | 20,218,538 | 1,641,192,916 | **$1,568.50** |
+| Claude Opus 5, 100.00 | 11,464 | 835,488,978 | 13,574,918 (1h) | 8,966,566 | 858,041,926 | **$777.72** |
 | GPT-5.6 Sol, 95.97 | 39,262,504 | 2,379,659,648 | 0 | 10,161,281 | 2,429,083,433 | $1,312.14 |
 
 The Opus conversion uses $5/M uncached input, $0.50/M cache reads, $10/M one-hour
@@ -85,6 +85,11 @@ workspace CLI footer counters. Complete provider sessions show that
 the footer path omitted most cached traffic and one long workspace. The earlier
 raw-token comparison and cost estimate are withdrawn. Reproduce the
 corrected release totals with `.venv/bin/python scripts/cost_report.py --release`.
+
+An earlier Opus draft also overcounted cost by treating each transcript row as
+a separate provider response. Claude Code repeats one provider message across
+its thinking, text, and tool-use content-block rows. The corrected total counts
+each provider message ID once and fails closed if duplicate rows disagree.
 
 **Integrity.** Every number here is backed locally by its own append-only ledger;
 see [`INTEGRITY.md`](INTEGRITY.md). The agent made no external requests in the
@@ -555,13 +560,15 @@ ledger. The board absorbed multiple provider-quota interruptions (each a clean
 resumable abort, driven to completion by the local supervisor); one
 16-hour orphaned agent search from a completed lane was killed and is noted
 here. The transport gate did its job: the two games whose off-grid clicks sank
-the earlier replay (bp35, lf52) replayed exactly this time. The board used
-8,256 actions including learning and 7,292 actions in the scored attempts.
-Under official RHAE scoring, exact 100.00 means every completed level met or
-exceeded median-human action efficiency. The scored count is 3.3% below
-VISTA's 7,542 and 5.3% below Retrodict's 7,703; NVIDIA AVO remains lower at
-6,624. The complete provider record totals 1,641,192,916 raw tokens, 97.15%
-cache reads, or $1,568.50 at current API list-equivalent rates. That is 47.5%
-below Tycho's disclosed $2,986 estimate and the lowest disclosed bill among
-the public 100.00 systems reviewed. AVO and VISTA do not disclose comparable
-bills. Actual execution used Claude subscription quota.
+the earlier replay (bp35, lf52) replayed exactly this time. The retained board
+runs used 8,256 environment actions, with 7,292 in scored levels. Under official
+RHAE scoring, exact 100.00 means every completed level met or exceeded
+median-human action efficiency. These are not full-campaign actions: local
+ledgers contain at least 13,688 non-reset actions and omit 22 prefix events.
+We do not rank either count against AVO's 6,624
+environment actions, VISTA's 7,542 game actions, or Retrodict's 7,703 campaign
+actions, because those are different denominators. The complete provider record,
+deduplicated by provider message ID, totals 858,041,926 raw tokens, 97.37% cache
+reads, or $777.72 at current API list-equivalent rates. That is 74.0% below the $2,986 API-equivalent
+estimate Retrodict published for Tycho; Tycho discloses no cost of its own, and
+neither do AVO or VISTA. Actual execution used Claude subscription quota.

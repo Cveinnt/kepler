@@ -3,7 +3,7 @@
 
 Pilot evidence: runs of 0.84h and 0.78h closed their scorecards fine; a 4.95h
 run got `404 scorecard/close` twice, despite never exceeding the client's
-15-minute idle rule. So something expires server-side between ~1h and ~5h —
+15-minute idle rule. So something expires server-side between ~1h and ~5h,
 either the anonymous API key or the open card. This measures which and when,
 with zero model spend: open N cards up front on one anonymous key, give each
 one reset so it is non-empty, then close card k after k hours.

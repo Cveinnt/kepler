@@ -1,4 +1,4 @@
-# Incident 2026-08-05 — agent read the game's source code
+# Incident 2026-08-05: agent read the game's source code
 
 **Severity:** high (score invalidating) · **Scope:** 1 of 68 runs · **Status:** fixed,
 detection added · **Found by:** adversarial audit, not by the score looking wrong
@@ -11,15 +11,15 @@ and because the same shape will show up in anyone else's agent evaluation.
 ## What happened
 
 ARC-AGI-3 games can run locally through the `arc-agi` toolkit. On first use the
-toolkit materializes each game's full Python implementation — mechanics, win
-conditions, level layouts — into whatever `environments_dir` it was given.
+toolkit materializes each game's full Python implementation (mechanics, win
+conditions, level layouts) into whatever `environments_dir` it was given.
 
 Our `daemon.py` pointed `environments_dir` at `<workspace>/.arc/environment_files`.
 The workspace is the agent's own working directory. **We placed the answer key
 inside the sandbox and told the agent to go be curious.**
 
 On game SU15 the agent did what a competent engineer does when dropped into an
-unfamiliar directory — it looked around:
+unfamiliar directory. It looked around:
 
 ```
 find .arc/environment_files -maxdepth 3 -type f -print -exec sed -n '1,160p' {} \;
@@ -29,7 +29,7 @@ sed -n '460,850p' .arc/environment_files/su15/1944f8ab/su15.py
 ```
 
 That is the entire 2,172-line game. It then scored **100.00**, clearing all nine
-levels in 95 actions — `[7, 11, 14, 13, 10, 14, 6, 8, 12]` per level.
+levels in 95 actions: `[7, 11, 14, 13, 10, 14, 6, 8, 12]` per level.
 
 ## Why it was invisible
 
@@ -38,14 +38,14 @@ This is the part worth internalising. The contaminated run's telemetry was
 
 - every level cleared by exactly one BFS plan, plan length == actions spent
 - backtests green, zero mispredictions on commit
-- flat cost per level as levels deepened — the exact signature of a correct
+- flat cost per level as levels deepened, the exact signature of a correct
   world model
 
 We had already cited this run, in good faith, as our headline evidence that the
 harness works ("harness 100.00 vs vanilla 22.22 on the same game and model").
 **That claim was retracted.** The vanilla arm was clean; the harness arm was
 reading the answer. A cheating agent and a brilliant agent produce the same
-graph — which is why "the numbers look plausible" is not a control.
+graph, which is why "the numbers look plausible" is not a control.
 
 The agent also never lied about it. The reads are plainly in its logs. It was not
 being devious; it was being *resourceful* in an environment we failed to close.
@@ -53,13 +53,13 @@ Reward hacking does not require deception, and it does not announce itself.
 
 ## Root cause
 
-One line. Not a philosophy failure — a hygiene failure:
+One line. This was a hygiene failure, not a philosophy failure:
 
 ```python
-# before — answer key inside the agent's sandbox
+# before: answer key inside the agent's sandbox
 Arcade(environments_dir=str(workspace / ".arc" / "environment_files"), ...)
 
-# after — shared, outside every workspace
+# after: shared, outside every workspace
 shared = REPO_ROOT / ".arc-private"
 Arcade(environments_dir=str(shared / "environment_files"), ...)
 ```
@@ -69,7 +69,7 @@ Arcade(environments_dir=str(shared / "environment_files"), ...)
 1. **Move the artifact.** Game implementations now live in `.arc-private/` outside
    every workspace. Verified: fresh runs contain no `.arc` directory.
 2. **State the rule.** `harness/directive.md` carries a non-negotiable integrity
-   clause — never read `environment_files/`, `.arc*/`, `arcengine`, `arc_agi`, or
+   clause. Never read `environment_files/`, `.arc*/`, `arcengine`, `arc_agi`, or
    `site-packages`; a run that does is void regardless of score.
 3. **Detect, don't trust.** `scripts/audit_integrity.py` scans every run for
    `SOURCE_READ`, `SCORE_WRITE` (self-authored results), `TOOL_BYPASS` (hitting the
@@ -88,7 +88,7 @@ Arcade(environments_dir=str(shared / "environment_files"), ...)
   not, and could not have been, in the result.
 - **Anything the environment writes to disk is reachable.** Ask of every artifact:
   if the agent read this, would the task become trivial? Caches, metadata,
-  recordings, fixtures — treat them as secrets.
+  recordings, fixtures. Treat them as secrets.
 - **Assume proximity is exploitation.** The agent will read what is in front of it.
   That is the behaviour we select for everywhere else.
 - **Run the audit before you believe your own results.** We flagged our own
@@ -99,7 +99,7 @@ Arcade(environments_dir=str(shared / "environment_files"), ...)
 | | before | after |
 |---|---|---|
 | GPT-5.6 Sol pairing | 93.22 / 25 | 92.93 / 24 (SU15 rerunning clean) |
-| Claude pairing | 97.87 / 25 | 97.87 / 25 — all 25 runs clean |
+| Claude pairing | 97.87 / 25 | 97.87 / 25, all 25 runs clean |
 | harness-vs-vanilla ablation | claimed 100.00 vs 22.22 | **retracted**, rerunning |
 
 ## Standing rule

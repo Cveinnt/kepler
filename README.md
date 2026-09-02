@@ -1,6 +1,6 @@
 # Kepler
 
-**100.00. Every level at or above median-human action efficiency. One frozen
+**100% on ARC-AGI-3. About one quarter of Tycho's estimated cost. One frozen
 configuration.**
 
 Kepler is an open-source agent harness for the 25 public ARC-AGI-3 games. One
@@ -10,7 +10,7 @@ model selection and no score-conditioned rerun.
 
 | Model | Score | Evidence | Resource record |
 |---|---:|---|---:|
-| Claude Opus 5 | **100.00** | [Server-verified exact](https://arcprize.org/scorecards/91aa2f10-5dc3-4471-80e5-9e8895db5de1) | 8,256 actions including learning; 1,641.2M tokens; $1,568.50 current API list-equivalent |
+| Claude Opus 5 | **100.00** | [Server-verified exact](https://arcprize.org/scorecards/91aa2f10-5dc3-4471-80e5-9e8895db5de1) | 8,256 retained-board-run actions; 858.0M tokens; $777.72 current API list-equivalent |
 | GPT-5.6 Sol (max) | **95.97** | [Server-verified exact](https://arcprize.org/scorecards/c9f087f3-b9de-452d-9520-d4d0597b0685) | 35,896 actions; 2,429.1M tokens; $1,312.14 current API list-equivalent |
 
 This repository has one public release identity: **Kepler 1.0**. Earlier
@@ -25,15 +25,15 @@ different boards.
 
 | Wedge | Measured claim |
 |---|---|
-| Human-relative performance | ARC Prize defines 100.00 as beating every level at or above median-human action efficiency. Kepler does that on all 25 public games. |
-| Scored-action convergence | 7,292 scored actions, 3.3% below VISTA's 7,542 and 5.3% below Retrodict's 7,703. AVO remains lower at 6,624. |
-| Learning-inclusive action economy | 8,256 total environment actions, 2.08x fewer than the 17,135-action first-time-human reference. |
-| Lowest disclosed perfect-score bill | $1,568.50 at current Opus 5 API list rates, 47.5% below Tycho's leaderboard cost of $2,986. AVO and VISTA do not disclose comparable bills. |
-| Single-configuration durability | One frozen configuration and one retained result per game. The GPT board keeps its same-configuration collapse rather than rerolling it. |
-| Zero game priors, enforced | CI fails if any agent-visible file names a public game. |
-| Mechanisms with deltas | Certify/replay added 2.35 board points; the clean-run-at-100 trigger converted four GPT games; every committed action carries a checked prediction. |
-| Audits that changed the paper | A source-reading win and a contaminated control were voided. A dead planner exposed a separate tool-integrity blind spot. |
-| Negative results and benchmark reform | Regressions, failed mechanisms, withdrawn claims, and five concrete evaluation changes are retained rather than edited out. |
+| Server-verified on two models | Claude Opus 5 at 100.00 and GPT-5.6 Sol at 95.97, both exact on ARC Prize's official replay. Under RHAE, the exact 100.00 means every completed public level met or exceeded median-human action efficiency. |
+| One frozen configuration, no cherry-picking | One model, one commit-frozen harness registered before results existed, one pass over 25 games, no score-conditioned reruns. The GPT board keeps its same-configuration collapse. |
+| Action accounting without a flattering denominator | 8,256 actions in the retained board runs and 7,292 in scored levels. Full campaign logs contain at least 13,688 non-reset actions plus 22 unavailable prefix events, so we do not call 8,256 learning-inclusive or compare it with another system's campaign total. |
+| Lower comparable cost | $777.72 at current Opus 5 API list rates, 74.0% below Retrodict's $2,986 API-equivalent estimate for Tycho. Tycho publishes no cost figure of its own; AVO and VISTA disclose none. |
+| Convergence and durability, with evidence | Certify/replay added 2.35 board points. Across the two release boards, 48 of 50 game-model cells reach 100. This is within-system convergence on the public set, not independent replication. |
+| Audit discipline | Six adversarial checks run over the raw session record before any number is published. A source-reading win and a contaminated control were voided, and a dead planner exposed a separate tool-integrity blind spot. |
+| Reward hacking, disclosed | An agent read 2,172 lines of game source inside its workspace and returned a natural-looking 100.00. That run was voided and quarantined, and it is not part of the release board. |
+| Human-like interaction design | Observe, hypothesize, run a discriminating experiment, revise on the first counterexample, then act. Every belief is executable code, retrodicted against the full history, and every committed action carries a checked prediction. |
+| Saturation points at the evaluator | With 48 of 50 cells at 100, peak RHAE no longer separates systems. Our own hardest game turned on what the observation channel discarded, which suggests observation-channel and evaluator quality now carry the signal. |
 
 ### One result, selected before the score
 
@@ -62,12 +62,13 @@ Kepler now executes every workspace tool in a dedicated smoke tier.
 
 ### Resource accounting, recovered from provider records
 
-The exact 100.00 board used 1,641.2M tokens, 97.15% cache reads, and costs
-$1,568.50 when its uncached input, cache reads, one-hour cache writes, and
-output are priced at current Opus 5 API rates. That is 47.5% below Tycho's
-$2,986 community-leaderboard cost, making Kepler the lowest disclosed bill
-among the public 100.00 systems reviewed. AVO and VISTA do
-not publish comparable bills.
+The exact 100.00 campaign used 858,041,926 tokens, 97.37% cache reads, and
+costs $777.72 when its uncached input, cache reads, one-hour cache writes,
+and output are priced at current Opus 5 API rates. That is 74.0% below the
+$2,986 API-equivalent estimate Retrodict published for Tycho. Tycho does not
+publish a cost figure of its own, and AVO and VISTA disclose none, so this is
+a comparison against one third-party estimate rather than a ranking of the
+field.
 
 The GPT board used 2,429.1M raw tokens. An earlier footer-based estimate was
 incomplete: provider session records show that the footers omitted most cached-
@@ -75,10 +76,13 @@ input traffic and one long-running workspace. At current GPT-5.6
 Sol rates the complete board is $1,312.14 list-equivalent. We corrected the
 claim rather than preserving a flattering denominator.
 
-The Opus board used 8,256 actions including learning and 7,292 in scored
-attempts. The learning-inclusive count is 2.08 times fewer than the 17,135-action
-first-time-human reference. The scored count is 3.3% below VISTA and 5.3% below
-Retrodict; AVO remains lower at 6,624.
+The retained Opus board runs used 8,256 environment actions, with 7,292 in
+scored levels. That is not the complete campaign count. The local ledgers
+contain at least 13,688 non-reset actions and omit 22 prefix events whose reset
+status cannot yet be recovered. We therefore do not call 8,256
+learning-inclusive or publish a first-time-human percentage. Published action
+counts from AVO, VISTA, and Retrodict also cover different stages and
+definitions, so ranking them would compare unlike quantities.
 
 ### A perception finding from the last resistant game
 

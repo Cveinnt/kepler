@@ -6,7 +6,7 @@ axes, whisper-weight gridlines, direct labels over legends, no chartjunk.
 """
 import matplotlib as mpl
 
-# palette — restrained, colorblind-safe value contrast
+# palette: restrained, colorblind-safe value contrast
 INK = "#1f2328"      # near-black text
 KEPLER = "#3d5a9e"   # slate blue: our boards
 EXTERN = "#b6bcc4"   # cool gray: external systems

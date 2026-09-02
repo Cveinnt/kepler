@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Regenerate fig1, fig3, fig4, fig5 from per-game data (source: runs*/ result.json).
 
-Style: figstyle.py — muted palette, serif matching the paper, direct labels.
+Style: figstyle.py, muted palette, serif matching the paper, direct labels.
 """
 import matplotlib
 from pathlib import Path
@@ -128,10 +128,10 @@ def fig5():
     ax.set_xscale("log")
     external = [(400, 99.0, "baseline1\n\\$400 · 99.0"),
                 (654, 99.86, "Retrodict\n\\$654 · 99.86"),
-                (2986, 100.0, "Tycho\n\\$2,986 · 100.00")]
+                (2986, 100.0, "Tycho\n\\$2,986 est. (Retrodict) · 100.00")]
     for cost, score, label in external:
         ax.scatter([cost], [score], s=70, color=S.EXTERN_DK, zorder=3)
-        offset = (0, -30) if cost == 400 else ((0, 12) if cost == 654 else (0, -30))
+        offset = (0, -30) if cost in (400, 2986) else (-16, -31)
         ax.annotate(label, (cost, score), xytext=offset, textcoords="offset points",
                     ha="center", fontsize=8.5, color=S.INK)
 
@@ -139,13 +139,13 @@ def fig5():
     ax.annotate("Kepler + GPT-5.6\n\\$1,312.14 · 95.97", (1312.14, 95.97),
                 xytext=(0, 12), textcoords="offset points", ha="center",
                 fontsize=8.5, color=S.INK)
-    ax.scatter([1568.50], [100.0], s=85, color=S.KEPLER, zorder=3)
-    ax.annotate("Kepler + Opus 5\n\\$1,568.50 · 100.00", (1568.50, 100.0),
-                xytext=(0, 13), textcoords="offset points", ha="center",
+    ax.scatter([777.72], [100.0], s=85, color=S.KEPLER, zorder=3)
+    ax.annotate("Kepler + Opus 5\n\\$777.72 · 100.00", (777.72, 100.0),
+                xytext=(24, 13), textcoords="offset points", ha="center",
                 fontsize=8.5, color=S.INK)
-    ax.annotate("", xy=(2986, 98.1), xytext=(1568.50, 98.1),
+    ax.annotate("", xy=(2986, 98.1), xytext=(777.72, 98.1),
                 arrowprops=dict(arrowstyle="<->", color=S.ACCENT, lw=1.3))
-    ax.text(2160, 98.35, "47.5% lower", ha="center", fontsize=9.5, color=S.ACCENT)
+    ax.text(1882, 98.35, "74.0% lower", ha="center", fontsize=9.5, color=S.ACCENT)
     ax.set_xlim(300, 3600)
     ax.set_ylim(94, 101.5)
     ax.set_xlabel("reported or current API list-equivalent cost (USD, log scale)")

@@ -15,8 +15,8 @@
 \usepackage{xurl}
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 
-\title{Kepler: 100.00 at Median-Human-or-Better Action Efficiency\\
-on Every ARC-AGI-3 Public Level}
+\title{Kepler: 100\% on ARC-AGI-3\\
+at About One Quarter of Tycho's Estimated Cost}
 
 \author{Wensen Wu\\
 Independent\\
@@ -31,7 +31,7 @@ Independent\\
 
 
 \begin{abstract}
-ARC-AGI-3's public set now has several perfect results, so a score alone no longer distinguishes a harness. We present Kepler, an open-source system reaching a \textbf{server-verified exact 100.00} RHAE with Claude Opus 5 under one frozen configuration, one run per game, and no score-conditioned reruns. Under the benchmark's human-relative metric, this means every completed public level met or exceeded median-human action efficiency. Kepler used \textbf{7,292 scored actions}, 3.3\% fewer than VISTA and 5.3\% fewer than Retrodict, although NVIDIA AVO reports fewer. Complete provider records yield a \textbf{\$1,568.50 current API list-equivalent bill}, 47.5\% below Tycho's disclosed estimate and the lowest disclosed bill among the public 100.00 systems we reviewed. The actual run consumed subscription quota. Kepler's primary contribution is the combination of this result with an auditable evaluation contract: exact replay, append-only ledgers, a CI-enforced zero-game-priors check, per-action predictions, negative results, and incident reports for two integrity failures that invalidated our own experiments. A separate defect showed that high scores can conceal broken infrastructure when agents silently route around failed tools. In a single-game within-system intervention, rendered animation frames changed the last resistant game from unsolved under text observations to 100.00. Across the two final boards, 48 of 50 game--model cells reached 100, motivating cost-conditioned, first-attempt, and verification-aware reporting alongside peak RHAE.
+ARC-AGI-3's public set now has several perfect results, so a score alone no longer distinguishes a harness. We present Kepler, an open-source system reaching a \textbf{server-verified exact 100.00} RHAE with Claude Opus 5 under one frozen configuration, one run per game, and no score-conditioned reruns. Under the benchmark's human-relative metric, this means every completed public level met or exceeded median-human action efficiency. The retained board runs used \textbf{8,256 environment actions}, with \textbf{7,292 in scored levels}. These are not full-campaign counts: local ledgers contain at least 13,688 non-reset actions and omit 22 prefix events, so we make no campaign-wide human-action comparison. Complete provider records, deduplicated by provider message ID, yield a \textbf{\$777.72 current API list-equivalent bill}, 74.0\% below the \$2,986 API-equivalent estimate Retrodict published for Tycho; Tycho, AVO, and VISTA disclose no cost figures of their own. The actual run consumed subscription quota. Kepler's primary contribution is the combination of this result with an auditable evaluation contract: exact replay, append-only ledgers, a CI-enforced zero-game-priors check, per-action predictions, negative results, and incident reports for two integrity failures that invalidated our own experiments. The companion trace corpus is prepared but not yet published, so the contract is specified and locally enforced rather than independently verified end to end. A separate defect showed that high scores can conceal broken infrastructure when agents silently route around failed tools. In a single-game within-system intervention, rendered animation frames changed the last resistant game from unsolved under text observations to 100.00. Across the two final boards, 48 of 50 game--model cells reached 100, motivating cost-conditioned, first-attempt, and verification-aware reporting alongside peak RHAE.
 \end{abstract}
 
 \section{Introduction}\label{sec:intro}
@@ -49,7 +49,7 @@ Kepler is our answer to that problem: an independent implementation of the execu
   \item \textbf{The audits ran against us first.} The same adversarial tooling we ship caught our own agents twice; once reading a game's source, once rebuilding the harness inside a control group; and both incidents are published with evidence (\S\ref{sec:integrity}).
 \end{itemize}
 
-The paper contributes four results. First, an exact 100.00 in 7,292 scored actions and 8,256 learning-inclusive actions under one frozen configuration. Second, complete provider-side resource accounting and the lowest disclosed perfect-score bill among the public systems reviewed. Third, a named-stage ablation with a diagnosed regression, a scoped observation intervention, and a prediction-gated reaction loop whose certify/replay stage added 2.35 points. Fourth, an audit record containing reward hacking, a contaminated control, replay seams, and a tool-health failure that outcome audits missed. It does not claim that the harness alone caused the score; the control experiment needed to establish that effect remains unrun (\S\ref{sec:limits}).
+The paper contributes four results. First, an exact 100.00 under one frozen configuration, with explicit separation between 8,256 retained-board-run actions, 7,292 scored-level actions, and incomplete full-campaign action accounting. Second, complete provider-side resource accounting, priced at \$777.72 list-equivalent against a field in which most perfect-score systems publish no cost at all. Third, a named-stage ablation with a diagnosed regression, a scoped observation intervention, and a prediction-gated reaction loop whose certify/replay stage added 2.35 points. Fourth, an audit record containing reward hacking, a contaminated control, replay seams, and a tool-health failure that outcome audits missed. It does not claim that the harness alone caused the score; the control experiment needed to establish that effect remains unrun (\S\ref{sec:limits}).
 
 \begin{figure}[ht]
   \centering
@@ -224,13 +224,13 @@ The fourth finding is a single-game within-system intervention. Setup: the one g
 
 \subsection{Cost}\label{sec:cost}
 
-The community leaderboard's submission rules make cost a first-class field. We therefore recover usage from complete provider-side session records rather than workspace CLI footers. The exact 100.00 Opus board contains \textbf{21,844 uncached input}, \textbf{1,594,379,011 cache-read input}, \textbf{26,573,523 one-hour cache-write input}, and \textbf{20,218,538 output} tokens: 1,641,192,916 raw tokens in total, 97.15\% of them cache reads. At current Opus 5 API rates of \$5/M uncached input, \$0.50/M cache reads, \$10/M one-hour cache writes, and \$25/M output~\citep{anthropicopus5pricing}, this is \textbf{\$1,568.50 list-equivalent}. Actual execution used Claude subscription quota; the dollar figure is a reproducible API-price comparison, not a billed charge.
+The community leaderboard's submission rules make cost a first-class field. We therefore recover usage from complete provider-side session records rather than workspace CLI footers. Claude Code stores thinking, text, and tool-use content blocks from one response as separate transcript rows carrying the same provider message ID and cumulative usage object. We deduplicate by that ID before summing. The exact 100.00 Opus campaign contains \textbf{11,464 uncached input}, \textbf{835,488,978 cache-read input}, \textbf{13,574,918 one-hour cache-write input}, and \textbf{8,966,566 output} tokens: 858,041,926 raw tokens in total, 97.37\% of them cache reads. At current Opus 5 API rates of \$5/M uncached input, \$0.50/M cache reads, \$10/M one-hour cache writes, and \$25/M output~\citep{anthropicopus5pricing}, this is \textbf{\$777.72 list-equivalent}. Actual execution used Claude subscription quota; the dollar figure is a reproducible API-price comparison, not a billed charge.
 
-Among the public 100.00 systems reviewed, this is the lowest disclosed bill. Tycho's community-leaderboard estimate is \$2,986, making Kepler 47.5\% lower; AVO and VISTA do not publish comparable bills. This is a deliberately narrow claim. Retrodict reports 99.86 at \$654 and baseline1 reports 99.0 at \$400, so Kepler is not the cheapest system at every score. Cost and run-selection methods also differ.
+The only public 100.00 system with any cost figure attached to it is Tycho, and that figure is not Tycho's: Retrodict published a \$2,986 API-equivalent estimate for it. Kepler's bill is 74.0\% below that estimate, or roughly one quarter as large. AVO and VISTA publish no comparable bills, and Tycho publishes none of its own, so this is a comparison against a single third-party estimate rather than a ranking of the field. This is a deliberately narrow claim. Retrodict reports 99.86 at \$654 and baseline1 reports 99.0 at \$400, so Kepler is not the cheapest system at every score. Cost and run-selection methods also differ.
 
 The 95.97 GPT-5.6 board contains 39,262,504 uncached input, 2,379,659,648 cached input, and 10,161,281 output tokens, or 2,429,083,433 raw tokens total. At current GPT-5.6 Sol rates of \$4/M uncached input, \$0.40/M cached input, and \$20/M output~\citep{openaigpt56pricing}, this is \textbf{\$1,312.14 list-equivalent}. An earlier draft used incomplete workspace CLI footer counters. Provider-side records showed that path omitted most cached traffic and one long workspace; the attractive comparison it produced has been withdrawn.
 
-Actions expose a different frontier. The 100.00 Opus board used \textbf{8,256 environment actions including learning}, 51.8\% fewer than the 17,135-action first-time-human reference, and \textbf{7,292 in scored attempts}. The scored count is 3.3\% below VISTA's 7,542 and 5.3\% below Retrodict's 7,703, while AVO remains lower at 6,624 under a different interaction design. The GPT board used 35,896 actions including learning and 8,400 in scored attempts. Kepler therefore does not collapse score, tokens, actions, and dollars into one efficiency claim; it publishes each axis and the relevant denominator.
+Actions expose a different frontier, and a denominator problem. The 100.00 Opus board reports \textbf{8,256 environment actions across the retained board runs} and \textbf{7,292 in scored levels}. The local campaign ledgers contain at least 13,688 non-reset actions and omit 22 prefix events whose reset status cannot yet be recovered. The GPT board similarly reports 35,896 retained-run actions and 8,400 in scored levels. We therefore call neither board total learning-inclusive, make no first-time-human percentage claim, and do not rank either count against other systems. AVO reports 6,624 environment actions, VISTA 7,542 game actions, and Retrodict 7,703 campaign actions; these count different things over different stages, and the published materials do not supply the detail needed to convert between them. Kepler therefore does not collapse score, tokens, actions, and dollars into one efficiency claim; it publishes each axis and states which comparisons are admissible.
 
 \begin{table}[ht]
   \centering
@@ -241,13 +241,13 @@ Actions expose a different frontier. The 100.00 Opus board used \textbf{8,256 en
     \toprule
     system & score & tokens & cost & trace disclosure \\
     \midrule
-    Tycho & 100.00 & not reported & \$2,986 (est.) & hashes only \\
+    Tycho & 100.00 & not reported & none disclosed; \$2,986 est.\ by Retrodict & hashes only \\
     Retrodict & 99.86 & 659.9M & \$654 & full traces \\
     baseline1 (ewma\_sv 1.6) & 99.0 & not reported & \$400 & scorecards \\
     VISTA & 100.00 & not reported & not disclosed & replays on arcprize.org \\
     AVO (NVIDIA) & 100.00 & not reported & not disclosed & none published \\
     \textbf{Kepler + GPT-5.6} & 95.97 & 2,429.1M (98.0\% cached input) & \$1,312.14 (list-equiv.) & prepared; publication pending \\
-    \textbf{Kepler + Opus 5} & 100.00 & 1,641.2M (97.15\% cache reads) & \textbf{\$1,568.50} (list-equiv.) & prepared; publication pending \\
+    \textbf{Kepler + Opus 5} & 100.00 & 858.0M (97.37\% cache reads) & \textbf{\$777.72} (list-equiv.) & prepared; publication pending \\
     \bottomrule
   \end{tabularx}
 \end{table}
@@ -255,7 +255,7 @@ Actions expose a different frontier. The 100.00 Opus board used \textbf{8,256 en
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.8\linewidth]{figures/fig5_cost.pdf}
-  \caption{Score against disclosed or current API list-equivalent cost. Kepler's \$1,568.50 is the lowest disclosed bill among the 100.00 systems reviewed; Tycho reports \$2,986, while AVO and VISTA do not publish comparable costs. Retrodict and baseline1 occupy cheaper, lower-scoring points. Pricing and accounting methods differ, so this is a disclosed frontier rather than a controlled efficiency experiment.}
+  \caption{Score against disclosed or current API list-equivalent cost. Kepler's \$777.72 is 74.0\% below the \$2,986 API-equivalent estimate Retrodict published for Tycho; Tycho discloses no cost of its own, and AVO and VISTA publish none. Retrodict and baseline1 occupy cheaper, lower-scoring points. Pricing and accounting methods differ, and most of the field reports nothing, so this is a sparse disclosure frontier rather than a controlled efficiency experiment.}
   \label{fig:costscatter}
 \end{figure}
 
@@ -398,7 +398,7 @@ The prepared companion trace corpus contains winners, failures, regressions, and
 Ryan Brown (Retrodict) and the Tycho authors (NIMI-research), whose released mechanisms this harness adopts with attribution (\texttt{NOTICE}) and whose release engineering set the bar this project measures itself against; the ARC Prize Foundation for ARC-AGI-3, the \texttt{arc-agi} toolkit, and the official RHAE implementation.
 
 \bigskip
-\paragraph{Appendices.} Full per-game tables for all boards, the guard-deadlock and dead-code forensic timelines, the sp80 search inventory, the lf52 replay transcripts, and the audit flag taxonomy are provided in the repository alongside the raw ledgers.
+\paragraph{Appendices.} Full per-game tables for all boards, the guard-deadlock and dead-code forensic timelines, the sp80 search inventory, the lf52 replay transcripts, and the audit flag taxonomy are provided in the repository as tables and write-ups. The raw append-only ledgers they were derived from belong to the companion trace corpus, which is prepared but not yet published (\S\ref{sec:repro}); until it is, the appendices can be read but not independently recomputed from source data.
 
 % Entries in references.bib not yet cited inline in the draft (kept in the bibliography for the
 % camera-ready pass): Chollet's On the Measure of Intelligence; the OpenAI two-settings blog post

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate fig2_arch.pdf — Kepler system architecture diagram.
+"""Regenerate fig2_arch.pdf, the Kepler system architecture diagram.
 
 The original fig2 had overlapping boxes/text; this lays every element out on an
 explicit grid so nothing can collide.

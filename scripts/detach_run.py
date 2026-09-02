@@ -6,8 +6,8 @@ supervisor reaps its process group on exit and takes the run with it, mid-game.
 macOS has no setsid(1), so this does the classic double-fork: the run ends up in
 its own session, owned by init, and survives whatever happens to the launcher.
 
-Nothing is lost when a run is killed anyway — no result.json is written, and the
-workspace keeps the world model, notes and append-only ledger — but a run that
+Nothing is lost when a run is killed anyway: no result.json is written, and the
+workspace keeps the world model, notes and append-only ledger. But a run that
 cannot survive its own launcher can never finish, either.
 
 Usage:

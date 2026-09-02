@@ -37,7 +37,7 @@ from commit import (  # noqa: E402
 )
 
 
-# v5: NOTHING refuses while learning — the hard cap became advisory after a
+# v5: NOTHING refuses while learning; the hard cap became advisory after a
 # >3,000-action level produced a legitimate 100 (lf52), and the real cost cap
 # moved to run_game's ledger-derived run budget. This test now simulates the
 # WARNING tier: it must stay silent on efficient wins and still FLAG the
@@ -86,7 +86,7 @@ def main() -> int:
     rows = []
     ledgers = sorted(glob.glob(str(ROOT / "runs*/*/*/events.jsonl")))
     if not ledgers:
-        print("VACUOUS: no run ledgers present — the grind-guard regression replays "
+        print("VACUOUS: no run ledgers present; the grind-guard regression replays "
               "local run data that is not tracked in git. Refusing to report success "
               "on nothing.")
         return 2
@@ -116,7 +116,7 @@ def main() -> int:
         elif n > 400:
             print(f"{name:40} {n:7} {s:>7}  silent")
     if not rows:
-        print("VACUOUS: no recorded timelines found under runs*/ — this regression\n"
+        print("VACUOUS: no recorded timelines found under runs*/; this regression\n"
               "checked NOTHING. Fetch the trace dataset first (see README > Traces).")
         return 2
     print(f"\nfires on {len(fired)} run(s), silent on {len(quiet)}")
@@ -126,12 +126,12 @@ def main() -> int:
     healthy = [r for r in rows if isinstance(r[2], (int, float)) and r[2] >= 100.0]
     flagged = [r for r in healthy if r[3]]
     # Advisory tier: a warning on a winning marathon (a level legitimately
-    # >3,000 actions) is correct behavior, not a regression — it costs no
+    # >3,000 actions) is correct behavior, not a regression; it costs no
     # refusal. Report them; fail only if MOST wins would be flagged, which
     # would mean the threshold is mis-tuned.
     if len(flagged) > max(2, len(healthy) // 10):
         ok = False
-        print(f"\nFAIL: advisory fires on {len(flagged)}/{len(healthy)} runs that scored 100 — threshold mis-tuned:")
+        print(f"\nFAIL: advisory fires on {len(flagged)}/{len(healthy)} runs that scored 100; threshold mis-tuned:")
         for r in flagged:
             print("   ", r[0])
     else:

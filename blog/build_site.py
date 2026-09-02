@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build blog/site/index.html — the Kepler release page.
+"""Build blog/site/index.html, the Kepler release page.
 
 Every figure is generated from the recorded runs or the numbers registered in
 RESULTS.md. The hero wall is real 64x64 environment observations lifted out of
@@ -78,7 +78,7 @@ def hero_wall(limit: int = 96) -> str:
 
     This sits under the hero because it is the one image nobody else could
     make: our actual evidence, not an illustration of it. The CSS shows the
-    tiles at 48/32/24/16 per row — every count divides 96, so there is never
+    tiles at 48/32/24/16 per row. Every count divides 96, so there is never
     a ragged last row.
     """
     ups_by_run: list[tuple[str, list]] = []
@@ -216,7 +216,7 @@ def plot_convergence(w=940) -> str:
          f'aria-label="Per-game release scores for both models: {full} of 50 cells '
          f'at 100.0, {miss} exceptions labeled">']
     s.append(f'<text x="{x0}" y="20" class="tick">Kepler release boards · frozen per model · '
-             f'score per game — solid = 100.0</text>')
+             f'score per game, solid = 100.0</text>')
     for (_, model, label), y in zip(FINAL_BOARDS, rows_y):
         comp = "100.00" if model == "opus" else "95.97"
         s.append(f'<text x="{x0-12}" y="{y+13:.1f}" class="lbl" '
@@ -256,7 +256,7 @@ def plot_cost(w=940, h=340) -> str:
         return y1 - (v - ylo) / (yhi - ylo) * (y1 - y0)
 
     s = [f'<svg viewBox="0 0 {w} {h}" class="plot" role="img" '
-         f'aria-label="Cost frontier: Kepler Opus at $1,568.50 and Tycho at '
+         f'aria-label="Cost frontier: Kepler Opus at $777.72 and Tycho at '
          f'$2,986 both scoring 100; Retrodict at $654 scoring 99.86; baseline1 '
          f'at $400 scoring 99; Kepler GPT at $1,312.14 scoring 95.97">']
     for gv in (90, 95, 100):
@@ -285,10 +285,10 @@ def plot_cost(w=940, h=340) -> str:
     s.append(f'<circle cx="{gx:.1f}" cy="{gy:.1f}" r="6" class="dot"/>')
     s.append(f'<text x="{gx-12:.1f}" y="{gy+24:.1f}" class="lbl dim" text-anchor="end">'
              f'Kepler GPT · $1,312.14 · 95.97</text>')
-    ox, oy = xp(1568.50), yp(100.0)
+    ox, oy = xp(777.72), yp(100.0)
     s.append(f'<circle cx="{ox:.1f}" cy="{oy:.1f}" r="7" class="dot"/>')
     s.append(f'<text x="{ox-12:.1f}" y="{oy-13:.1f}" class="lbl" text-anchor="end">'
-             f'Kepler Opus · $1,568.50 · 100.00</text>')
+             f'Kepler Opus · $777.72 · 100.00</text>')
 
     tx, ty = xp(2986), yp(100.0)
     s.append(f'<circle cx="{tx:.1f}" cy="{ty:.1f}" r="6" class="dot other"/>')
@@ -297,7 +297,7 @@ def plot_cost(w=940, h=340) -> str:
     s.append(f'<line x1="{ox:.1f}" y1="{oy+40:.1f}" x2="{tx:.1f}" y2="{ty+40:.1f}" '
              f'class="grid strong"/>')
     s.append(f'<text x="{(ox+tx)/2:.1f}" y="{oy+58:.1f}" class="lbl flag" '
-             f'text-anchor="middle">Kepler 47.5% lower</text>')
+             f'text-anchor="middle">Kepler 74.0% lower</text>')
     s.append("</svg>")
     return "".join(s)
 
@@ -309,7 +309,7 @@ def og_image() -> None:
 
     Links on X/HN/Slack render as bare grey text without one, which for a page
     whose job is to be shared is a measurable loss. Drawn with PIL so it ships
-    from the same build as every other figure — no design tool, no drift.
+    from the same build as every other figure: no design tool, no drift.
     """
     from PIL import ImageDraw
 
@@ -343,7 +343,7 @@ def og_image() -> None:
         d.rectangle([bar_x, y, bar_x + bar_w * (v - 90) / 10, y + 28], fill=color)
         d.text((bar_x + bar_w * (v - 90) / 10 + 14, y), f"{v:.2f}",
                font=font(24, bold=True), fill=ink)
-    d.text((70, 570), "one frozen config · 7,292 scored actions · $1,568.50 list-equivalent",
+    d.text((70, 570), "one frozen config · 100.00 exact · $777.72 list-equivalent",
            font=font(22), fill=muted)
     OUT.mkdir(parents=True, exist_ok=True)
     img.save(OUT / "og.png", optimize=True)
