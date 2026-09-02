@@ -9,7 +9,8 @@ Started 2026-08-07; appended through launch from `runs/*/*/result.json`.
 Self-reported on the 25 public ARC-AGI-3 games, scored with the official local
 RHAE implementation from the `arc-agi` toolkit.
 
-> **Release identity.** This project has one public release, **Kepler 1.0.0**.
+> **Release identity.** This project has one public release, **Kepler 1.0**,
+> tagged `v1.0.0`.
 > The names below describe experimental stages, not software releases. Legacy
 > `runs-v*` strings remain only where they identify an exact internal directory
 > or freeze record. Canonical release facts live in [`release.json`](release.json).

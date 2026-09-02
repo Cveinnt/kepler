@@ -5,8 +5,9 @@ the environment, writes an executable theory, tests that theory against the
 entire recorded history, and certifies an action program. A mechanical executor
 then plays the scored attempt without a model in the loop.
 
-This document describes **Kepler 1.0.0**. Earlier experiments are named stages
-in [`RESULTS.md`](RESULTS.md), not separate public software releases.
+This document describes **Kepler 1.0**. The release tag is `v1.0.0`. Earlier
+experiments are named stages in [`RESULTS.md`](RESULTS.md), not separate public
+software releases.
 
 ## Release contract
 
