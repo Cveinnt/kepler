@@ -49,7 +49,7 @@ jobs:
         run: python3 tests/test_grind_guard.py
 
       - name: Byte-compile the harness
-        run: python3 -m compileall -q harness scripts
+        run: python3 -m compileall -q harness scripts tests
 
       # The site build reads real run data (runs/), which is gitignored and shipped
       # as a separate dataset, so this step can only run where that data exists.
