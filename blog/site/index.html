@@ -383,7 +383,7 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
       <tbody>
         <tr><td><b>100.00</b><span>25/25 games exact on official replay</span></td>
             <td><b>48/50</b><span>game×model cells at 100 on the final boards (GPT: 95.97)</span></td>
-            <td><b>7,292</b><span>actions in scored levels; 8,256 across the retained board runs</span></td></tr>
+            <td><b>7,202</b><span>actions on ARC&rsquo;s replay card; 7,292 in the original local scored-level results</span></td></tr>
         <tr><td><b>$777.72</b><span>current API list-equivalent, 74.0% below Retrodict&rsquo;s $2,986 estimate for Tycho</span></td>
             <td><b>13,688+</b><span>observed non-reset campaign actions; exact total pending ledger repair</span></td>
             <td><b>2</b><span>integrity failures caught, claims voided, evidence retained</span></td></tr>
@@ -400,7 +400,7 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
       <tbody>
         <tr><td class="g">Server-verified on two models</td><td class="e">Exact 100.00 with Opus 5 (card 91aa2f10) and exact 95.97 with GPT-5.6 Sol (card c9f087f3). On the Opus board, 181 of 183 completed levels used no more actions than the median-human baseline</td></tr>
         <tr><td class="g">One frozen configuration, no cherry-picking</td><td class="e">Harness frozen by commit hash before the board&rsquo;s results existed; one pass over 25 games; no score-conditioned reruns; the GPT board&rsquo;s same-configuration collapse retained</td></tr>
-        <tr><td class="g">Action accounting without a flattering denominator</td><td class="e">8,256 actions in retained board runs and 7,292 in scored levels. Full campaign logs contain at least 13,688 non-reset actions plus 22 unavailable prefix events, so 8,256 is not labeled learning-inclusive</td></tr>
+        <tr><td class="g">Action accounting without a flattering denominator</td><td class="e">8,256 actions in retained board runs, 7,292 in the original local scored-level results, and 7,202 on ARC&rsquo;s public replay card. Replay uses the final reset-to-end ledger segment, so these are different recorded denominators, not score disagreements</td></tr>
         <tr><td class="g">Lower comparable cost</td><td class="e">$777.72 at current Opus 5 API list rates, 74.0% below the $2,986 API-equivalent estimate Retrodict published for Tycho. Tycho, AVO, and VISTA publish no cost figures of their own</td></tr>
         <tr><td class="g">Convergence across final boards</td><td class="e">Certify/replay added 2.35 board points. Across the two release boards, 48 of 50 game&times;model cells reach 100. This is within-system convergence on the public set, not independent replication</td></tr>
         <tr><td class="g">Audit discipline</td><td class="e">Six adversarial checks run over the retained session record before release. Zero game IDs on agent-visible surfaces, enforced in CI. A source-reading win and a contaminated control were both voided. The audit cannot detect events the client failed to retain</td></tr>
@@ -418,7 +418,7 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
           <td class="e">Provider-record token accounting, separate board and observed-campaign action counts, and incidents that changed published claims</td></tr>
         <tr><td class="g"><a href="https://vista-research.github.io/">VISTA</a></td>
           <td class="e">A clean vision-first thesis at 100.00</td>
-          <td class="e">A scoped within-system observation intervention, explicit resource denominators, and disclosed integrity incidents. VISTA&rsquo;s 7,542 game actions and our 7,292 scored-attempt actions are not the same measurement, so we do not rank them</td></tr>
+          <td class="e">A scoped within-system observation intervention, explicit resource denominators, and disclosed integrity incidents. VISTA&rsquo;s 7,542 game actions, our 7,292 local scored-level actions, and ARC&rsquo;s 7,202 replay-card total are not the same measurement, so we do not rank them</td></tr>
         <tr><td class="g"><a href="https://github.com/NIMI-research/Tycho">Tycho</a></td>
           <td class="e">The first published perfect score and strongest academic world-model treatment</td>
           <td class="e">A bill 74.0% below the $2,986 API-equivalent estimate Retrodict published for Tycho, plus stricter run-selection and integrity records</td></tr>
@@ -459,7 +459,8 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
           <td class="s">100.00<span class="sub">one frozen configuration</span></td>
           <td class="c"><a class="chip" href="https://arcprize.org/scorecards/91aa2f10-5dc3-4471-80e5-9e8895db5de1">91aa2f10</a></td>
           <td class="e">25/25 games exact on official replay; 8,256 actions across
-            the retained board runs; every result retained.</td>
+            the retained board runs; 7,292 in original local scored-level results;
+            7,202 on the public replay card.</td>
         </tr>
         <tr>
           <td class="g">GPT-5.6 Sol</td>
@@ -716,6 +717,13 @@ document.addEventListener("DOMContentLoaded", function () {
       undercounted it because it read incomplete CLI footer counters;
       retained provider session records show 2,429.1M raw tokens. We corrected the
       number everywhere rather than preserve a flattering comparison.</p>
+    <p>Action totals need the same care. The Opus run has 8,256 actions across
+      retained local runs, 7,292 in the original local scored-level results, and
+      7,202 on ARC&rsquo;s public replay card. The replay path selects the last
+      full-reset-to-end ledger segment and counts a new opening reset. Three runs
+      contain a later, shorter certified segment than the original result file.
+      Scores match exactly; the action totals answer different accounting
+      questions.</p>
   </div>
   <figure class="fig wide">
     <svg viewBox="0 0 940 340" class="plot" role="img" aria-label="Cost frontier: Kepler Opus at $777.72 and Tycho at $2,986 both scoring 100; Retrodict at $654 scoring 99.86; baseline1 at $400 scoring 99; Kepler GPT at $1,312.14 scoring 95.97"><line x1="64" y1="264.0" x2="910" y2="264.0" class="grid"/><text x="54" y="268.0" class="tick" text-anchor="end">90</text><line x1="64" y1="162.2" x2="910" y2="162.2" class="grid"/><text x="54" y="166.2" class="tick" text-anchor="end">95</text><line x1="64" y1="60.4" x2="910" y2="60.4" class="grid"/><text x="54" y="64.4" class="tick" text-anchor="end">100</text><line x1="163.1" y1="40" x2="163.1" y2="264" class="grid"/><text x="163.1" y="284" class="tick" text-anchor="middle">$400</text><line x1="330.3" y1="40" x2="330.3" y2="264" class="grid"/><text x="330.3" y="284" class="tick" text-anchor="middle">$650</text><line x1="478.6" y1="40" x2="478.6" y2="264" class="grid"/><text x="478.6" y="284" class="tick" text-anchor="middle">$1k</text><line x1="640.4" y1="40" x2="640.4" y2="264" class="grid"/><text x="640.4" y="284" class="tick" text-anchor="middle">$1.6k</text><line x1="856.9" y1="40" x2="856.9" y2="264" class="grid"/><text x="856.9" y="284" class="tick" text-anchor="middle">$3k</text><text x="487" y="328" class="tick" text-anchor="middle">reported or current API list-equivalent USD, log scale</text><circle cx="163.1" cy="80.7" r="6" class="dot other"/><text x="175.1" y="103.7" class="lbl dim">baseline1 · $400 · 99.0</text><circle cx="332.4" cy="63.2" r="6" class="dot other"/><text x="344.4" y="51.2" class="lbl">Retrodict · $654 · 99.86</text><circle cx="572.1" cy="142.4" r="6" class="dot"/><text x="560.1" y="166.4" class="lbl dim" text-anchor="end">Kepler GPT · $1,312.14 · 95.97</text><circle cx="392.0" cy="60.4" r="7" class="dot"/><text x="380.0" y="47.4" class="lbl" text-anchor="end">Kepler Opus · $777.72 · 100.00</text><circle cx="855.3" cy="60.4" r="6" class="dot other"/><text x="855.3" y="84.4" class="lbl dim" text-anchor="middle">Tycho · $2,986 · 100.00</text><line x1="392.0" y1="100.4" x2="855.3" y2="100.4" class="grid strong"/><text x="623.7" y="118.4" class="lbl flag" text-anchor="middle">Kepler 74.0% lower</text></svg>

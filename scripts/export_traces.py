@@ -92,11 +92,14 @@ comparison against one third-party estimate and not a ranking of the field.
 Retrodict's lower-scoring 99.86 costs less at $654. The GPT board is $1,312.14
 current API list-equivalent.
 
-The retained Opus board runs used 8,256 environment actions, with 7,292 in
-scored levels. Full campaign logs contain at least 13,688 non-reset actions and
-omit 22 prefix events, so 8,256 is not labeled learning-inclusive. None of these
-counts is ranked against other systems, whose action counts cover different
-stages and definitions.
+The retained Opus board runs used 8,256 environment actions, with 7,292 in the
+original local scored-level results and 7,202 on ARC's public replay card. The
+GPT equivalents are 8,400 and 8,220. Replay selects the last full-reset-to-end
+ledger segment and counts a new opening reset, so these are different recorded
+denominators rather than score disagreements. Full campaign logs contain at
+least 13,688 non-reset actions and omit 22 prefix events, so 8,256 is not
+labeled learning-inclusive. None of these counts is ranked against other
+systems, whose action counts cover different stages and definitions.
 
 **Public-set scores are not a measure of AGI progress.** The ARC-AGI-3
 technical report (§4.3.1) says so explicitly and ships a human-replay harness

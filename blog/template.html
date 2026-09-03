@@ -383,7 +383,7 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
       <tbody>
         <tr><td><b>100.00</b><span>25/25 games exact on official replay</span></td>
             <td><b>48/50</b><span>game×model cells at 100 on the final boards (GPT: 95.97)</span></td>
-            <td><b>7,292</b><span>actions in scored levels; 8,256 across the retained board runs</span></td></tr>
+            <td><b>7,202</b><span>actions on ARC&rsquo;s replay card; 7,292 in the original local scored-level results</span></td></tr>
         <tr><td><b>$777.72</b><span>current API list-equivalent, 74.0% below Retrodict&rsquo;s $2,986 estimate for Tycho</span></td>
             <td><b>13,688+</b><span>observed non-reset campaign actions; exact total pending ledger repair</span></td>
             <td><b>2</b><span>integrity failures caught, claims voided, evidence retained</span></td></tr>
@@ -400,7 +400,7 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
       <tbody>
         <tr><td class="g">Server-verified on two models</td><td class="e">Exact 100.00 with Opus 5 (card 91aa2f10) and exact 95.97 with GPT-5.6 Sol (card c9f087f3). On the Opus board, 181 of 183 completed levels used no more actions than the median-human baseline</td></tr>
         <tr><td class="g">One frozen configuration, no cherry-picking</td><td class="e">Harness frozen by commit hash before the board&rsquo;s results existed; one pass over 25 games; no score-conditioned reruns; the GPT board&rsquo;s same-configuration collapse retained</td></tr>
-        <tr><td class="g">Action accounting without a flattering denominator</td><td class="e">8,256 actions in retained board runs and 7,292 in scored levels. Full campaign logs contain at least 13,688 non-reset actions plus 22 unavailable prefix events, so 8,256 is not labeled learning-inclusive</td></tr>
+        <tr><td class="g">Action accounting without a flattering denominator</td><td class="e">8,256 actions in retained board runs, 7,292 in the original local scored-level results, and 7,202 on ARC&rsquo;s public replay card. Replay uses the final reset-to-end ledger segment, so these are different recorded denominators, not score disagreements</td></tr>
         <tr><td class="g">Lower comparable cost</td><td class="e">$777.72 at current Opus 5 API list rates, 74.0% below the $2,986 API-equivalent estimate Retrodict published for Tycho. Tycho, AVO, and VISTA publish no cost figures of their own</td></tr>
         <tr><td class="g">Convergence across final boards</td><td class="e">Certify/replay added 2.35 board points. Across the two release boards, 48 of 50 game&times;model cells reach 100. This is within-system convergence on the public set, not independent replication</td></tr>
         <tr><td class="g">Audit discipline</td><td class="e">Six adversarial checks run over the retained session record before release. Zero game IDs on agent-visible surfaces, enforced in CI. A source-reading win and a contaminated control were both voided. The audit cannot detect events the client failed to retain</td></tr>
@@ -418,7 +418,7 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
           <td class="e">Provider-record token accounting, separate board and observed-campaign action counts, and incidents that changed published claims</td></tr>
         <tr><td class="g"><a href="https://vista-research.github.io/">VISTA</a></td>
           <td class="e">A clean vision-first thesis at 100.00</td>
-          <td class="e">A scoped within-system observation intervention, explicit resource denominators, and disclosed integrity incidents. VISTA&rsquo;s 7,542 game actions and our 7,292 scored-attempt actions are not the same measurement, so we do not rank them</td></tr>
+          <td class="e">A scoped within-system observation intervention, explicit resource denominators, and disclosed integrity incidents. VISTA&rsquo;s 7,542 game actions, our 7,292 local scored-level actions, and ARC&rsquo;s 7,202 replay-card total are not the same measurement, so we do not rank them</td></tr>
         <tr><td class="g"><a href="https://github.com/NIMI-research/Tycho">Tycho</a></td>
           <td class="e">The first published perfect score and strongest academic world-model treatment</td>
           <td class="e">A bill 74.0% below the $2,986 API-equivalent estimate Retrodict published for Tycho, plus stricter run-selection and integrity records</td></tr>
@@ -459,7 +459,8 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
           <td class="s">100.00<span class="sub">one frozen configuration</span></td>
           <td class="c"><a class="chip" href="https://arcprize.org/scorecards/91aa2f10-5dc3-4471-80e5-9e8895db5de1">91aa2f10</a></td>
           <td class="e">25/25 games exact on official replay; 8,256 actions across
-            the retained board runs; every result retained.</td>
+            the retained board runs; 7,292 in original local scored-level results;
+            7,202 on the public replay card.</td>
         </tr>
         <tr>
           <td class="g">GPT-5.6 Sol</td>
@@ -716,6 +717,13 @@ document.addEventListener("DOMContentLoaded", function () {
       undercounted it because it read incomplete CLI footer counters;
       retained provider session records show 2,429.1M raw tokens. We corrected the
       number everywhere rather than preserve a flattering comparison.</p>
+    <p>Action totals need the same care. The Opus run has 8,256 actions across
+      retained local runs, 7,292 in the original local scored-level results, and
+      7,202 on ARC&rsquo;s public replay card. The replay path selects the last
+      full-reset-to-end ledger segment and counts a new opening reset. Three runs
+      contain a later, shorter certified segment than the original result file.
+      Scores match exactly; the action totals answer different accounting
+      questions.</p>
   </div>
   <figure class="fig wide">
     <!--plot_cost-->

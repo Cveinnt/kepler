@@ -15,6 +15,7 @@
     "games_at_100": 25,
     "actions_retained_board_runs": 8256,
     "actions_scored_levels": 7292,
+    "actions_official_replay_card": 7202,
     "actions_campaign_observed_minimum": 13688,
     "actions_campaign_unlogged_prefix_events": 22,
     "actions_campaign_exact": null,
@@ -41,6 +42,7 @@
     "games_at_100": 23,
     "actions_retained_board_runs": 35896,
     "actions_scored_levels": 8400,
+    "actions_official_replay_card": 8220,
     "resource_accounting": {
       "uncached_input_tokens": 39262504,
       "cache_read_input_tokens": 2379659648,

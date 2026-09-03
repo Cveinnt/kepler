@@ -19,7 +19,7 @@ Sources:
 | System | Public result | Reported actions | Disclosed cost | Run-selection note |
 |---|---:|---:|---:|---|
 | NVIDIA AVO | 100.00 | 6,624 environment actions | not disclosed | general-purpose transfer evaluation |
-| Kepler | **100.00** | **8,256 retained-board-run actions; 7,292 in scored levels; at least 13,688 campaign actions observed** | **$777.72 current API list-equivalent** | one frozen configuration; one retained run per game |
+| Kepler | **100.00** | **8,256 retained-board-run actions; 7,292 in original local scored-level results; 7,202 on the public replay card; at least 13,688 campaign actions observed** | **$777.72 current API list-equivalent** | one frozen configuration; one retained run per game |
 | VISTA | 100.00 | 7,542 game actions | not disclosed | vision-first harness |
 | Tycho | 100.00 | not reported in compared materials | none disclosed; Retrodict estimates $2,986 API-equivalent | multiple model/policy results |
 | Retrodict | 99.86 | 7,703 campaign actions | $654 | single public board with trace disclosure |
@@ -39,8 +39,9 @@ defensible position is the combination:
 
 - exact 100.00 across all 25 public games, plus a second server-exact board at
   95.97 on a different model;
-- 8,256 actions in retained board runs and 7,292 in scored levels, with at least
-  13,688 non-reset campaign actions reported separately;
+- 8,256 actions in retained board runs, 7,292 in original local scored-level
+  results, and 7,202 on the public replay card, with at least 13,688 non-reset
+  campaign actions reported separately;
 - $777.72 at current API list rates, 74.0% below Retrodict's $2,986
   API-equivalent estimate for Tycho;
 - one frozen configuration with no score-conditioned reruns;
@@ -56,7 +57,7 @@ defensible position is the combination:
 |---|---|
 | Score | Exact 100.00 on official replay |
 | Human-relative performance | 181/183 Opus levels at or above median-human action efficiency; two below, with capped gains elsewhere preserving the 100.00 composite |
-| Scored convergence | 7,292 actions in scored levels |
+| Scored convergence | 7,292 actions in original local scored-level results; 7,202 on the public replay card |
 | Campaign actions | At least 13,688 observed non-reset actions, plus 22 unavailable prefix events |
 | Perfect-score bill | $777.72 current API list-equivalent, 74.0% below Retrodict's $2,986 estimate for Tycho |
 | Selection | One frozen configuration, one run per game, failures retained |

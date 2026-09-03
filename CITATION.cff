@@ -17,8 +17,9 @@ abstract: >-
   100.00 RHAE on all 25 public ARC-AGI-3 games with one frozen Claude Opus 5
   configuration and no score-conditioned reruns. On that board, 181 of 183
   completed levels use no more actions than the median-human baseline. The
-  retained board runs use 8,256 environment actions, with 7,292 in scored
-  levels. Complete campaign action accounting is
+  retained board runs use 8,256 environment actions, with 7,292 in the original
+  local scored-level results and 7,202 on the public replay card. Complete
+  campaign action accounting is
   still pending. The provider record costs $777.72 at current API
   list-equivalent rates. The release includes complete
   provider-record resource accounting, score-lineage tools, an enforced

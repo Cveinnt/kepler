@@ -78,7 +78,14 @@ Sol rates the complete board is $1,312.14 list-equivalent. We corrected the
 claim rather than preserving a flattering denominator.
 
 The retained Opus board runs used 8,256 environment actions, with 7,292 in
-scored levels. That is not the complete campaign count. The local ledgers
+the original local scored-level results. ARC's public replay card reports 7,202
+actions. The GPT equivalents are 8,400 local scored-level actions and 8,220 on
+the public replay card. These are different recorded denominators, not score
+disagreements: replay uses the last full-reset-to-end ledger segment and counts
+a new opening reset. Three runs contain a later, shorter certified segment than
+the original result file. Both final server scores match exactly.
+
+None of those figures is the complete campaign count. The local ledgers
 contain at least 13,688 non-reset actions and omit 22 prefix events whose reset
 status cannot yet be recovered. We therefore do not call 8,256
 learning-inclusive or publish a first-time-human percentage. Published action
@@ -111,7 +118,7 @@ result. See
 |---|---|
 | Server-verified on two models | Claude Opus 5 at 100.00 and GPT-5.6 Sol at 95.97, both exact on ARC Prize's official replay. On the Opus board, 181 of 183 completed levels used no more actions than the median-human baseline; two used more, while capped gains elsewhere preserved the 100.00 composite. |
 | One frozen configuration, no cherry-picking | One model, one commit-frozen harness registered before results existed, one pass over 25 games, no score-conditioned reruns. The GPT board keeps its same-configuration collapse. |
-| Action accounting without a flattering denominator | 8,256 actions in the retained board runs and 7,292 in scored levels. Full campaign logs contain at least 13,688 non-reset actions plus 22 unavailable prefix events, so we do not call 8,256 learning-inclusive or compare it with another system's campaign total. |
+| Action accounting without a flattering denominator | 8,256 actions in the retained board runs, 7,292 in the original local scored-level results, and 7,202 on ARC's public replay card. Full campaign logs contain at least 13,688 non-reset actions plus 22 unavailable prefix events, so we do not call 8,256 learning-inclusive or compare it with another system's campaign total. |
 | Lower comparable cost | $777.72 at current Opus 5 API list rates, 74.0% below Retrodict's $2,986 API-equivalent estimate for Tycho. Tycho publishes no cost figure of its own; AVO and VISTA disclose none. |
 | Convergence across final boards | Certify/replay added 2.35 board points. Across the two release boards, 48 of 50 game-model cells reach 100. This is within-system convergence on the public set, not independent replication. |
 | Audit discipline | Six adversarial checks run over the retained session record before release. A source-reading win and a contaminated control were voided, and a dead planner exposed a separate tool-integrity blind spot. The audit is evidence-bounded: it cannot detect events the client did not retain. |

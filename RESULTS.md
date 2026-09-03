@@ -15,10 +15,16 @@ RHAE implementation from the `arc-agi` toolkit.
 > `runs-v*` strings remain only where they identify an exact internal directory
 > or freeze record. Canonical release facts live in [`release.json`](release.json).
 
-| Kepler 1.0 board | score | exact replay | retained-board-run actions | scored-level actions | provider-record tokens | current API list-equivalent |
-|---|---:|---|---:|---:|---:|---:|
-| Claude Opus 5 | **100.00** | [91aa2f10](https://arcprize.org/scorecards/91aa2f10-5dc3-4471-80e5-9e8895db5de1) | 8,256 | 7,292 | 858.0M, 97.37% cache reads | **$777.72** |
-| GPT-5.6 Sol (max) | **95.97** | [c9f087f3](https://arcprize.org/scorecards/c9f087f3-b9de-452d-9520-d4d0597b0685) | 35,896 | 8,400 | 2,429.1M, 98.0% cached input | $1,312.14 |
+| Kepler 1.0 board | score | exact replay | retained-board-run actions | local scored-level actions | public replay-card actions | provider-record tokens | current API list-equivalent |
+|---|---:|---|---:|---:|---:|---:|---:|
+| Claude Opus 5 | **100.00** | [91aa2f10](https://arcprize.org/scorecards/91aa2f10-5dc3-4471-80e5-9e8895db5de1) | 8,256 | 7,292 | 7,202 | 858.0M, 97.37% cache reads | **$777.72** |
+| GPT-5.6 Sol (max) | **95.97** | [c9f087f3](https://arcprize.org/scorecards/c9f087f3-b9de-452d-9520-d4d0597b0685) | 35,896 | 8,400 | 8,220 | 2,429.1M, 98.0% cached input | $1,312.14 |
+
+The replay-card totals use the last full-reset-to-end ledger segment, omit its
+recorded opening reset, and count a new server-side opening reset. Three local
+run ledgers contain a later, shorter certified segment than the original result
+file. This explains the action-count difference; both final server scores match
+the local scores exactly.
 
 The [public companion dataset](https://huggingface.co/datasets/cveinnt/kepler-arc-agi-3-traces)
 contains the two final 25-game boards: 50 run records, 58,098 environment
@@ -569,8 +575,9 @@ resumable abort, driven to completion by the local supervisor); one
 16-hour orphaned agent search from a completed lane was killed and is noted
 here. The transport gate did its job: the two games whose off-grid clicks sank
 the earlier replay (bp35, lf52) replayed exactly this time. The retained board
-runs used 8,256 environment actions, with 7,292 in scored levels. Under official
-The board completed 183 levels; 181 used no more actions than the median-human
+runs used 8,256 environment actions, with 7,292 in the original local
+scored-level results and 7,202 on the public replay card. The board completed
+183 levels; 181 used no more actions than the median-human
 baseline and two used more. Capped gains elsewhere preserved the 100.00
 composite, so exact 100.00 is not a per-level efficiency guarantee. These are
 not full-campaign actions: local
