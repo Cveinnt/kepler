@@ -402,7 +402,7 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
         <tr><td class="g">One frozen configuration, no cherry-picking</td><td class="e">Harness frozen by commit hash before the board&rsquo;s results existed; one pass over 25 games; no score-conditioned reruns; the GPT board&rsquo;s same-configuration collapse retained</td></tr>
         <tr><td class="g">Action accounting without a flattering denominator</td><td class="e">8,256 actions in retained board runs, 7,292 in the original local scored-level results, and 7,202 on ARC&rsquo;s public replay card. Replay uses the final reset-to-end ledger segment, so these are different recorded denominators, not score disagreements</td></tr>
         <tr><td class="g">Lower comparable cost</td><td class="e">$777.72 at current Opus 5 API list rates, 74.0% below the $2,986 API-equivalent estimate Retrodict published for Tycho. Tycho, AVO, and VISTA publish no cost figures of their own</td></tr>
-        <tr><td class="g">Convergence across final boards</td><td class="e">Certify/replay added 2.35 board points. Across the two release boards, 48 of 50 game&times;model cells reach 100. This is within-system convergence on the public set, not independent replication</td></tr>
+        <tr><td class="g">Convergence across final boards</td><td class="e">The certify/replay stage measured 2.35 board points above its predecessor on the same model and games. Adjacent changes were not held constant, so this is a descriptive stage delta, not causal replay lift. Across the two release boards, 48 of 50 game&times;model cells reach 100. This is within-system convergence on the public set, not independent replication</td></tr>
         <tr><td class="g">Audit discipline</td><td class="e">Six adversarial checks run over the retained session record before release. Zero game IDs on agent-visible surfaces, enforced in CI. A source-reading win and a contaminated control were both voided. The audit cannot detect events the client failed to retain</td></tr>
         <tr><td class="g">Reward hacking, disclosed</td><td class="e">An agent read 2,172 lines of game source inside its workspace and returned a natural-looking 100.00. That run was voided and quarantined with its evidence, and it is not part of this release board</td></tr>
         <tr><td class="g">Human-like interaction design</td><td class="e">Observe, hypothesize, run a discriminating experiment, revise on the first counterexample, then act. Every belief is executable code; every committed action carries a checked prediction</td></tr>
@@ -591,8 +591,9 @@ document.addEventListener("DOMContentLoaded", function () {
     <ul>
       <li><strong>Certify, then replay.</strong> The agent&rsquo;s job ends at certifying
         an executable solution; a 176-line fail-closed replayer plays the scored attempt
-        with no model in the loop. Found by code-diffing the published 99-class systems,
-        then ablated: <strong>+2.35 points</strong>, same model, same games.</li>
+        with no model in the loop. The next frozen stage measured
+        <strong>+2.35 points</strong> on the same model and games. Adjacent changes were
+        not held constant, so this is a stage delta rather than causal replay lift.</li>
       <li><strong>A prediction on every action.</strong> Every committed action carries a
         falsifiable claim about the next frame; the first miss voids the plan. The
         reaction is immediate and mechanical, so one wrong belief cannot silently
