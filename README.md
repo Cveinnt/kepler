@@ -195,5 +195,7 @@ credited in [`NOTICE`](NOTICE). [VISTA](https://vista-research.github.io/)
 motivated the observation-channel intervention.
 
 These are public-set harness results, not evidence that ARC-AGI-3 or AGI is
-solved. The semi-private and private sets remain untested. Cite via
+solved. The semi-private and private sets remain untested. We cannot inspect
+provider training corpora, so we do not claim the models had no prior exposure
+to the public games. Cite via
 [`CITATION.cff`](CITATION.cff). MIT license.
