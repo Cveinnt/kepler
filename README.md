@@ -14,6 +14,11 @@ API-equivalent estimate for Tycho; Tycho did not publish a bill.
 | Claude Opus 5 | **100.00** | [Server-verified exact](https://arcprize.org/scorecards/91aa2f10-5dc3-4471-80e5-9e8895db5de1) | 8,256 retained-board-run actions; 858.0M tokens; $777.72 current API list-equivalent |
 | GPT-5.6 Sol (max) | **95.97** | [Server-verified exact](https://arcprize.org/scorecards/c9f087f3-b9de-452d-9520-d4d0597b0685) | 35,896 actions; 2,429.1M tokens; $1,312.14 current API list-equivalent |
 
+**Start here:** [Project page](https://kepler-harness.vercel.app/) ·
+[Paper](docs/paper/latex/main.pdf) · [Reproduce the result](#verify-it) ·
+[Trace dataset](https://huggingface.co/datasets/cveinnt/kepler-arc-agi-3-traces) ·
+[Integrity record](INTEGRITY.md)
+
 This repository has one public release identity: **Kepler 1.0**. Earlier
 experimental configurations remain in [`RESULTS.md`](RESULTS.md) as ablation
 evidence, not as competing product versions. Canonical release facts live in

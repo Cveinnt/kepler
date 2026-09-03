@@ -21,7 +21,7 @@ own words for its scorecard: a *"verified re-execution of the recorded runs, not
 a new attempt."* GKM states plainly that **"at scoring time no model runs"** -
 a frozen `final_path` is sent to the API. arc-skill's scorecard *"was produced
 by replaying the recorded runs."* The Kepler release does the same: an agent certifies
-per-level programs and a 176-line executor replays them.
+per-level programs and a fail-closed executor replays them.
 
 RHAE scores the final attempt, not superseded attempts. So the rational entry
 can spend thousands of actions learning and a baseline-minimal number scoring.

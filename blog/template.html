@@ -322,13 +322,14 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
 <nav aria-label="Site">
   <div class="bar">
     <a class="brand" href="#top">Kepler</a>
-    <a href="#number">The number</a>
-    <a href="#see">The finding</a>
-    <a href="#explore">Explore</a>
+    <a href="#number">Results</a>
+    <a href="#see">Finding</a>
+    <a href="#explore" class="hide-s">Explore</a>
     <a href="#method">Method</a>
     <a href="#cost" class="hide-s">Cost</a>
     <a href="#incidents">Incidents</a>
     <a href="https://huggingface.co/datasets/cveinnt/kepler-arc-agi-3-traces">Traces</a>
+    <a href="https://github.com/Cveinnt/kepler/blob/main/docs/paper/latex/main.pdf">Paper</a>
     <a href="https://github.com/Cveinnt/kepler">Code</a>
   </div>
 </nav>
@@ -384,7 +385,7 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
       of the game as an executable <code>world_model.py</code>, certifies that theory
       against the entire recorded history, plans inside the certified model, and commits
       actions through a single guarded channel that checks every prediction. In the release configuration, the
-      scored attempt itself is played by a 176-line mechanical replayer executing the
+      scored attempt itself is played by a compact mechanical replayer executing the
       agent&rsquo;s certified per-level programs, the agent&rsquo;s job ends at
       certification. This is a human scientific loop made executable: observe, form a
       falsifiable hypothesis, run a discriminating experiment, revise on the first
@@ -628,7 +629,7 @@ document.addEventListener("DOMContentLoaded", function () {
       system, but makes every step executable: observe, hypothesize, test, revise, plan.</p>
     <ul>
       <li><strong>Certify, then replay.</strong> The agent&rsquo;s job ends at certifying
-        an executable solution; a 176-line fail-closed replayer plays the scored attempt
+        an executable solution; a fail-closed replayer plays the scored attempt
         with no model in the loop. The next frozen stage measured
         <strong>+2.35 points</strong> on the same model and games. Adjacent changes were
         not held constant, so this is a stage delta rather than causal replay lift.</li>
@@ -693,7 +694,7 @@ document.addEventListener("DOMContentLoaded", function () {
       <!-- cleanrun path -->
       <rect x="422" y="216" width="170" height="62" class="box hot"/>
       <text x="440" y="242" font-weight="600">cleanrun.py</text>
-      <text x="440" y="261" class="t2">mechanical replay, 176 lines</text>
+      <text x="440" y="261" class="t2">mechanical replay, fail-closed</text>
       <path d="M338 200 C 380 226, 390 240, 414 244" class="arrow"/>
       <text x="230" y="252" class="t3">certified per-level</text>
       <text x="230" y="266" class="t3">programs</text>
@@ -726,7 +727,7 @@ document.addEventListener("DOMContentLoaded", function () {
           counterexample, a wrong belief becomes a cheap logged experiment.</dd></div>
       <div><dt><i>4</i>The scored attempt is mechanical</dt>
         <dd>The agent&rsquo;s job ends at certifying per-level action programs.
-          A 176-line replayer self-certifies the artifact and plays it against the real
+          The replayer self-certifies the artifact and plays it against the real
           game, halting at the first cell where reality disagrees. Repairs can only fail
           closed.</dd></div>
     </dl>

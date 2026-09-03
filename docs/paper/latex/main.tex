@@ -96,7 +96,7 @@ the evaluation result rather than qualifications to be deferred.
 
 \subsection{The loop: observe, model, certify, plan, commit}\label{sec:loop}
 
-The agent is a stock CLI coding agent in a workspace. It never plays the game directly. The directive (\texttt{harness/directive.md}, 218 lines; the entire ``prompt engineering'' of the system) frames the task as experimental physics: hypothesize the mechanism, encode it as an executable program, test it against recorded reality, and plan inside it.
+The agent is a stock CLI coding agent in a workspace. It never plays the game directly. The complete instruction file, \texttt{harness/directive.md}, frames the task as experimental physics: hypothesize the mechanism, encode it as an executable program, test it against recorded reality, and plan inside it.
 
 Persistent state is three files. \texttt{world\_model.py} is the agent's theory of the game in two layers; state grounding (named finders that turn pixels into objects) and mechanism (\texttt{simulate(grid, action)} written over those objects, not raw pixels). \texttt{notes.md} is a lab notebook with an epistemic discipline: every claim tagged \textbf{checked} (verified against the log) or \textbf{assumed}, and no multi-step plan built on assumed points. \texttt{events.jsonl} is the append-only timeline of every real transition ever taken; ground truth the agent can read but not edit.
 
@@ -121,15 +121,15 @@ Five tools close the loop:
 
 \subsection{The guarded channel}\label{sec:channel}
 
-\texttt{commit.py} (508 lines) enforces prediction discipline mechanically: every committed action carries a prediction from the agent's own \texttt{simulate}; the action executes, and the first misprediction \textbf{voids the remainder of the plan} and returns the counterexample. This converts a wrong belief into a cheap, logged experiment instead of an expensive pile of wasted actions; and it makes every committed plan a falsifiable statement of the model's current accuracy. Predictions may be partial (\texttt{None} for unclaimed cells; a HUD strip, an animation region), but abstaining everywhere is rejected as vacuous. Three invariants hold the system up: reality outranks the model, history is append-only, and nothing reaches the game except through the predict-checked channel.
+\texttt{commit.py} enforces prediction discipline mechanically: every committed action carries a prediction from the agent's own \texttt{simulate}; the action executes, and the first misprediction \textbf{voids the remainder of the plan} and returns the counterexample. This converts a wrong belief into a cheap, logged experiment instead of an expensive pile of wasted actions; and it makes every committed plan a falsifiable statement of the model's current accuracy. Predictions may be partial (\texttt{None} for unclaimed cells; a HUD strip, an animation region), but abstaining everywhere is rejected as vacuous. Three invariants hold the system up: reality outranks the model, history is append-only, and nothing reaches the game except through the predict-checked channel.
 
 \subsection{Certify, then mechanically execute}\label{sec:certifyreplay}
 
-RHAE scores the final full attempt; the segmentation our verifier and the official replay both use; so the winning shape of a game is learn (unscored: superseded by the attempt that follows), then speedrun (scored, minimal actions). Early experimental stages trusted the live agent to execute the speedrun it had certified. The release configuration removes the agent from the scored attempt entirely: the agent's job ends at writing \texttt{cleanrun.json}, the full per-level action programs. \texttt{harness/ws\_tools/cleanrun.py} (176 lines, copied into each workspace as \texttt{tools/cleanrun.py}) then self-certifies the artifact (per-level program lengths within 1.3$\times$ the human baseline; each program simulated to \texttt{level\_up}/\texttt{win} from \emph{recorded} level-start grids when the world model exposes the threaded-state API; absent that API, certification degrades to length checks alone, a weaker guarantee we state rather than hide) and replays it through the daemon, halting on the first cell where the real game falsifies the model. The runner drives up to three certify+execute repair cycles; repairs can only fail closed. The scored attempt is thus a mechanical replay of a certified program; the same architecture we found, by code diff, in the published 99-class harnesses (\S\ref{sec:related}).
+RHAE scores the final full attempt, which is also the segmentation used by our verifier and the official replay. The winning shape of a game is therefore learn (unscored because it is superseded by the attempt that follows), then speedrun (scored, minimal actions). Early experimental stages trusted the live agent to execute the speedrun it had certified. The release configuration removes the agent from the scored attempt entirely: the agent's job ends at writing \texttt{cleanrun.json}, the full per-level action programs. \texttt{harness/ws\_tools/cleanrun.py}, copied into each workspace as \texttt{tools/cleanrun.py}, then self-certifies the artifact (per-level program lengths within 1.3$\times$ the human baseline; each program simulated to \texttt{level\_up}/\texttt{win} from \emph{recorded} level-start grids when the world model exposes the threaded-state API; absent that API, certification degrades to length checks alone, a weaker guarantee we state rather than hide) and replays it through the daemon, halting on the first cell where the real game falsifies the model. The runner drives up to three certify+execute repair cycles; repairs can only fail closed. The scored attempt is thus a mechanical replay of a certified program; the same architecture we found, by code diff, in the published 99-class harnesses (\S\ref{sec:related}).
 
 \subsection{Game-agnosticism, enforced}\label{sec:agnostic}
 
-The directive, tools, and all agent-visible surfaces contain zero game-specific information; no game IDs, no per-game priors. Kepler enforces this as a CI gate: \texttt{scripts/check\_no\_game\_ids.py} scans every agent-visible file and fails the build on a hit. The whole methodology is 2,753 lines: the directive, the daemon, the runner, the workspace tools, and the frame renderer.
+The directive, tools, and all agent-visible surfaces contain zero game-specific information; no game IDs, no per-game priors. Kepler enforces this as a CI gate: \texttt{scripts/check\_no\_game\_ids.py} scans every agent-visible file and fails the build on a hit. The complete methodology is inspectable in the directive, daemon, runner, workspace tools, and frame renderer.
 
 \begin{figure}[ht]
   \centering
@@ -151,7 +151,7 @@ Each stage after the initial loop was frozen by commit hash registered in \textt
     \toprule
     stage & frozen at & mechanism added & composite & $\Delta$ \\
     \midrule
-    Initial loop & not reported & base loop + guarded channel & \textbf{97.78} &; \\
+    Initial loop & not reported & base loop + guarded channel & \textbf{97.78} & n/a \\
     Added discipline & \texttt{d37660e}+\texttt{6c3a38d} & \begin{tabular}[t]{@{}l@{}}escalation ladder, partial predictions,\\ automatic one-shot clean run\end{tabular} & \textbf{94.01} & $-3.77$ \\
     Guard corrections & \texttt{e61f9ad}+\texttt{d422ab3} & \begin{tabular}[t]{@{}l@{}}score-floor notices replace hard stops;\\ certified post-WIN restart gate\end{tabular} & \textbf{96.51} & $+2.50$ \\
     Certify/replay & \texttt{eac9af2} & \begin{tabular}[t]{@{}l@{}}mechanical scored attempts (\texttt{cleanrun.py}),\\ forensic fixes\end{tabular} & \textbf{98.86} & $+2.35$ \\
@@ -183,11 +183,11 @@ The guard-correction stage hid a bug that no score can reveal, only per-event fo
 
 \subsection{Boards}\label{sec:boards}
 
-Single configuration, frozen harness, all 25 public games, one run per game (the single disclosed exception is labeled). Validation runs are separate from the reported boards. Model identity is pinned by evidence, not by alias: the Claude boards' session transcripts resolve to \texttt{claude-opus-5} (46{,}749 records across the three boards), and the GPT boards ran \texttt{gpt-5.6-sol}. The table uses named experimental stages so that internal run-directory labels are not confused with public software releases:
+Each release board uses one configuration, a frozen harness, all 25 public games, and one run per game. Validation runs are separate from the reported boards. One earlier experimental board used a disclosed score-conditioned rerun and is labeled below; it is not a release board. Model identity is pinned by evidence, not by alias: the Claude boards' session transcripts resolve to \texttt{claude-opus-5} (46{,}749 records across the three boards), and the GPT boards ran \texttt{gpt-5.6-sol}. The table uses named experimental stages so that internal run-directory labels are not confused with public software releases:
 
 \begin{table}[ht]
   \centering
-  \caption{Single-configuration boards: frozen harness, all 25 public games, one run per game (the single disclosed exception labeled).}
+  \caption{Single-configuration boards on all 25 public games. Release boards use one run per game; the one score-conditioned rerun belongs to an earlier experimental board and is labeled.}
   \label{tab:boards}
   \small
   \begin{tabular}{llrrp{5.1cm}}

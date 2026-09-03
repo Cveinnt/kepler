@@ -56,6 +56,7 @@ citation = read("CITATION.cff")
 paper = read("docs/paper/latex/main.tex")
 project_page = read("blog/template.html")
 generated_page = read("blog/site/index.html")
+dataset_card_source = read("scripts/export_traces.py")
 
 assert release["name"] == "Kepler"
 assert release["version"] == VERSION
@@ -94,6 +95,13 @@ for path, text in {
 
 assert generated_page.count(f'<h1>{HOOK}</h1>') == 1
 assert f'<meta name="citation_title" content="{TITLE}">' in generated_page
+for url in (
+    "https://kepler-harness.vercel.app/",
+    "https://github.com/Cveinnt/kepler",
+    "https://github.com/Cveinnt/kepler/blob/main/docs/paper/latex/main.pdf",
+    "https://github.com/Cveinnt/kepler/blob/main/INTEGRITY.md",
+):
+    assert url in dataset_card_source, f"dataset card source: missing {url}"
 generated_contract = parse_page(generated_page)
 assert generated_contract.images, "blog/site/index.html: expected generated evidence images"
 for image in generated_contract.images:
@@ -111,10 +119,14 @@ launch_surfaces = {
     "docs/benchmark-observations.md": read("docs/benchmark-observations.md"),
     "blog/template.html": project_page,
     "blog/site/index.html": generated_page,
+    "scripts/export_traces.py": dataset_card_source,
 }
 for path, text in launch_surfaces.items():
     claim_text = re.sub(r'data:image/[^"\']+', "", text)
-    for forbidden in ("V7", "V8", "1/30", "1/35", "under review at", "Submitted to ICLR"):
+    for forbidden in (
+        "V7", "V8", "1/30", "1/35", "under review at", "Submitted to ICLR",
+        "176-line", "508 lines", "2,753 lines",
+    ):
         assert forbidden.lower() not in claim_text.lower(), f"{path}: contains {forbidden!r}"
     assert "\N{EM DASH}" not in claim_text, f"{path}: contains an em dash"
 

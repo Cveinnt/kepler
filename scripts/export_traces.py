@@ -65,11 +65,16 @@ configs:
 # Kepler 1.0 ARC-AGI-3 trace corpus
 
 Run artifacts from Kepler 1.0, an open-source agent harness for the 25 public
-[ARC-AGI-3](https://arcprize.org/arc-agi/3/) games. A CLI coding agent
-(codex / claude) that encodes its theory of each game as an executable
-`world_model.py`, certifies it against the full recorded interaction history,
-plans with BFS inside the certified model, and acts through a single guarded
-channel that voids the plan on the first misprediction.
+[ARC-AGI-3](https://arcprize.org/arc-agi/3/) games. A stock CLI coding agent
+encodes its theory of each game as an executable `world_model.py`, certifies it
+against the full recorded interaction history, plans inside the certified
+model, and acts through a guarded channel that voids the plan on the first
+misprediction.
+
+[Project page](https://kepler-harness.vercel.app/) ·
+[Code](https://github.com/Cveinnt/kepler) ·
+[Paper](https://github.com/Cveinnt/kepler/blob/main/docs/paper/latex/main.pdf) ·
+[Integrity record](https://github.com/Cveinnt/kepler/blob/main/INTEGRITY.md)
 
 The canonical release contains two single-configuration boards:
 
@@ -84,9 +89,9 @@ The canonical release contains two single-configuration boards:
 Token and cost accounting was recovered from provider-side session records
 retained locally on the execution host and deduplicated by provider message ID.
 Those provider records are not part of this dataset; only the captured CLI
-session logs above are. They put the Opus campaign at 858,041,926 raw tokens,
-97.37% cache reads, and $777.72 at current API list-equivalent rates. That is 74.0% below the $2,986 API-equivalent estimate
-Retrodict published for Tycho.
+session logs are. They put the Opus campaign at 858,041,926 raw tokens,
+97.37% cache reads, and $777.72 at current API list-equivalent rates. That is
+74.0% below the $2,986 API-equivalent estimate Retrodict published for Tycho.
 Tycho discloses no cost of its own, and neither do AVO or VISTA, so this is a
 comparison against one third-party estimate and not a ranking of the field.
 Retrodict's lower-scoring 99.86 costs less at $654. The GPT board is $1,312.14
