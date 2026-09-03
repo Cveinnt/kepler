@@ -13,11 +13,10 @@ license = { text = "MIT" }
 requires-python = ">=3.13"
 dependencies = [
     # Runs the 25 public ARC-AGI-3 games locally and provides the official
-    # RHAE scorecard implementation (arc-agi pulls in arcengine, flask,
-    # pillow, pydantic, python-dotenv as transitive deps).
-    "arc-agi>=0.9.9",
-    # harness/daemon.py talks HTTP to itself over localhost via urllib; the
-    # workspace tools and any future driver code use requests directly.
+    # RHAE scorecard implementation. Pin the exact toolkit and engine versions
+    # used for the release so CI cannot silently verify against a newer engine.
+    "arc-agi==0.9.9",
+    "arcengine==0.9.3",
 ]
 
 [project.urls]
