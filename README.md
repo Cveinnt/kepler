@@ -72,13 +72,19 @@ claims, preserved the evidence, changed the boundaries, and added adversarial
 checks over the raw session record. See [`INTEGRITY.md`](INTEGRITY.md) and
 [`incidents/`](incidents/).
 
-### A failure high scores could not reveal
+### The experimental subject was also the lab technician
 
 A bundled planner crashed on every invocation across five experimental boards.
 Agents silently wrote replacement searches and kept solving games, so score and
 ledger audits stayed green. That finding separates outcome integrity from tool
 integrity: autonomous self-repair can make broken infrastructure look healthy.
 Kepler now executes every workspace tool in a dedicated smoke tier.
+
+This is not an autonomous self-improving harness. The outer harness did not
+choose and retain its own revisions. The narrower result is more useful:
+capable agents improved their working artifacts and repaired around broken
+infrastructure, making the system more successful while making the intended
+experiment less informative.
 
 ### Resource accounting, recovered from provider records
 
