@@ -138,7 +138,7 @@ result. See
 | Wedge | Measured claim |
 |---|---|
 | Score and human-relative execution | Claude Opus 5 at 100.00 and GPT-5.6 Sol at 95.97, both exact on ARC Prize's official replay. On the Opus board, 181 of 183 completed levels used no more actions than the median-human baseline; two used more. This is final-attempt action efficiency, not discovery efficiency or human-like cognition. |
-| Frozen selection policy | One model, one commit-frozen harness registered before results existed, one retained run per game, no score-conditioned reruns. The GPT board keeps its same-configuration collapse. |
+| Frozen selection policy | One model, one commit-frozen harness registered before the 25-run release board, one retained run per game, no score-conditioned reruns. The GPT board keeps its same-configuration collapse. |
 | Action accounting without a flattering denominator | 8,256 actions in the retained board runs, 7,292 in the original local scored-level results, and 7,202 on ARC's public replay card. Full campaign logs contain at least 13,688 non-reset actions plus 22 unavailable prefix events, so we do not call 8,256 learning-inclusive or compare it with another system's campaign total. |
 | Lower comparable cost | $777.72 at current Opus 5 API list rates, 74.0% below Retrodict's $2,986 API-equivalent estimate for Tycho. Tycho publishes no cost figure of its own; AVO and VISTA disclose none. |
 | Final-board score convergence | Across the two frozen release configurations, 48 of 50 game-model cells reach 100. This is concentration at the public-set ceiling, not faster learning, causal harness lift, or independent replication. The certify/replay stage's +2.35-point change remains a descriptive stage delta because adjacent changes were not held constant. |
@@ -215,7 +215,8 @@ Kepler builds on the executable-world-model lineage established by
 credited in [`NOTICE`](NOTICE). [VISTA](https://vista-research.github.io/)
 motivated the observation-channel intervention.
 
-These are public-set harness results, not evidence that ARC-AGI-3 or AGI is
+These are public-set harness results, and the public games were both development
+material and evaluation surface. They are not evidence that ARC-AGI-3 or AGI is
 solved. The semi-private and private sets remain untested. We cannot inspect
 provider training corpora, so we do not claim the models had no prior exposure
 to the public games. Cite via
