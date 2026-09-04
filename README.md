@@ -28,24 +28,24 @@ evidence, not as competing product versions. Canonical release facts live in
 
 Five facts define the release:
 
-1. **A perfect score at a lower comparable cost.** The retained Opus runs price
+1. **Audits that changed the claims.** A source-reading 100 and a contaminated
+   control were voided. A dead planner is reported even though agents repaired
+   around it and kept scoring well.
+2. **Executable evidence.** Every committed action carries a prediction from an
+   executable world model. The first mismatch stops the plan and becomes a
+   counterexample. Score replay, trajectory integrity, tool health, selection,
+   and resource accounting remain separate checks.
+3. **A fixed selection policy.** One model, one commit-frozen harness, one
+   retained run per game, no score-conditioned reruns.
+4. **A perfect score at a lower comparable cost.** The retained Opus runs price
    to $777.72 at current API list-equivalent rates, 74.0% below Retrodict's
    $2,986 estimate for Tycho. This is a one-comparator claim, not a field-wide
    ranking.
-2. **A fixed selection policy.** One model, one commit-frozen harness, one
-   retained run per game, no score-conditioned reruns.
-3. **Human-relative execution efficiency.** On the Opus board, 181 of 183
-   completed levels used no more actions than the median-human baseline. This
-   measures the final completed attempt, not discovery or human-like cognition.
-4. **Score convergence across two models.** Under two frozen model
-   configurations, 48 of 50 game-model cells reached 100. This means
-   concentration at the public-set ceiling, not faster learning or independent
-   replication.
-5. **Audits that changed the claims.** A source-reading 100 and a contaminated
-   control were voided. A dead planner is reported even though agents repaired
-   around it and kept scoring well. Every committed action also carries a
-   prediction from an executable world model, so the first mismatch stops the
-   plan and becomes evidence.
+5. **A ceiling, not a generalization claim.** On the Opus board, 181 of 183
+   completed levels used no more actions than the median-human baseline. Across
+   both frozen boards, 48 of 50 game-model cells reached 100. These are
+   final-attempt and public-set results, not human-like cognition, faster
+   learning, or held-out evidence.
 
 ARC Prize re-executed every game in the Opus release board to 100.00. The
 [public final-board trace release](https://huggingface.co/datasets/cveinnt/kepler-arc-agi-3-traces)

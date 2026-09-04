@@ -342,12 +342,12 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
       all 25 public games, no score-conditioned reruns.</strong> Cost means $777.72 at current standard API rates
       against Retrodict&rsquo;s $2,986 estimate for Tycho, not a Tycho bill.</p>
     <ol class="wedges">
-      <li><b>Human-relative execution</b>181 of 183 completed Opus levels used no
-        more actions than the median-human baseline. This covers final attempts.</li>
-      <li><b>Cross-model score convergence</b>48 of 50 game&times;model cells reached
-        100 under two frozen configurations. This is public-set concentration, not faster learning.</li>
-      <li><b>Audits that changed the claims</b>A source-reading 100 and a contaminated
-        control were voided. A dead planner is disclosed despite green scores.</li>
+      <li><b>Audits that changed the claims</b>A source-reading 100 was voided, the
+        control group was withdrawn, and a dead planner was disclosed despite green scores.</li>
+      <li><b>Executable evidence</b>World models retrodict the full history and predict
+        before every action. Score, trajectory, tool, selection, and cost checks stay separate.</li>
+      <li><b>One setup, with receipts</b>One frozen configuration, no score-conditioned
+        reruns, exact server replay, and a public 50-run trace corpus.</li>
     </ol>
     <div class="cards-row">
       <a href="https://arcprize.org/scorecards/91aa2f10-5dc3-4471-80e5-9e8895db5de1"><b>100.00</b> · Opus 5 board, server-verified exact</a>
@@ -403,7 +403,11 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
       inspect provider training corpora, so this audit does not rule out model-level
       exposure to the public games.
       <a href="https://github.com/NIMI-research/Tycho">Tycho</a>, MIT&rsquo;s
-      VISTA, and NVIDIA&rsquo;s AVO also report 100.00, and
+      VISTA, and NVIDIA&rsquo;s AVO also report 100.00 on the public set. OpenAI&rsquo;s
+      <a href="https://arcprize.org/blog/astra">GPT-6 Astra</a> reports 99.95 on
+      the semi-private set through a Provider Adapter, which is stronger evidence of
+      generalization under a different protocol. We make no score or cost comparison
+      between the two. Meanwhile,
       <a href="https://github.com/ryanbbrown/Retrodict">Retrodict</a>&rsquo;s 99.86 set the
       disclosure standard we build on. What this release adds is a stricter experimental
       contract: exact official replay for both headline boards, an enforced run-selection
@@ -452,6 +456,9 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
     <div class="scroll"><table class="matrix">
       <thead><tr><th>System</th><th>What it leads</th><th>What Kepler adds</th></tr></thead>
       <tbody>
+        <tr><td class="g"><a href="https://arcprize.org/blog/astra">OpenAI GPT-6 Astra</a></td>
+          <td class="e">99.95 on the semi-private set through a Provider Adapter, with compact symbolic state and strong action efficiency</td>
+          <td class="e">Inspectable public artifacts, an external prediction-to-action contract, and incidents that changed our own claims. Sets, protocols, and costs differ, so we do not rank the systems against each other</td></tr>
         <tr><td class="g"><a href="https://developer.nvidia.com/blog/nvidia-avo-reaches-100-on-arc-agi-3-demonstrating-a-frontier-level-general-purpose-architecture-for-long-horizon-autonomous-agents/">NVIDIA AVO</a></td>
           <td class="e">100.00 in 6,624 environment actions and a broad transfer story</td>
           <td class="e">Provider-record token accounting, separate board and observed-campaign action counts, and incidents that changed published claims</td></tr>
