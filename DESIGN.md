@@ -19,8 +19,9 @@ software releases.
 - Public-set results only. No held-out or private-set claim.
 
 Canonical scores, cards, action counts, and token totals live in
-[`release.json`](release.json). The trace dataset is a required part of the
-release contract but is not public yet.
+[`release.json`](release.json). The
+[public trace dataset](https://huggingface.co/datasets/cveinnt/kepler-arc-agi-3-traces)
+is a required part of the release contract.
 
 ## Environment
 

@@ -430,8 +430,10 @@ the observation channel from text grids to rendered PNG frames (every frame,
 animation frames included, the text ledger provably drops them).
 
 - 19 text-mode sessions across 6 attempts inferred physics from settled grids +
-  animation-frame COUNTS, exhaustively proved L6 "unsolvable under known rules,"
-  and isolated an unexplained animation residual they could never decode.
+  animation-frame COUNTS. The learned model fit 4,655 of 4,670 recorded
+  transitions, and the agent searched roughly 410 million candidate
+  configurations before concluding L6 was "unsolvable under known rules." The
+  remaining animation residual could not be decoded from the text channel.
 - Visual session 20 read the frames and found the missing mechanic within one
   session: a blocked flight DEFLECTS around pieces and resumes course (the
   agent's notes: "the thing 19 sessions missed... water round a rock"), plus two
