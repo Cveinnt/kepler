@@ -86,6 +86,11 @@ The canonical release contains two single-configuration boards:
   non-perfect games retained. Scorecard:
   [c9f087f3](https://arcprize.org/scorecards/c9f087f3-b9de-452d-9520-d4d0597b0685).
 
+Across these two frozen release boards, 48 of 50 game-model cells reached 100.
+On the Opus board, 181 of 183 completed levels used no more actions than the
+corresponding median-human baseline. This is final-attempt action efficiency,
+not learning cost or evidence of human-like cognition.
+
 Token and cost accounting was recovered from provider-side session records
 retained locally on the execution host and deduplicated by provider message ID.
 Those provider records are not part of this dataset; only the captured CLI
