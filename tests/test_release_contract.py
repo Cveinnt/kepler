@@ -15,6 +15,10 @@ ROOT = Path(__file__).resolve().parents[1]
 VERSION = "1.0.0"
 TITLE = "Kepler: Auditable World Models for ARC-AGI-3"
 HOOK = "100% on ARC-AGI-3 at one-fourth the cost."
+PREVIEW_DESCRIPTION = (
+    "Open-source agent harness with one frozen configuration, exact server replay, "
+    "$777.72 list-equivalent cost, and audits that voided its own best-looking results."
+)
 
 
 def read(path: str) -> str:
@@ -80,6 +84,8 @@ assert f"\\title{{{TITLE}}}" in paper
 assert "\\author{Wensen Wu" in paper
 assert f'<h1>{HOOK}</h1>' in project_page
 assert f'<meta name="citation_title" content="{TITLE}">' in project_page
+assert len(PREVIEW_DESCRIPTION) <= 160
+assert project_page.count(f'content="{PREVIEW_DESCRIPTION}"') == 3
 
 for path, text in {
     "blog/template.html": project_page,
@@ -95,6 +101,7 @@ for path, text in {
 
 assert generated_page.count(f'<h1>{HOOK}</h1>') == 1
 assert f'<meta name="citation_title" content="{TITLE}">' in generated_page
+assert generated_page.count(f'content="{PREVIEW_DESCRIPTION}"') == 3
 for url in (
     "https://kepler-harness.vercel.app/",
     "https://github.com/Cveinnt/kepler",
