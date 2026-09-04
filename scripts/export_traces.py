@@ -73,7 +73,7 @@ misprediction.
 
 [Project page](https://kepler-harness.vercel.app/) ·
 [Code](https://github.com/Cveinnt/kepler) ·
-[Paper](https://github.com/Cveinnt/kepler/blob/main/docs/paper/latex/main.pdf) ·
+[Paper](https://github.com/Cveinnt/kepler/releases/download/v1.0.0/kepler-1.0-paper.pdf) ·
 [Integrity record](https://github.com/Cveinnt/kepler/blob/main/INTEGRITY.md)
 
 The canonical release contains two single-configuration boards:

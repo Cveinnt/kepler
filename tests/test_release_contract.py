@@ -98,7 +98,7 @@ assert f'<meta name="citation_title" content="{TITLE}">' in generated_page
 for url in (
     "https://kepler-harness.vercel.app/",
     "https://github.com/Cveinnt/kepler",
-    "https://github.com/Cveinnt/kepler/blob/main/docs/paper/latex/main.pdf",
+    "https://github.com/Cveinnt/kepler/releases/download/v1.0.0/kepler-1.0-paper.pdf",
     "https://github.com/Cveinnt/kepler/blob/main/INTEGRITY.md",
 ):
     assert url in dataset_card_source, f"dataset card source: missing {url}"
