@@ -138,13 +138,13 @@ The directive, tools, and all agent-visible surfaces contain zero game-specific 
   \label{fig:architecture}
 \end{figure}
 
-\section{Ablation by Named Experimental Stage}\label{sec:ladder}
+\section{Named Experimental Stages}\label{sec:ladder}
 
 Each stage after the initial loop was frozen by commit hash registered in \texttt{RESULTS.md} \emph{before} its board's results existed; each ran as a complete single-configuration board and is retained, including the stage that made things worse. These labels describe experiments, not public software releases. Claude Opus 5, all 25 public games:
 
 \begin{table}[ht]
   \centering
-  \caption{The ablation ladder: frozen experimental stages, mechanisms, and composites (Claude Opus 5, all 25 public games).}
+  \caption{Frozen experimental stages, mechanisms, and composites (Claude Opus 5, all 25 public games).}
   \label{tab:ladder}
   \resizebox{\linewidth}{!}{%
   \begin{tabular}{lllrr}
@@ -243,7 +243,7 @@ One historical divergence should be stated directly: the superseded visual-repla
 
 \subsection{Convergence}\label{sec:convergence}
 
-Across the two certify/replay boards; one frozen harness (\texttt{eac9af2}), two frontier models; \textbf{43 of 50 games score 100.0}. Under the two Kepler release boards, \textbf{48 of 50 cells score 100.0}, and the Opus board is a single-configuration, server-verified-exact \textbf{100.00}. We treat this as evidence of within-system convergence on the public set, not as independent replication or held-out generalization.
+Across the two certify/replay boards; one frozen harness (\texttt{eac9af2}), two frontier models; \textbf{43 of 50 games score 100.0}. Under the two Kepler release boards, \textbf{48 of 50 cells score 100.0}, and the Opus board is a single-configuration, server-verified-exact \textbf{100.00}. We call this final-board score convergence: concentration at the evaluator ceiling across two frozen model configurations, not faster learning, independent replication, or held-out generalization.
 
 \begin{figure}[ht]
   \centering
@@ -260,11 +260,11 @@ The fourth finding is a single-game within-system intervention. Setup: the one g
 
 The community leaderboard's submission rules make cost a first-class field. We therefore recover usage from retained local provider-session records rather than workspace CLI footers. Claude Code stores thinking, text, and tool-use content blocks from one response as separate transcript rows carrying the same provider message ID and cumulative usage object. We deduplicate by that ID before summing. The exact 100.00 Opus campaign contains \textbf{11,464 uncached input}, \textbf{835,488,978 cache-read input}, \textbf{13,574,918 one-hour cache-write input}, and \textbf{8,966,566 output} tokens: 858,041,926 raw tokens in total, 97.37\% of them cache reads. At current Opus 5 API rates of \$5/M uncached input, \$0.50/M cache reads, \$10/M one-hour cache writes, and \$25/M output~\citep{anthropicopus5pricing}, this is \textbf{\$777.72 list-equivalent}. Actual execution used Claude subscription quota; the dollar figure is a reproducible API-price comparison, not a billed charge.
 
-Among the 100.00 systems in our comparison, the only cost figure we found is not a reported bill: Retrodict published a \$2,986 API-equivalent estimate for Tycho. Kepler's bill is 74.0\% below that estimate, or roughly one quarter as large. AVO and VISTA publish no comparable bills in the reviewed materials, and Tycho publishes none of its own, so this is a comparison against a single third-party estimate rather than a ranking of the field. This is a deliberately narrow claim. Retrodict reports 99.86 at \$654 and baseline1 reports 99.0 at \$400, so Kepler is not the cheapest system at every score. Cost and run-selection methods also differ.
+Among the 100.00 systems in our comparison, the only cost figure we found is not a reported bill: Retrodict published a \$2,986 API-equivalent estimate for Tycho. Kepler's list-equivalent estimate is 74.0\% below that estimate, or roughly one quarter as large. AVO and VISTA publish no comparable bills in the reviewed materials, and Tycho publishes none of its own, so this is a comparison against a single third-party estimate rather than a ranking of the field. This is a deliberately narrow claim. Retrodict reports 99.86 at \$654 and baseline1 reports 99.0 at \$400, so Kepler is not the cheapest system at every score. Cost and run-selection methods also differ.
 
 The 95.97 GPT-5.6 board contains 39,262,504 uncached input, 2,379,659,648 cached input, and 10,161,281 output tokens, or 2,429,083,433 raw tokens total. At current GPT-5.6 Sol rates of \$4/M uncached input, \$0.40/M cached input, and \$20/M output~\citep{openaigpt56pricing}, this is \textbf{\$1,312.14 list-equivalent}. An earlier draft used incomplete workspace CLI footer counters. Provider-side records showed that path omitted most cached traffic and one long workspace; the attractive comparison it produced has been withdrawn.
 
-Actions expose a different frontier, and a denominator problem. The 100.00 Opus board reports \textbf{8,256 environment actions across the retained board runs} and \textbf{7,292 in the original local scored-level results}. The local campaign ledgers contain at least 13,688 non-reset actions and omit 22 prefix events whose reset status cannot yet be recovered. The GPT board similarly reports 35,896 retained-run actions and 8,400 in its original local scored-level results. ARC's public replay cards report 7,202 Opus actions and 8,220 GPT actions. These are different recorded denominators, not score disagreements: the replay path selects the last full-reset-to-end ledger segment, omits its recorded opening reset, and lets the server count a new opening reset. Three run ledgers contain a later, shorter certified segment than the original result file. The final server scores match the local scores exactly. We therefore call neither board total learning-inclusive, make no first-time-human percentage claim, and do not rank any count against other systems. AVO reports 6,624 environment actions, VISTA 7,542 game actions, and Retrodict 7,703 campaign actions; these count different things over different stages, and the published materials do not supply the detail needed to convert between them. Kepler therefore does not collapse score, tokens, actions, and dollars into one efficiency claim; it publishes each axis and states which comparisons are admissible.
+Actions expose a different frontier, and a denominator problem. The 100.00 Opus board reports \textbf{8,256 environment actions across the retained board runs} and \textbf{7,292 in the original local scored-level results}. On the completed Opus levels, \textbf{181 of 183 used no more actions than the corresponding median-human baseline}; two used more. This is final-attempt action efficiency, not evidence of human-like cognition or discovery efficiency. The local campaign ledgers contain at least 13,688 non-reset actions and omit 22 prefix events whose reset status cannot yet be recovered. The GPT board similarly reports 35,896 retained-run actions and 8,400 in its original local scored-level results. ARC's public replay cards report 7,202 Opus actions and 8,220 GPT actions. These are different recorded denominators, not score disagreements: the replay path selects the last full-reset-to-end ledger segment, omits its recorded opening reset, and lets the server count a new opening reset. Three run ledgers contain a later, shorter certified segment than the original result file. The final server scores match the local scores exactly. We therefore call neither board total learning-inclusive, make no first-time-human percentage claim, and do not rank any count against other systems. AVO reports 6,624 environment actions, VISTA 7,542 game actions, and Retrodict 7,703 campaign actions; these count different things over different stages, and the published materials do not supply the detail needed to convert between them. Kepler therefore does not collapse score, tokens, actions, and dollars into one efficiency claim; it publishes each axis and states which comparisons are admissible.
 
 \begin{table}[ht]
   \centering
@@ -374,16 +374,14 @@ Model identity is pinned by the session transcripts (\S\ref{sec:boards}). Beyond
 
 \textbf{Early ${\sim}$99\% reports.} The first ${\sim}$99\%-class numbers on this benchmark were self-reported from write-ups without released code, using a per-game best-of-2 fallback with score feedback, the selection rule Kamradt's critique targeted. Our initial loop, run \emph{with} that fallback for comparison only, matched those numbers within noise (98.30 / 95.51). We then abandoned the rule as score-conditioned selection. The \S\ref{sec:ladder} ladder reports the same initial loop without fallback selection (97.78). The executable-world-model idea itself is established in published, citable work, including Tycho~\citep{tycho} and Rodionov's baseline1 line~\citep{thinharness}. This project is an independent implementation.
 
-\textbf{GPT-6 Astra.} ARC Prize reports 62.71 on the semi-private set under its
-provider-neutral Standard interface and 99.95 with a Provider Adapter that
-preserves opaque reasoning state and compacts long interactions
-~\citep{arcprize2026astra}. Astra's trajectories construct compact symbolic
-world models without Kepler's external executable-model protocol. This is
-stronger generalization evidence than our public-set board and further rules
-out treating world-model construction or human-relative action efficiency as
-unique Kepler contributions. Our narrower contribution is an externally
-checkable contract joining predictions, actions, workspace state, selection,
-and replay, plus an audit record that changed our own claims.
+\textbf{GPT-6 Astra.} ARC Prize reports 62.71 under its provider-neutral
+Standard interface and 99.95 using a Provider Adapter on the semi-private
+set~\citep{arcprize2026astra}. Because Kepler reports public-set results under a
+different protocol, the scores and costs are not directly comparable. These
+results show that compact symbolic state and human-relative action efficiency
+are not unique to Kepler. Kepler instead evaluates an externally checkable
+contract linking predictions, actions, workspace state, selection, and replay,
+together with the failures exposed when that contract was applied.
 
 \textbf{Tycho} (NIMI-research; arXiv:2607.28287)~\citep{tycho} reports 100.00, the first published perfect score. Its paper-artifact release includes frozen configurations, CI, and an official scorecard per row, while publishing traces as SHA-256 hashes rather than inspectable data and providing no cost accounting. We adopted (and credit in \texttt{NOTICE}) its partial UNKNOWN-cell predictions, vacuous-coverage rejection, threaded hidden-state planning, consecutive-RESET guard, and 5$\times$-baseline level cutoff. Our discipline regression subsequently falsified treating the last item as an \emph{official-rule} limit (\S\ref{sec:disciplineautopsy}); adopted mechanisms still warrant independent testing.
 

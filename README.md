@@ -26,17 +26,31 @@ evidence, not as competing product versions. Canonical release facts live in
 
 ## What is different
 
-Three claims define the release:
+Five facts define the release:
 
-1. **The result was selected before the score.** One model, one commit-frozen
-   harness, one pass over 25 games, no score-conditioned reruns.
-2. **The result has an official receipt.** ARC Prize re-executed every game to
-   100.00. The [public final-board trace release](https://huggingface.co/datasets/cveinnt/kepler-arc-agi-3-traces)
-   includes human baselines and dependency-free scorers so both boards can be
-   recomputed from their action records.
-3. **The audit is allowed to win.** A source-reading 100 and a contaminated
+1. **A perfect score at a lower comparable cost.** The retained Opus runs price
+   to $777.72 at current API list-equivalent rates, 74.0% below Retrodict's
+   $2,986 estimate for Tycho. This is a one-comparator claim, not a field-wide
+   ranking.
+2. **A fixed selection policy.** One model, one commit-frozen harness, one
+   retained run per game, no score-conditioned reruns.
+3. **Human-relative execution efficiency.** On the Opus board, 181 of 183
+   completed levels used no more actions than the median-human baseline. This
+   measures the final completed attempt, not discovery or human-like cognition.
+4. **Score convergence across two models.** Under two frozen model
+   configurations, 48 of 50 game-model cells reached 100. This means
+   concentration at the public-set ceiling, not faster learning or independent
+   replication.
+5. **Audits that changed the claims.** A source-reading 100 and a contaminated
    control were voided. A dead planner is reported even though agents repaired
-   around it and kept scoring well.
+   around it and kept scoring well. Every committed action also carries a
+   prediction from an executable world model, so the first mismatch stops the
+   plan and becomes evidence.
+
+ARC Prize re-executed every game in the Opus release board to 100.00. The
+[public final-board trace release](https://huggingface.co/datasets/cveinnt/kepler-arc-agi-3-traces)
+includes human baselines and dependency-free scorers so both boards can be
+recomputed from their action records.
 
 [Inspect the full evidence matrix](#full-evidence-matrix) or
 [run the verification path](#verify-it).
@@ -123,14 +137,14 @@ result. See
 
 | Wedge | Measured claim |
 |---|---|
-| Server-verified on two models | Claude Opus 5 at 100.00 and GPT-5.6 Sol at 95.97, both exact on ARC Prize's official replay. On the Opus board, 181 of 183 completed levels used no more actions than the median-human baseline; two used more, while capped gains elsewhere preserved the 100.00 composite. |
-| One frozen configuration, no cherry-picking | One model, one commit-frozen harness registered before results existed, one pass over 25 games, no score-conditioned reruns. The GPT board keeps its same-configuration collapse. |
+| Score and human-relative execution | Claude Opus 5 at 100.00 and GPT-5.6 Sol at 95.97, both exact on ARC Prize's official replay. On the Opus board, 181 of 183 completed levels used no more actions than the median-human baseline; two used more. This is final-attempt action efficiency, not discovery efficiency or human-like cognition. |
+| Frozen selection policy | One model, one commit-frozen harness registered before results existed, one retained run per game, no score-conditioned reruns. The GPT board keeps its same-configuration collapse. |
 | Action accounting without a flattering denominator | 8,256 actions in the retained board runs, 7,292 in the original local scored-level results, and 7,202 on ARC's public replay card. Full campaign logs contain at least 13,688 non-reset actions plus 22 unavailable prefix events, so we do not call 8,256 learning-inclusive or compare it with another system's campaign total. |
 | Lower comparable cost | $777.72 at current Opus 5 API list rates, 74.0% below Retrodict's $2,986 API-equivalent estimate for Tycho. Tycho publishes no cost figure of its own; AVO and VISTA disclose none. |
-| Convergence across final boards | The certify/replay stage measured 2.35 board points above its predecessor on the same model and games. Adjacent changes were not held constant, so this is a descriptive stage delta, not causal replay lift. Across the two release boards, 48 of 50 game-model cells reach 100. This is within-system convergence on the public set, not independent replication. |
-| Audit discipline | Six adversarial checks run over the retained session record before release. A source-reading win and a contaminated control were voided, and a dead planner exposed a separate tool-integrity blind spot. The audit is evidence-bounded: it cannot detect events the client did not retain. |
+| Final-board score convergence | Across the two frozen release configurations, 48 of 50 game-model cells reach 100. This is concentration at the public-set ceiling, not faster learning, causal harness lift, or independent replication. The certify/replay stage's +2.35-point change remains a descriptive stage delta because adjacent changes were not held constant. |
+| Audit regression and incident record | A deterministic code-level suite detects 11 of 13 hand-built threat fixtures and flags none of five benign controls. Separately, a source-reading win and a contaminated control were voided, and a dead planner exposed a tool-integrity blind spot. The suite is not a field sensitivity estimate and cannot detect events the client did not retain. |
 | Reward hacking, disclosed | An agent read 2,172 lines of game source inside its workspace and returned a natural-looking 100.00. That run was voided and quarantined, and it is not part of the release board. |
-| Human-like interaction design | Observe, hypothesize, run a discriminating experiment, revise on the first counterexample, then act. Every belief is executable code, retrodicted against the full history, and every committed action carries a checked prediction. |
+| Human-style scientific loop | Observe, hypothesize, run a discriminating experiment, revise on the first counterexample, then act. Every belief is executable code, retrodicted against the full history, and every committed action carries a checked prediction. |
 | Saturation points at the evaluator | With 48 of 50 cells at 100, peak RHAE no longer separates systems. Our own hardest game turned on what the observation channel discarded, which suggests observation-channel and evaluator quality now carry the signal. |
 
 ## How it works

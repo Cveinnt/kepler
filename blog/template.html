@@ -342,10 +342,10 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
       all 25 public games, no score-conditioned reruns.</strong> Cost means $777.72 at current standard API rates
       against Retrodict&rsquo;s $2,986 estimate for Tycho, not a Tycho bill.</p>
     <ol class="wedges">
-      <li><b>Frozen before the score</b>One commit-locked harness, one run per game,
-        no per-game model selection. GPT&rsquo;s two non-perfect results stay in.</li>
-      <li><b>Server replay plus reproducible traces</b>ARC Prize re-executed all 25
-        games to 100. The trace package recomputes the board from action records.</li>
+      <li><b>Human-relative execution</b>181 of 183 completed Opus levels used no
+        more actions than the median-human baseline. This covers final attempts.</li>
+      <li><b>Cross-model score convergence</b>48 of 50 game&times;model cells reached
+        100 under two frozen configurations. This is public-set concentration, not faster learning.</li>
       <li><b>Audits that changed the claims</b>A source-reading 100 and a contaminated
         control were voided. A dead planner is disclosed despite green scores.</li>
     </ol>
@@ -437,14 +437,14 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
     <div class="scroll"><table class="matrix">
       <thead><tr><th>Wedge</th><th>Measured release evidence</th></tr></thead>
       <tbody>
-        <tr><td class="g">Server-verified on two models</td><td class="e">Exact 100.00 with Opus 5 (card 91aa2f10) and exact 95.97 with GPT-5.6 Sol (card c9f087f3). On the Opus board, 181 of 183 completed levels used no more actions than the median-human baseline</td></tr>
-        <tr><td class="g">One frozen configuration, no cherry-picking</td><td class="e">Harness frozen by commit hash before the board&rsquo;s results existed; one pass over 25 games; no score-conditioned reruns; the GPT board&rsquo;s same-configuration collapse retained</td></tr>
+        <tr><td class="g">Score and human-relative execution</td><td class="e">Exact 100.00 with Opus 5 (card 91aa2f10) and exact 95.97 with GPT-5.6 Sol (card c9f087f3). On the Opus board, 181 of 183 completed levels used no more actions than the median-human baseline. This is final-attempt action efficiency, not discovery efficiency or human-like cognition</td></tr>
+        <tr><td class="g">Frozen selection policy</td><td class="e">Harness frozen by commit hash before the board&rsquo;s results existed; one retained run per game; no score-conditioned reruns; the GPT board&rsquo;s same-configuration collapse retained</td></tr>
         <tr><td class="g">Action accounting without a flattering denominator</td><td class="e">8,256 actions in retained board runs, 7,292 in the original local scored-level results, and 7,202 on ARC&rsquo;s public replay card. Replay uses the final reset-to-end ledger segment, so these are different recorded denominators, not score disagreements</td></tr>
         <tr><td class="g">Lower comparable cost</td><td class="e">$777.72 at current Opus 5 API list rates, 74.0% below the $2,986 API-equivalent estimate Retrodict published for Tycho. Tycho, AVO, and VISTA publish no cost figures of their own</td></tr>
-        <tr><td class="g">Convergence across final boards</td><td class="e">The certify/replay stage measured 2.35 board points above its predecessor on the same model and games. Adjacent changes were not held constant, so this is a descriptive stage delta, not causal replay lift. Across the two release boards, 48 of 50 game&times;model cells reach 100. This is within-system convergence on the public set, not independent replication</td></tr>
-        <tr><td class="g">Audit discipline</td><td class="e">Six adversarial checks run over the retained session record before release. Zero game IDs on agent-visible surfaces, enforced in CI. A source-reading win and a contaminated control were both voided. The audit cannot detect events the client failed to retain</td></tr>
+        <tr><td class="g">Final-board score convergence</td><td class="e">Across two frozen release configurations, 48 of 50 game&times;model cells reach 100. This is concentration at the public-set ceiling, not faster learning, causal harness lift, or independent replication. The certify/replay stage&rsquo;s +2.35-point change remains descriptive because adjacent changes were not held constant</td></tr>
+        <tr><td class="g">Audit regression and incident record</td><td class="e">A deterministic code-level suite detects 11 of 13 hand-built threat fixtures and flags none of five benign controls. Separately, a source-reading win and a contaminated control were voided, and a dead planner exposed a tool-integrity blind spot. The suite is not a field sensitivity estimate</td></tr>
         <tr><td class="g">Reward hacking, disclosed</td><td class="e">An agent read 2,172 lines of game source inside its workspace and returned a natural-looking 100.00. That run was voided and quarantined with its evidence, and it is not part of this release board</td></tr>
-        <tr><td class="g">Human-like interaction design</td><td class="e">Observe, hypothesize, run a discriminating experiment, revise on the first counterexample, then act. Every belief is executable code; every committed action carries a checked prediction</td></tr>
+        <tr><td class="g">Human-style scientific loop</td><td class="e">Observe, hypothesize, run a discriminating experiment, revise on the first counterexample, then act. Every belief is executable code; every committed action carries a checked prediction</td></tr>
         <tr><td class="g">Saturation points at the evaluator</td><td class="e">With 48 of 50 cells at 100, peak RHAE no longer separates systems. Our own hardest game turned on what the observation channel discarded, which suggests observation-channel quality now carries the signal</td></tr>
       </tbody>
     </table></div>
