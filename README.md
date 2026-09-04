@@ -68,9 +68,11 @@ Kepler now executes every workspace tool in a dedicated smoke tier.
 
 ### Resource accounting, recovered from provider records
 
-The exact 100.00 campaign used 858,041,926 tokens, 97.37% cache reads, and
-costs $777.72 when its uncached input, cache reads, one-hour cache writes,
-and output are priced at current Opus 5 API rates. That is 74.0% below the
+The retained Opus release runs used 858,041,926 tokens, 97.37% cache reads,
+and cost $777.72 when their uncached input, cache reads, one-hour cache writes,
+and output are priced at current Opus 5 API rates. This is a list-equivalent
+reconstruction, not cash spend or the cost of the full research campaign. It is
+74.0% below the
 $2,986 API-equivalent estimate Retrodict published for Tycho. Tycho does not
 publish a cost figure of its own, and AVO and VISTA disclose none, so this is
 a comparison against one third-party estimate rather than a ranking of the

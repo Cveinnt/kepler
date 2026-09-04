@@ -374,6 +374,17 @@ Model identity is pinned by the session transcripts (\S\ref{sec:boards}). Beyond
 
 \textbf{Early ${\sim}$99\% reports.} The first ${\sim}$99\%-class numbers on this benchmark were self-reported from write-ups without released code, using a per-game best-of-2 fallback with score feedback, the selection rule Kamradt's critique targeted. Our initial loop, run \emph{with} that fallback for comparison only, matched those numbers within noise (98.30 / 95.51). We then abandoned the rule as score-conditioned selection. The \S\ref{sec:ladder} ladder reports the same initial loop without fallback selection (97.78). The executable-world-model idea itself is established in published, citable work, including Tycho~\citep{tycho} and Rodionov's baseline1 line~\citep{thinharness}. This project is an independent implementation.
 
+\textbf{GPT-6 Astra.} ARC Prize reports 62.71 on the semi-private set under its
+provider-neutral Standard interface and 99.95 with a Provider Adapter that
+preserves opaque reasoning state and compacts long interactions
+~\citep{arcprize2026astra}. Astra's trajectories construct compact symbolic
+world models without Kepler's external executable-model protocol. This is
+stronger generalization evidence than our public-set board and further rules
+out treating world-model construction or human-relative action efficiency as
+unique Kepler contributions. Our narrower contribution is an externally
+checkable contract joining predictions, actions, workspace state, selection,
+and replay, plus an audit record that changed our own claims.
+
 \textbf{Tycho} (NIMI-research; arXiv:2607.28287)~\citep{tycho} reports 100.00, the first published perfect score. Its paper-artifact release includes frozen configurations, CI, and an official scorecard per row, while publishing traces as SHA-256 hashes rather than inspectable data and providing no cost accounting. We adopted (and credit in \texttt{NOTICE}) its partial UNKNOWN-cell predictions, vacuous-coverage rejection, threaded hidden-state planning, consecutive-RESET guard, and 5$\times$-baseline level cutoff. Our discipline regression subsequently falsified treating the last item as an \emph{official-rule} limit (\S\ref{sec:disciplineautopsy}); adopted mechanisms still warrant independent testing.
 
 \textbf{Retrodict} (Ryan Brown)~\citep{retrodict}; 99.86 at \$654 / 659.9M tokens; publishes full traces including superseded attempts, per-game cost ledgers, and an explicit replay disclosure (``a verified re-execution of the recorded runs, not a new attempt''; language we adopt). Its comparison memo critiqued early releases, including the selection rules Kepler subsequently changed. We also adopt its sparse expected-cell predictions, escalation-ladder tiers, and prediction-discipline framing (\texttt{NOTICE}).
