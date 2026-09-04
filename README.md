@@ -1,6 +1,6 @@
 # Kepler
 
-**100% on ARC-AGI-3 at one-fourth the cost. One frozen configuration.**
+**100% on ARC-AGI-3 at one-fourth the cost.**
 
 Kepler is an open-source agent harness for the 25 public ARC-AGI-3 games. One
 frozen Claude Opus 5 configuration scored **100.00**, with every game
