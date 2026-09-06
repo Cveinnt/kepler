@@ -148,7 +148,7 @@ def fig5():
     ax.text(1882, 98.35, "74.0% lower", ha="center", fontsize=9.5, color=S.ACCENT)
     ax.set_xlim(300, 3600)
     ax.set_ylim(94, 101.5)
-    ax.set_xlabel("reported or current API list-equivalent cost (USD, log scale)")
+    ax.set_xlabel("reported or Sep 1, 2026 API list-equivalent cost (USD, log scale)")
     ax.set_ylabel("RHAE")
     fig.savefig(OUT / "fig5_cost.pdf")
     plt.close(fig)

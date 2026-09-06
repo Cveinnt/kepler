@@ -6,17 +6,17 @@
 <link rel="canonical" href="https://kepler-harness.vercel.app/">
 <meta property="og:type" content="article">
 <meta property="og:title" content="100% on ARC-AGI-3 at one-fourth the cost.">
-<meta property="og:description" content="Open-source agent harness with one frozen configuration, exact server replay, $777.72 list-equivalent cost, and audits that voided its own best-looking results.">
+<meta property="og:description" content="One frozen setup, 100.00 on 25 public games, $777.72 API-equivalent release cost. Inspect the agent-written simulators and the winning traces.">
 <meta property="og:url" content="https://kepler-harness.vercel.app/">
 <meta property="og:image" content="https://kepler-harness.vercel.app/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Kepler scored 100% on ARC-AGI-3 at one-fourth the cost. The card reports $777.72 in current API list-equivalent cost, 74% below the Tycho estimate via Retrodict, and a voided perfect run after an agent read the answer key.">
+<meta property="og:image:alt" content="Kepler scored 100% on ARC-AGI-3 at one-fourth the cost. The card reports $777.72 in September 1, 2026 API list-equivalent cost, 74% below the Tycho estimate via Retrodict, and 181 of 183 completed levels at or below median-human actions in the final attempt, excluding discovery.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="100% on ARC-AGI-3 at one-fourth the cost.">
-<meta name="twitter:description" content="Open-source agent harness with one frozen configuration, exact server replay, $777.72 list-equivalent cost, and audits that voided its own best-looking results.">
+<meta name="twitter:description" content="One frozen setup, 100.00 on 25 public games, $777.72 API-equivalent release cost. Inspect the agent-written simulators and the winning traces.">
 <meta name="twitter:image" content="https://kepler-harness.vercel.app/og.png">
-<meta name="twitter:image:alt" content="Kepler scored 100% on ARC-AGI-3 at one-fourth the cost. The card reports $777.72 in current API list-equivalent cost, 74% below the Tycho estimate via Retrodict, and a voided perfect run after an agent read the answer key.">
+<meta name="twitter:image:alt" content="Kepler scored 100% on ARC-AGI-3 at one-fourth the cost. The card reports $777.72 in September 1, 2026 API list-equivalent cost, 74% below the Tycho estimate via Retrodict, and 181 of 183 completed levels at or below median-human actions in the final attempt, excluding discovery.">
 <meta name="citation_title" content="Kepler: Auditable World Models for ARC-AGI-3">
 <meta name="citation_author" content="Wensen Wu">
 <meta name="citation_publication_date" content="2026-09-01">
@@ -24,7 +24,7 @@
 <meta name="citation_abstract_html_url" content="https://kepler-harness.vercel.app/">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23100f0e%22/><circle cx=%2250%22 cy=%2250%22 r=%2230%22 fill=%22none%22 stroke=%22%237db0de%22 stroke-width=%226%22/><circle cx=%2278%22 cy=%2238%22 r=%228%22 fill=%22%237db0de%22/></svg>">
 <title>Kepler: 100% on ARC-AGI-3 at One-Fourth the Cost</title>
-<meta name="description" content="Open-source agent harness with one frozen configuration, exact server replay, $777.72 list-equivalent cost, and audits that voided its own best-looking results.">
+<meta name="description" content="One frozen setup, 100.00 on 25 public games, $777.72 API-equivalent release cost. Inspect the agent-written simulators and the winning traces.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -311,6 +311,10 @@ footer .wrap{padding:44px 24px 84px}
 footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
   color:var(--muted);max-width:76ch}
 
+.sp80-frames{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:24px 0}
+.sp80-frames img{display:block;width:100%;height:auto;image-rendering:pixelated}
+.sp80-frames p{font-size:13px;margin:8px 0 0}
+@media(max-width:540px){.sp80-frames{grid-template-columns:1fr}.sp80-frames img{max-width:320px}}
 .bynumbers{width:100%;border-collapse:collapse;margin:1.5rem 0 2.5rem}
 .bynumbers td{padding:.9rem 1rem;border:1px solid var(--rule,rgba(0,0,0,.12));vertical-align:top}
 .bynumbers b{display:block;font-size:1.6rem;line-height:1.1}
@@ -338,14 +342,14 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
   <div class="wrap">
     <p class="kicker">Kepler 1.0 · open source</p>
     <h1>100% on ARC-AGI-3 at one-fourth the cost.</h1>
-    <p class="stand"><strong>One frozen Claude Opus 5 configuration, one pass over
-      all 25 public games, no score-conditioned reruns.</strong> Cost means $777.72 at current standard API rates
+    <p class="stand"><strong>One frozen Claude Opus 5 configuration, one retained run per
+      game across all 25 public games, no score-conditioned reruns.</strong> Cost means $777.72 at September 1, 2026 API rates
       against Retrodict&rsquo;s $2,986 estimate for Tycho, not a Tycho bill.</p>
     <ol class="wedges">
-      <li><b>Audits that changed the claims</b>A source-reading 100 was voided, the
-        control group was withdrawn, and a dead planner was disclosed despite green scores.</li>
-      <li><b>Executable evidence</b>World models retrodict the full history and predict
-        before every action. Score, trajectory, tool, selection, and cost checks stay separate.</li>
+      <li><b>Short final solutions</b>181 of 183 completed Opus levels used no more
+        actions than the median-human baseline in the final attempt. This excludes discovery.</li>
+      <li><b>The agent writes a simulator</b>Inspect its rules, predictions, and mistakes.
+        The first wrong prediction stops the plan and returns the counterexample.</li>
       <li><b>One setup, with receipts</b>One frozen configuration, no score-conditioned
         reruns, exact server replay, and a public 50-run trace corpus.</li>
     </ol>
@@ -409,7 +413,7 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
       generalization under a different protocol. We make no score or cost comparison
       between the two. Meanwhile,
       <a href="https://github.com/ryanbbrown/Retrodict">Retrodict</a>&rsquo;s 99.86 set the
-      disclosure standard we build on. What this release adds is a stricter experimental
+      disclosure standard we build on. What this release adds is an explicit experimental
       contract: exact official replay for both headline boards, an enforced run-selection
       policy, resource accounting, negative results, and adversarial audits that twice
       invalidated claims we had made ourselves. The
@@ -419,6 +423,34 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
 </section>
 
 <!-- ═══════════════ 2 · The number and its receipts ═══════════════ -->
+<section id="see">
+  <div class="wrap">
+    <p class="kicker">The finding</p>
+    <h2>The missing mechanic was visible in flight</h2>
+    <!--sp80_frames-->
+    <p class="cards-note">Actual development-run frames 0, 12 and 20 from sp80 event
+      8324. The pink trail branches around the pieces and reaches four goals. These
+      are observations, not simulator predictions or frames from the later release board.</p>
+    <p class="lede">On sp80, the agent's notebook reports a simulator fitting
+      4,655 of 4,670 transitions and a search through roughly 410 million candidate
+      configurations. Nineteen text-mode sessions left the final level unsolved.
+      That was search under incomplete rules, not a proof that the game was impossible.</p>
+    <p>Our text interface saved settled grids and animation-frame counts, but not
+      rendered animation frames. Enabling <code>--visual</code> let a continuation
+      inspect the moving ball while retaining its earlier notes and models. It
+      identified a deflection rule visible during flight. Earlier frame counts
+      also contained clues, so this does not establish that images were necessary.</p>
+    <p>From the agent&rsquo;s own notebook, first session with eyes: <em>&ldquo;19 sessions
+      inferred physics from frame counts and concluded L6 was unsolvable. Session 20 got
+      per-frame PNGs and the game simply shows you everything.&rdquo;</em> Its final
+      successful attempt used 57 actions. That count excludes the earlier discovery.
+      A later fresh visual run rediscovered the game, but we did not run a matched
+      fresh text-only control. This is one game's discovery story, not a measured
+      causal speedup. <a href="https://www.wensenwu.com/thoughts/kepler">Scrub through
+      the winning drop in the engineering walkthrough.</a></p>
+  </div>
+</section>
+
 <section id="number">
   <div class="wrap">
     <p class="kicker">02 · The number and its receipts</p>
@@ -427,24 +459,24 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
         <tr><td><b>100.00</b><span>25/25 games exact on official replay</span></td>
             <td><b>48/50</b><span>game×model cells at 100 on the final boards (GPT: 95.97)</span></td>
             <td><b>7,202</b><span>actions on ARC&rsquo;s replay card; 7,292 in the original local scored-level results</span></td></tr>
-        <tr><td><b>$777.72</b><span>current API list-equivalent, 74.0% below Retrodict&rsquo;s $2,986 estimate for Tycho</span></td>
+        <tr><td><b>$777.72</b><span>September 1, 2026 API list-equivalent, 74.0% below Retrodict&rsquo;s $2,986 estimate for Tycho</span></td>
             <td><b>13,688+</b><span>observed non-reset campaign actions; exact total pending ledger repair</span></td>
             <td><b>2</b><span>integrity failures caught, claims voided, evidence retained</span></td></tr>
       </tbody>
     </table>
     <h2>One frozen configuration, with the failure left in</h2>
     <p>The headline policy is strict: one model, one harness frozen by commit hash before
-      the board&rsquo;s results existed, one pass over all 25 games, no score-conditioned
+      the board&rsquo;s results existed, one retained run on all 25 games, no score-conditioned
       reruns. Best-of numbers appear only as a labeled ceiling. Under that policy the
       harness itself is the experiment, and the experiment went backwards once.</p>
     <h3>Nine claims and the evidence for each</h3>
     <div class="scroll"><table class="matrix">
-      <thead><tr><th>Wedge</th><th>Measured release evidence</th></tr></thead>
+      <thead><tr><th>Release result</th><th>Measured release evidence</th></tr></thead>
       <tbody>
         <tr><td class="g">Score and human-relative execution</td><td class="e">Exact 100.00 with Opus 5 (card 91aa2f10) and exact 95.97 with GPT-5.6 Sol (card c9f087f3). On the Opus board, 181 of 183 completed levels used no more actions than the median-human baseline. This is final-attempt action efficiency, not discovery efficiency or human-like cognition</td></tr>
         <tr><td class="g">Frozen selection policy</td><td class="e">Harness frozen by commit hash before the board&rsquo;s results existed; one retained run per game; no score-conditioned reruns; the GPT board&rsquo;s same-configuration collapse retained</td></tr>
         <tr><td class="g">Action accounting without a flattering denominator</td><td class="e">8,256 actions in retained board runs, 7,292 in the original local scored-level results, and 7,202 on ARC&rsquo;s public replay card. Replay uses the final reset-to-end ledger segment, so these are different recorded denominators, not score disagreements</td></tr>
-        <tr><td class="g">Lower comparable cost</td><td class="e">$777.72 at current Opus 5 API list rates, 74.0% below the $2,986 API-equivalent estimate Retrodict published for Tycho. Tycho, AVO, and VISTA publish no cost figures of their own</td></tr>
+        <tr><td class="g">Lower comparable cost</td><td class="e">$777.72 at September 1, 2026 Opus 5 API list rates, 74.0% below the $2,986 API-equivalent estimate Retrodict published for Tycho. Tycho, AVO, and VISTA publish no cost figures of their own</td></tr>
         <tr><td class="g">Final-board score convergence</td><td class="e">Across two frozen release configurations, 48 of 50 game&times;model cells reach 100. This is concentration at the public-set ceiling, not faster learning, causal harness lift, or independent replication. The certify/replay stage&rsquo;s +2.35-point change remains descriptive because adjacent changes were not held constant</td></tr>
         <tr><td class="g">Audit regression and incident record</td><td class="e">A deterministic code-level suite detects 11 of 13 hand-built threat fixtures and flags none of five benign controls. Separately, a source-reading win and a contaminated control were voided, and a dead planner exposed a tool-integrity blind spot. The suite is not a field sensitivity estimate</td></tr>
         <tr><td class="g">Reward hacking, disclosed</td><td class="e">An agent read 2,172 lines of game source inside its workspace and returned a natural-looking 100.00. That run was voided and quarantined with its evidence, and it is not part of this release board</td></tr>
@@ -464,16 +496,16 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
           <td class="e">Provider-record token accounting, separate board and observed-campaign action counts, and incidents that changed published claims</td></tr>
         <tr><td class="g"><a href="https://vista-research.github.io/">VISTA</a></td>
           <td class="e">A clean vision-first thesis at 100.00</td>
-          <td class="e">A scoped within-system observation intervention, explicit resource denominators, and disclosed integrity incidents. VISTA&rsquo;s 7,542 game actions, our 7,292 local scored-level actions, and ARC&rsquo;s 7,202 replay-card total are not the same measurement, so we do not rank them</td></tr>
+          <td class="e">A scoped observation-channel case study, explicit resource denominators, and disclosed integrity incidents. VISTA&rsquo;s 7,542 game actions, our 7,292 local scored-level actions, and ARC&rsquo;s 7,202 replay-card total are not the same measurement, so we do not rank them</td></tr>
         <tr><td class="g"><a href="https://github.com/NIMI-research/Tycho">Tycho</a></td>
           <td class="e">The first published perfect score and a detailed academic world-model treatment</td>
-          <td class="e">A retained-run list-equivalent estimate 74.0% below the $2,986 API-equivalent estimate Retrodict published for Tycho, plus stricter run-selection and integrity records</td></tr>
+          <td class="e">A retained-run list-equivalent estimate 74.0% below the $2,986 API-equivalent estimate Retrodict published for Tycho, plus disclosed run-selection and integrity records</td></tr>
         <tr><td class="g"><a href="https://github.com/ryanbbrown/Retrodict">Retrodict</a></td>
           <td class="e">99.86 with the field&rsquo;s clearest cost and replay disclosure</td>
           <td class="e">0.14 points higher, with a second server-exact board on a different model; Retrodict remains cheaper and its 7,703 campaign actions are not comparable to our scored-attempt count</td></tr>
         <tr><td class="g"><a href="https://www.primeintellect.ai/blog/prime-agent">Prime Agent</a></td>
           <td class="e">Three-run evidence and a broader general-agent claim</td>
-          <td class="e">A higher exact board, per-action evidence, zero-prior CI, and disclosed reward-hacking incidents</td></tr>
+          <td class="e">A higher exact board, per-action evidence, literal game-ID scanning, and disclosed reward-hacking incidents</td></tr>
       </tbody>
     </table></div>
   </div>
@@ -512,7 +544,7 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
           <td class="g">GPT-5.6 Sol</td>
           <td class="s">95.97<span class="sub">same policy, one frozen configuration</span></td>
           <td class="c"><a class="chip" href="https://arcprize.org/scorecards/c9f087f3-b9de-452d-9520-d4d0597b0685">c9f087f3</a></td>
-          <td class="e">Official 95.9672; $1,312.14 current API list-equivalent; all 25 games retained,
+          <td class="e">Official 95.9672; $1,312.14 September 1, 2026 API list-equivalent; all 25 games retained,
             including the same-configuration collapse.</td>
         </tr>
       </tbody>
@@ -535,29 +567,7 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
 
 <!-- ═══════════════ 3 · How it works ═══════════════ -->
 <!-- ═══════════════ 2.5 · The ablation ═══════════════ -->
-<section id="see">
-  <div class="wrap">
-    <p class="kicker">The finding</p>
-    <h2>The missing evidence was in the animation</h2>
-    <p class="lede">One game beat five attempts. Our agent verified its physics against
-      4,655 of 4,670 recorded transitions, exhaustively searched ~410 million candidate
-      configurations, and returned a proof: <em>no solution exists under the rules it knew.</em>
-      Nineteen sessions of correct proofs, about the wrong rules.</p>
-    <p>The post-mortem: like the world-model harnesses we reviewed, ours fed the agent text grids of
-      settled frames. The missing mechanic only exists <em>during the animation</em>, which
-      the text channel drops entirely. So we isolated the observation channel: one flag,
-      <code>--visual</code>, renders every frame as a PNG and tells the agent to look.
-      Same model, same tools, same budgets. Everything fixed except the observation channel.</p>
-    <p>From the agent&rsquo;s own notebook, first session with eyes: <em>&ldquo;19 sessions
-      inferred physics from frame counts and concluded L6 was unsolvable. Session 20 got
-      per-frame PNGs and the game simply shows you everything.&rdquo;</em> Fifty-seven
-      actions later the level was done; a fresh clean-board run rediscovered it all from
-      scratch and finished at the cap. On this game the binding constraint wasn&rsquo;t
-      reasoning or scale; it was what the agent could see. VISTA (MIT) built a vision-first system;
-      NVIDIA's AVO stayed on text grids. This is a single-game, within-system intervention,
-      not a benchmark-wide controlled ablation.</p>
-  </div>
-</section>
+
 
 
 <!-- ═══════════════ interactive explorer ═══════════════ -->
@@ -591,7 +601,7 @@ document.addEventListener("DOMContentLoaded", function () {
       width: w, height: 360, marginLeft: 52, marginBottom: 60,
       style: {fontFamily: SERIF, fontSize: "13px"},
       x: {domain: [...new Set(data.map(d => d.game))].sort(), label: null, tickRotate: -90},
-      y: {label: "actions (learning included)", grid: true},
+      y: {label: "retained-run actions (not full campaign)", grid: true},
       color: {domain: ["Claude Opus 5", "GPT-5.6 Sol"], range: [KEPLER, ACCENT], legend: true},
       marks: [
         Plot.ruleY([0]),
@@ -749,7 +759,7 @@ document.addEventListener("DOMContentLoaded", function () {
     <p>Chollet&rsquo;s condition for a harness result being legitimate is that the
       settings and the cost are clearly reported. So: the exact 100.00 Opus board used
       11,464 uncached input, 835.489M cache-read input, 13.575M one-hour cache-write
-      input, and 8.967M output tokens. At current Opus 5 API rates, that is
+      input, and 8.967M output tokens. At September 1, 2026 Opus 5 API rates, that is
       <strong>$777.72 list-equivalent</strong>. Claude Code stores separate transcript
       rows for content blocks from one provider message, so records are deduplicated by
       provider message ID before summing. The run actually consumed Claude
@@ -774,7 +784,7 @@ document.addEventListener("DOMContentLoaded", function () {
   </div>
   <figure class="fig wide">
     <!--plot_cost-->
-    <figcaption><b>Score against disclosed or current API list-equivalent cost.</b>
+    <figcaption><b>Score against disclosed or September 1, 2026 API list-equivalent cost.</b>
       Kepler&rsquo;s $777.72 sits 74.0% below the $2,986 API-equivalent estimate
       Retrodict published for Tycho. Tycho discloses no cost of its own, and AVO and
       VISTA publish none. Retrodict and baseline1 occupy cheaper, lower-scoring points.

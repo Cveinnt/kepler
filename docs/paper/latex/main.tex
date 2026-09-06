@@ -32,7 +32,7 @@ Independent Researcher}
 
 
 \begin{abstract}
-ARC-AGI-3 evaluates agents in interactive environments whose rules and objectives must be inferred from observation. We present Kepler, an open-source harness that represents hypotheses as executable world models and validates them through retrospective transition checks and prediction-gated action. Under one frozen Claude Opus 5 configuration, Kepler obtained a server-verified 100.00 RHAE on all 25 public games, with no per-game model selection or score-conditioned reruns. On 181 of 183 completed levels, the final Opus attempt used no more actions than the corresponding median-human baseline. The retained board runs used 8,256 environment actions, of which 7,292 occurred in scored levels. Retained local provider-session records yield 858.0 million tokens, 97.37\% cache reads, and a \$777.72 cost at current API list-equivalent rates. We also report three evaluation failures: source-code leakage that produced an invalid perfect run, agents reconstructing a removed harness in a control condition, and autonomous repair masking a broken planner. A single-game observation intervention further showed that animation frames contained task-relevant information absent from settled text grids. Across the final Claude Opus 5 and GPT-5.6 Sol boards, 48 of 50 game--model cells reached 100. These results indicate that public-set score alone has limited discriminative value and motivate first-attempt, cost-conditioned, and verification-aware reporting.
+ARC-AGI-3 evaluates agents in interactive environments whose rules and objectives must be inferred from observation. We present Kepler, an open-source harness that represents hypotheses as executable world models and validates them through retrospective transition checks and prediction-gated action. Under one frozen Claude Opus 5 configuration, Kepler obtained a server-verified 100.00 RHAE on all 25 public games, with no per-game model selection or score-conditioned reruns. On 181 of 183 completed levels, the final Opus attempt used no more actions than the corresponding median-human baseline. The retained board runs used 8,256 environment actions, of which 7,292 occurred in scored levels. Retained local provider-session records yield 858.0 million tokens, 97.37\% cache reads, and a \$777.72 cost at September 1, 2026 API list-equivalent rates. We also report three evaluation failures: source-code leakage that produced an invalid perfect run, agents reconstructing a removed harness in a control condition, and autonomous repair masking a broken planner. A single-game observation case study showed that animation frames contained task-relevant information absent from settled text grids. Across the final Claude Opus 5 and GPT-5.6 Sol boards, 48 of 50 game--model cells reached 100. These results indicate that public-set score alone has limited discriminative value and motivate first-attempt, cost-conditioned, and verification-aware reporting.
 \end{abstract}
 
 \section{Introduction}\label{sec:intro}
@@ -62,7 +62,8 @@ against the next observation. A mismatch terminates the remaining plan and
 records the counterexample. The protocol evaluates externally committed beliefs
 and behavior rather than private chain-of-thought.
 
-This paper makes three contributions:
+\pagebreak[3]
+This paper makes three contributions:\nopagebreak
 
 \begin{enumerate}
   \item We define an executable verification contract for long-horizon agents:
@@ -75,8 +76,9 @@ This paper makes three contributions:
   \item We report capability and resource evidence under explicit selection
   rules. Two frozen release configurations reach 100.00 and 95.97 RHAE, with
   actions, tokens, costs, replay status, and limitations reported as separate
-  quantities. A scoped observation intervention further isolates information
-  lost by the text-only interface on one resistant game.
+  quantities. A single-game case study identifies a transient mechanic visible
+  in retained animation frames but absent from the settled-grid observations
+  used by our earlier runs.
 \end{enumerate}
 
 These results do not establish held-out generalization or isolate the causal
@@ -88,7 +90,7 @@ the evaluation result rather than qualifications to be deferred.
 \begin{figure}[ht]
   \centering
   \includegraphics[width=\linewidth]{figures/fig1_ladder.pdf}
-  \caption{Reported ARC-AGI-3 results (RHAE, public set). Gray marks external systems as published; blue marks Kepler single-configuration boards. The same model class spans 13.3--100 under different agent systems. Each 100-point system in this comparison describes its result as a mechanically replayed trace rather than live play.}
+  \caption{Reported ARC-AGI-3 results (RHAE, public set). Gray marks external systems as published; blue marks Kepler single-configuration boards. The same model class spans 13.3--100 under different agent systems. Replay verification and solution discovery are distinct stages; a replayed scorecard does not identify the discovery architecture.}
   \label{fig:ladder}
 \end{figure}
 
@@ -252,17 +254,17 @@ Across the two certify/replay boards; one frozen harness (\texttt{eac9af2}), two
   \label{fig:heatstrip}
 \end{figure}
 
-\subsection{The modality ablation}\label{sec:ablation}
+\subsection{An observation-channel case study}\label{sec:ablation}
 
-The fourth finding is a single-game within-system intervention. Setup: the one game our text-mode agents never solved (\S\ref{sec:sp80}), whose final level 19 sessions across five text-mode attempts had exhaustively ``proved'' unsolvable under every rule set derivable from settled grids and animation-frame \emph{counts}. Intervention: one flag (\texttt{--visual}) makes the daemon persist every frame, animation frames included, as rendered PNGs, and directs the agent to look; tools, discipline, budgets, and audits are held fixed. Result: the same model found the missing mechanic; a deflection rule directly visible in the animation, plus two goal-state affordances; and completed the level in 57 actions. A fresh clean-board run then rediscovered the game under the frozen harness, and the server-verified release board reproduced the result again. This removes inherited learning but not the limits of a one-game, one-system intervention. We conclude only that transient visual evidence was necessary for this system on this game.
+The fourth finding is an observation-channel case study on sp80 (\S\ref{sec:sp80}). Nineteen text-mode sessions did not solve the final level. These sessions shared accumulated notes and models; they are not independent trials. Enabling \texttt{--visual} retained rendered animation frames in addition to settled grids and frame counts. The continuation inherited earlier learning and identified a deflection rule visible during animation. Its final successful attempt on the last level used 57 actions. A later fresh visual run rediscovered the game under the frozen harness, and the release board reproduced the score. Without a matched fresh text-only control, these observations do not establish that vision was necessary or isolate its effect on discovery cost.
 
 \subsection{Cost}\label{sec:cost}
 
-The community leaderboard's submission rules make cost a first-class field. We therefore recover usage from retained local provider-session records rather than workspace CLI footers. Claude Code stores thinking, text, and tool-use content blocks from one response as separate transcript rows carrying the same provider message ID and cumulative usage object. We deduplicate by that ID before summing. The exact 100.00 Opus campaign contains \textbf{11,464 uncached input}, \textbf{835,488,978 cache-read input}, \textbf{13,574,918 one-hour cache-write input}, and \textbf{8,966,566 output} tokens: 858,041,926 raw tokens in total, 97.37\% of them cache reads. At current Opus 5 API rates of \$5/M uncached input, \$0.50/M cache reads, \$10/M one-hour cache writes, and \$25/M output~\citep{anthropicopus5pricing}, this is \textbf{\$777.72 list-equivalent}. Actual execution used Claude subscription quota; the dollar figure is a reproducible API-price comparison, not a billed charge.
+The community leaderboard's submission rules make cost a first-class field. We therefore recover usage from retained local provider-session records rather than workspace CLI footers. Claude Code stores thinking, text, and tool-use content blocks from one response as separate transcript rows carrying the same provider message ID and cumulative usage object. We deduplicate by that ID before summing. The exact 100.00 Opus campaign contains \textbf{11,464 uncached input}, \textbf{835,488,978 cache-read input}, \textbf{13,574,918 one-hour cache-write input}, and \textbf{8,966,566 output} tokens: 858,041,926 raw tokens in total, 97.37\% of them cache reads. At September 1, 2026 Opus 5 API rates of \$5/M uncached input, \$0.50/M cache reads, \$10/M one-hour cache writes, and \$25/M output~\citep{anthropicopus5pricing}, this is \textbf{\$777.72 list-equivalent}. Actual execution used Claude subscription quota; the dollar figure is a reproducible API-price comparison, not a billed charge.
 
 Among the 100.00 systems in our comparison, the only cost figure we found is not a reported bill: Retrodict published a \$2,986 API-equivalent estimate for Tycho. Kepler's list-equivalent estimate is 74.0\% below that estimate, or roughly one quarter as large. AVO and VISTA publish no comparable bills in the reviewed materials, and Tycho publishes none of its own, so this is a comparison against a single third-party estimate rather than a ranking of the field. This is a deliberately narrow claim. Retrodict reports 99.86 at \$654 and baseline1 reports 99.0 at \$400, so Kepler is not the cheapest system at every score. Cost and run-selection methods also differ.
 
-The 95.97 GPT-5.6 board contains 39,262,504 uncached input, 2,379,659,648 cached input, and 10,161,281 output tokens, or 2,429,083,433 raw tokens total. At current GPT-5.6 Sol rates of \$4/M uncached input, \$0.40/M cached input, and \$20/M output~\citep{openaigpt56pricing}, this is \textbf{\$1,312.14 list-equivalent}. An earlier draft used incomplete workspace CLI footer counters. Provider-side records showed that path omitted most cached traffic and one long workspace; the attractive comparison it produced has been withdrawn.
+The 95.97 GPT-5.6 board contains 39,262,504 uncached input, 2,379,659,648 cached input, and 10,161,281 output tokens, or 2,429,083,433 raw tokens total. At September 1, 2026 GPT-5.6 Sol rates of \$4/M uncached input, \$0.40/M cached input, and \$20/M output~\citep{openaigpt56pricing}, this is \textbf{\$1,312.14 list-equivalent}. An earlier draft used incomplete workspace CLI footer counters. Provider-side records showed that path omitted most cached traffic and one long workspace; the attractive comparison it produced has been withdrawn.
 
 Actions expose a different frontier, and a denominator problem. The 100.00 Opus board reports \textbf{8,256 environment actions across the retained board runs} and \textbf{7,292 in the original local scored-level results}. On the completed Opus levels, \textbf{181 of 183 used no more actions than the corresponding median-human baseline}; two used more. This is final-attempt action efficiency, not evidence of human-like cognition or discovery efficiency. The local campaign ledgers contain at least 13,688 non-reset actions and omit 22 prefix events whose reset status cannot yet be recovered. The GPT board similarly reports 35,896 retained-run actions and 8,400 in its original local scored-level results. ARC's public replay cards report 7,202 Opus actions and 8,220 GPT actions. These are different recorded denominators, not score disagreements: the replay path selects the last full-reset-to-end ledger segment, omits its recorded opening reset, and lets the server count a new opening reset. Three run ledgers contain a later, shorter certified segment than the original result file. The final server scores match the local scores exactly. We therefore call neither board total learning-inclusive, make no first-time-human percentage claim, and do not rank any count against other systems. AVO reports 6,624 environment actions, VISTA 7,542 game actions, and Retrodict 7,703 campaign actions; these count different things over different stages, and the published materials do not supply the detail needed to convert between them. Kepler therefore does not collapse score, tokens, actions, and dollars into one efficiency claim; it publishes each axis and states which comparisons are admissible.
 
@@ -289,7 +291,7 @@ Actions expose a different frontier, and a denominator problem. The 100.00 Opus 
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.8\linewidth]{figures/fig5_cost.pdf}
-  \caption{Score against disclosed or current API list-equivalent cost. Kepler's \$777.72 is 74.0\% below the \$2,986 API-equivalent estimate Retrodict published for Tycho; Tycho discloses no cost of its own, and AVO and VISTA publish none. Retrodict and baseline1 occupy cheaper, lower-scoring points. Pricing and accounting methods differ, and most of the field reports nothing, so this is a sparse disclosure frontier rather than a controlled efficiency experiment.}
+  \caption{Score against disclosed or September 1, 2026 API list-equivalent cost. Kepler's \$777.72 is 74.0\% below the \$2,986 API-equivalent estimate Retrodict published for Tycho; Tycho discloses no cost of its own, and AVO and VISTA publish none. Retrodict and baseline1 occupy cheaper, lower-scoring points. Pricing and accounting methods differ, and most of the field reports nothing, so this is a sparse disclosure frontier rather than a controlled efficiency experiment.}
   \label{fig:costscatter}
 \end{figure}
 
@@ -299,7 +301,7 @@ A score file is just a number an agent might have influenced. RHAE's only agent-
 
 \subsection{Incident 2: the control group rebuilt the harness}\label{sec:incident2}
 
-To measure the harness's contribution we ran an ablation with the same model and games but methodology stripped to \texttt{observe.py} and a bare \texttt{act.py}. The workspaces lived inside the repository, however, and \texttt{harness/ws\_tools/} was on disk. \textbf{All six baseline agents found it}: three copied the tools in with \texttt{cp}, while the rest wrote shims executing the repository's canonical tools directly, with 92--9,148 harness-tool invocations each and a \texttt{world\_model.py} in every workspace. The comparison was harness-against-harness, so every conclusion drawn from it, including a published claim that ``the harness's net advantage is roughly zero,'' is \textbf{withdrawn}. A valid ablation needs workspaces outside the repository tree and has not been run: \emph{the harness's contribution to our scores is currently unmeasured.} We retain this statement because omitting withdrawn results biases the literature toward positive findings.
+To measure the harness's contribution we ran an ablation with the same model and games but methodology stripped to \texttt{observe.py} and a bare \texttt{act.py}. The workspaces lived inside the repository, however, and \texttt{harness/ws\_tools/} was on disk. \textbf{All six baseline agents found it}: three copied the tools in with \texttt{cp}, while the rest wrote shims executing the repository's canonical tools directly, with 92--9,148 harness-tool invocations each and a \texttt{world\_model.py} in every workspace. The comparison was harness-against-harness, so every conclusion drawn from it, including a published claim that ``the harness's net advantage is roughly zero,'' is \textbf{withdrawn}. A valid ablation needs enforced read boundaries excluding treatment tools, prior solutions, and engine source, with tests confirming access is denied. Moving a workspace alone is insufficient. Such a control has not been completed: \emph{the harness's contribution to our scores is currently unmeasured.} We retain this statement because omitting withdrawn results biases the literature toward positive findings.
 
 Both incidents share a lesson we now design by: twice we shipped a control that was an instruction and a file-placement policy rather than a boundary. An agent optimizing against a metric uses whatever is \emph{reachable}, and reachable means the filesystem, not the instructions.
 
@@ -325,20 +327,15 @@ The certify/replay stage removed model judgment from the scored attempt. Under t
 
 \subsection{Implications for ARC-AGI-3 evaluation}\label{sec:eval}
 
-Our claim (1) is not idiosyncratic to Kepler: it appears in each 98-to-100-class
-harness we reviewed, and the convergence is itself a measurement result. The
-reviewed public code and scorecards separate an unbounded,
-unscored \emph{learning} phase from a minimal \emph{scored} phase that is a
-mechanical replay of a certified trace. Tycho ships a replay viewer and scores
-competition-mode replays; Retrodict describes its scorecard as ``a verified
-re-execution of the recorded runs, not a new attempt''; GKM states that ``at
-scoring time no model runs''; arc-skill's scorecard ``was produced by replaying
-the recorded runs.'' The seven reviewed teams adopted the same segmentation
-because RHAE scores only the final attempt, so learning efficiency is worth
-nothing. The consequence is that the public-set number now measures \emph{whether
-a frontier model can eventually build a correct world model of a game}, not
-whether an agent plays efficiently; two different capabilities, one reported
-in the other's name.
+Kepler separates discovery, final-attempt execution, and scorecard replay.
+These stages consume different resources. Retrodict, GKM, and arc-skill also
+disclose replay-based scoring, but a replayed scorecard alone does not establish
+how a system discovered its solution or whether it used an executable world
+model. Direct-interaction systems can produce replayable traces as well. The
+measurement issue is narrower: final-attempt action efficiency does not account
+for the inference, exploration, and failed attempts that preceded that attempt.
+We recommend reporting those stages separately rather than inferring a shared
+architecture or discovery efficiency from similar final scores.
 
 Two further patterns fall out of the same reading. First, with the public set
 saturated (five entries at ${\ge}99$, four at 100; 48 of our own 50 cells at 100 on the final boards),
@@ -364,7 +361,25 @@ repository.
 
 \subsection{sp80 as an open problem}\label{sec:sp80}
 
-For most of this project, sp80 was the open problem: below the cap on every board, for us and for Retrodict alike. Our longest text-mode run reached level 5 of 6 with every level at the cap, then spent days on level 6. Its endgame is the scientifically interesting part. The agent stopped probing and started \emph{proving}: under a physics that backtested green on 4,655 of 4,670 recorded transitions, it exhaustively searched on the order of $4.1\times10^{8}$ candidate configurations and established that no solution existed under the rules it knew. It also isolated one unexplained observable, a persistent animation-length residual, that had to hide the missing mechanic. The proof was correct, the rules were wrong, and the residual was the signature of an observation channel that deleted evidence. The intervention in \S\ref{sec:ablation} tests that hypothesis directly. We propose ``time-to-missing-mechanic,'' the interval between an agent's first proof-grade exhaustion of its rule set and its first observation isolating the missing mechanic, as a frontier metric for cases like this. On sp80, that interval closed in the first session where the agent could see the animation.
+For most of this project, sp80 was the open problem: below the cap on every board, for us and for Retrodict alike. Our longest text-mode run reached level 5 of 6 with every level at the cap, then spent days on level 6. The agent reported searching roughly $4.1\times10^{8}$ candidate configurations without finding a solution under its learned rules. Its notebook reports a model reproducing 4,655 of 4,670 recorded transitions, leaving 15 mismatches attributed there to game-over flags; an animation-length residual is discussed separately. We have not independently rerun that exact historical model. This was search under an incompletely fitted model, not a proof that the game was unsolvable. Retained animation later exposed a deflection rule, but earlier frame counts also contained distinguishing clues. The case therefore does not establish that images were necessary. We propose measuring missing-mechanic latency from a logged prediction discrepancy to a tested model repair, alongside the actions and inference used over that interval. This would reward responding to counterexamples rather than expanding search under a mistaken rule set.
+
+\begin{figure}[ht]
+  \centering
+  \begin{minipage}{0.31\linewidth}
+    \centering\includegraphics[width=\linewidth]{figures/sp80-start.png}\\
+    \small (a) Before the drop
+  \end{minipage}\hfill
+  \begin{minipage}{0.31\linewidth}
+    \centering\includegraphics[width=\linewidth]{figures/sp80-deflection.png}\\
+    \small (b) Branching flight
+  \end{minipage}\hfill
+  \begin{minipage}{0.31\linewidth}
+    \centering\includegraphics[width=\linewidth]{figures/sp80-filled.png}\\
+    \small (c) Four goals filled
+  \end{minipage}
+  \caption{Retained frames 0, 12, and 20 of the winning sp80 drop (development event 8324). The pink trail records the branching route around obstacles; yellow goals change appearance when filled. These are observed frames, not simulator predictions. They illustrate the discovered mechanic, not a matched visual advantage or a new held-out result. The development continuation predates the frozen release board.}
+  \label{fig:sp80frames}
+\end{figure}
 
 \subsection{Limits}\label{sec:limits}
 
@@ -407,18 +422,19 @@ segmentation of \S\ref{sec:eval} spans \emph{both} schools; the convergence
 is about what is scored, not how games are learned. Second, the schools have
 never been compared under controlled conditions (AVO: ``this is not a
 controlled ablation''); the observation channel (text grid vs.\ rendered
-frames) is confounded with everything else. Our harness records every frame and
-can toggle the observation channel alone (\texttt{--visual}), holding tools,
-discipline, and budget fixed for one game; \S\ref{sec:ablation} reports that
-single-game intervention. It does not establish a benchmark-wide visual advantage.
+frames) is confounded with everything else. Our harness can retain animation
+frames with \texttt{--visual}; \S\ref{sec:ablation} reports a continuation that
+also inherited earlier learning. This case motivates a matched observation
+study, not a claim of isolated or benchmark-wide visual advantage.
 
-\textbf{Prime Agent}~\citep{primeagent}; a general-purpose, self-improving
+\textbf{Prime Agent}~\citep{primeagent,primeagentreport}; a general-purpose, self-improving
 coding harness adapted to ARC-AGI-3 through its task prompt and broker. Prime
 Intellect reports three Opus 5 runs at 94.99--95.50, with a 95.24 median
 scorecard and estimated costs of \$944--1,288. This is stronger run-to-run
 evidence than Kepler's $n=1$ release cells. Kepler reports a higher single-board
-score and a stricter integrity record; Prime Agent makes the broader transfer
-claim across coding and long-context tasks.
+score; Prime Agent makes the broader transfer claim across coding and
+long-context tasks. Unmatched protocols and audit coverage do not support a
+ranking of capability or integrity between the two systems.
 
 \textbf{arc-code} (Berman)~\citep{arccode}; the minimal-scaffold datapoint: stock Claude Code with an 11-line prompt reaches 96.2 pass@1 / 99.3 pass@2 (${\sim}$\$540), while GPT-5.6 Sol under the same scaffold scores \textbf{73.7}. This cuts against attributing Kepler's Claude score entirely to harness design and reinforces the need for a valid control experiment.
 
@@ -434,7 +450,7 @@ python3 traces/verify_scores.py --traces-dir traces
 python3 traces/audit_integrity.py --traces-dir traces
 python3 scripts/verify.py                     # replay local fixture
 .venv/bin/python scripts/cost_report.py       # token accounting
-python3 scripts/check_no_game_ids.py          # zero-prior gate
+python3 scripts/check_no_game_ids.py          # literal game-ID scan
 \end{verbatim}}
 
 The dataset contains 50 run records and 58,098 environment events in append-only ledgers, along with human baselines, final world models and notebooks, captured CLI output for every final-board workspace, and dependency-free verification programs. Independent score recomputation matches 100.00 for Claude Opus 5 and 95.9672 for GPT-5.6 Sol, and the ledger check covers all 363 completed levels. The integrity scan applies to the published records and its fixed pattern set; it cannot prove that a client retained every event or detect every possible violation. Earlier stages, failures, and superseded runs remain documented in \texttt{RESULTS.md} and the incident archive, but are not part of this final-board dataset. Frozen-harness hashes were registered before the selected boards' results existed. Headline scorecards are c9f087f3 (GPT, exact) and 91aa2f10 (Opus, exact). Bit-for-bit reproduction of live runs is not expected because of sampling and provider drift; score reproduction from a published ledger is mechanical.

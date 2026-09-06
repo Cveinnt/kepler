@@ -244,7 +244,7 @@ def plot_convergence(w=940) -> str:
 
 
 def plot_cost(w=940, h=340) -> str:
-    """Score against disclosed or current API list-equivalent cost."""
+    """Score against disclosed or September 1, 2026 API list-equivalent cost."""
     lo, hi = math.log10(300), math.log10(3500)
     ylo, yhi = 90.0, 101.0
     x0, x1, y0, y1 = 64, w - 30, 40, h - 76
@@ -270,7 +270,7 @@ def plot_cost(w=940, h=340) -> str:
         s.append(f'<text x="{x:.1f}" y="{y1+20}" class="tick" '
                  f'text-anchor="middle">{lab}</text>')
     s.append(f'<text x="{(x0+x1)/2:.0f}" y="{h-12}" class="tick" '
-             f'text-anchor="middle">reported or current API list-equivalent USD, log scale</text>')
+             f'text-anchor="middle">reported or September 1, 2026 API list-equivalent USD, log scale</text>')
 
     # Published lower-cost, lower-scoring points.
     bx, by = xp(400), yp(99.0)
@@ -280,7 +280,7 @@ def plot_cost(w=940, h=340) -> str:
     s.append(f'<circle cx="{rx:.1f}" cy="{ry:.1f}" r="6" class="dot other"/>')
     s.append(f'<text x="{rx+12:.1f}" y="{ry-12:.1f}" class="lbl">Retrodict · $654 · 99.86</text>')
 
-    # Kepler boards from complete provider transcripts and current API rates.
+    # Kepler boards from complete provider transcripts and September 1, 2026 API rates.
     gx, gy = xp(1312.14), yp(95.97)
     s.append(f'<circle cx="{gx:.1f}" cy="{gy:.1f}" r="6" class="dot"/>')
     s.append(f'<text x="{gx-12:.1f}" y="{gy+24:.1f}" class="lbl dim" text-anchor="end">'
@@ -335,20 +335,20 @@ def og_image() -> None:
     d.rounded_rectangle([70, 286, 570, 478], radius=12,
                         outline=(66, 63, 57), width=2)
     d.text((98, 311), "$777.72", font=font(59, bold=True), fill=ink)
-    d.text((101, 383), "CURRENT API LIST-EQUIVALENT", font=font(18, bold=True),
+    d.text((101, 383), "SEP 1, 2026 API LIST-EQUIVALENT", font=font(18, bold=True),
            fill=muted)
     d.text((101, 426), "74% BELOW TYCHO ESTIMATE", font=font(24, bold=True),
            fill=accent)
 
     d.rounded_rectangle([606, 286, 1130, 478], radius=12,
                         outline=flag, width=2)
-    d.text((634, 311), "VOIDED 100", font=font(49, bold=True), fill=flag)
-    d.text((636, 383), "AGENT READ THE ANSWER KEY", font=font(21, bold=True),
+    d.text((634, 311), "181 / 183", font=font(49, bold=True), fill=accent)
+    d.text((636, 383), "AT OR BELOW MEDIAN HUMAN", font=font(21, bold=True),
            fill=ink)
-    d.text((636, 426), "AUDIT CAUGHT IT. RESULT WITHDRAWN.", font=font(18),
+    d.text((636, 426), "FINAL-ATTEMPT ACTIONS, NOT DISCOVERY", font=font(17),
            fill=muted)
 
-    d.text((70, 518), "THE SCORE IS REAL. SO ARE THE FAILURES.",
+    d.text((70, 518), "ONE SETUP. MODELS YOU CAN INSPECT.",
            font=font(31, bold=True), fill=ink)
     d.text((70, 578),
            "25 public games · ARC server replay · Tycho estimate via Retrodict",
@@ -356,6 +356,23 @@ def og_image() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     img.save(OUT / "og.png", optimize=True)
     print(f"wrote {OUT/'og.png'}")
+
+
+def sp80_frames() -> str:
+    """Three retained frames of development event 8324, never simulated output."""
+    panels = []
+    for name, label in (
+        ("sp80-start.png", "Before the drop"),
+        ("sp80-deflection.png", "The flight branches"),
+        ("sp80-filled.png", "All four goals filled"),
+    ):
+        raw = (ROOT / "docs/paper/latex/figures" / name).read_bytes()
+        uri = "data:image/png;base64," + base64.b64encode(raw).decode()
+        panels.append(
+            f'<div><img src="{uri}" alt="Retained sp80 frame: {label}" '
+            f'width="512" height="512" loading="lazy"><p>{label}</p></div>'
+        )
+    return '<div class="sp80-frames">' + ''.join(panels) + '</div>'
 
 
 def build() -> None:
@@ -366,6 +383,7 @@ def build() -> None:
         "plot_convergence": plot_convergence(),
         "plot_cost": plot_cost(),
         "interactive_data": interactive_data(),
+        "sp80_frames": sp80_frames(),
     }
     html = Path(__file__).with_name("template.html").read_text()
     for k, v in figs.items():

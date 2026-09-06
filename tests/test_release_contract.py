@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import base64
 import re
 import subprocess
 import tomllib
@@ -16,8 +17,8 @@ VERSION = "1.0.0"
 TITLE = "Kepler: Auditable World Models for ARC-AGI-3"
 HOOK = "100% on ARC-AGI-3 at one-fourth the cost."
 PREVIEW_DESCRIPTION = (
-    "Open-source agent harness with one frozen configuration, exact server replay, "
-    "$777.72 list-equivalent cost, and audits that voided its own best-looking results."
+    "One frozen setup, 100.00 on 25 public games, $777.72 API-equivalent release cost. "
+    "Inspect the agent-written simulators and the winning traces."
 )
 
 
@@ -116,6 +117,41 @@ for image in generated_contract.images:
     assert image.get("width") and image.get("height"), (
         "blog/site/index.html: image is missing intrinsic dimensions"
     )
+
+# These regressions previously overstated discovery speed, information loss,
+# and the resource denominator. Test the claim, not the layout or prose order.
+for path, text in {
+    "README.md": readme,
+    "blog/template.html": project_page,
+    "blog/site/index.html": generated_page,
+    "docs/paper/latex/main.tex": paper,
+}.items():
+    for stale_claim in (
+        "Nineteen sessions of correct proofs",
+        "Fifty-seven\n      actions later",
+        "find the\nrule in 57 actions",
+        "actions (learning included)",
+        "current API list-equivalent",
+        "current standard API",
+        "current Opus 5 API",
+        "zero-prior CI",
+        "score and a stricter integrity record",
+        "We conclude only that transient visual evidence was necessary",
+    ):
+        assert stale_claim not in text, f"{path}: restored unsupported claim {stale_claim!r}"
+    assert "September 1, 2026" in text, f"{path}: missing fixed pricing basis"
+
+assert 'id="see"' in project_page
+assert '<!--sp80_frames-->' in project_page
+assert '<!--sp80_frames-->' not in generated_page
+for frame_name in ("sp80-start.png", "sp80-deflection.png", "sp80-filled.png"):
+    frame = (ROOT / "docs/paper/latex/figures" / frame_name).read_bytes()
+    uri = "data:image/png;base64," + base64.b64encode(frame).decode()
+    assert any(image.get("src") == uri for image in generated_contract.images), (
+        f"project case figure no longer matches retained artifact {frame_name}"
+    )
+assert "development event 8324" in paper
+assert "not simulator predictions" in paper
 
 launch_surfaces = {
     "README.md": readme,

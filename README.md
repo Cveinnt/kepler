@@ -6,13 +6,13 @@ Kepler is an open-source agent harness for the 25 public ARC-AGI-3 games. One
 frozen Claude Opus 5 configuration scored **100.00**, with every game
 re-executed to 100 by ARC Prize's official server replay. There was no per-game
 model selection and no score-conditioned rerun. The cost headline compares
-$777.72 at current standard API list-equivalent rates with Retrodict's $2,986
+$777.72 at September 1, 2026 API list-equivalent rates with Retrodict's $2,986
 API-equivalent estimate for Tycho; Tycho did not publish a bill.
 
 | Model | Score | Evidence | Resource record |
 |---|---:|---|---:|
-| Claude Opus 5 | **100.00** | [Server-verified exact](https://arcprize.org/scorecards/91aa2f10-5dc3-4471-80e5-9e8895db5de1) | 8,256 retained-board-run actions; 858.0M tokens; $777.72 current API list-equivalent |
-| GPT-5.6 Sol (max) | **95.97** | [Server-verified exact](https://arcprize.org/scorecards/c9f087f3-b9de-452d-9520-d4d0597b0685) | 35,896 actions; 2,429.1M tokens; $1,312.14 current API list-equivalent |
+| Claude Opus 5 | **100.00** | [Server-verified exact](https://arcprize.org/scorecards/91aa2f10-5dc3-4471-80e5-9e8895db5de1) | 8,256 retained-board-run actions; 858.0M tokens; $777.72 September 1, 2026 API list-equivalent |
+| GPT-5.6 Sol (max) | **95.97** | [Server-verified exact](https://arcprize.org/scorecards/c9f087f3-b9de-452d-9520-d4d0597b0685) | 35,896 actions; 2,429.1M tokens; $1,312.14 September 1, 2026 API list-equivalent |
 
 **Start here:** [Project page](https://kepler-harness.vercel.app/) ·
 [Paper](docs/paper/latex/main.pdf) · [Reproduce the result](#verify-it) ·
@@ -28,24 +28,28 @@ evidence, not as competing product versions. Canonical release facts live in
 
 Five facts define the release:
 
-1. **Audits that changed the claims.** A source-reading 100 and a contaminated
-   control were voided. A dead planner is reported even though agents repaired
-   around it and kept scoring well.
-2. **Executable evidence.** Every committed action carries a prediction from an
+1. **100.00 with one setup.** One model, one commit-frozen harness, one
+   retained run per public game, no score-conditioned reruns.
+2. **$777.72 for the retained release runs.** At September 1, 2026 API rates,
+   that is 74.0% below Retrodict's $2,986 estimate for Tycho. This compares
+   two API-equivalent estimates, not research bills or matched experiments.
+3. **Short final solutions.** On 181 of 183 completed Opus levels, the final
+   attempt used no more actions than the median-human baseline. Discovery and
+   retries still cost work; this is not a faster-learning result.
+4. **A simulator you can inspect.** Every committed action carries a prediction from an
    executable world model. The first mismatch stops the plan and becomes a
    counterexample. Score replay, trajectory integrity, tool health, selection,
    and resource accounting remain separate checks.
-3. **A fixed selection policy.** One model, one commit-frozen harness, one
-   retained run per game, no score-conditioned reruns.
-4. **A perfect score at a lower comparable cost.** The retained Opus runs price
-   to $777.72 at current API list-equivalent rates, 74.0% below Retrodict's
-   $2,986 estimate for Tycho. This is a one-comparator claim, not a field-wide
-   ranking.
-5. **A ceiling, not a generalization claim.** On the Opus board, 181 of 183
-   completed levels used no more actions than the median-human baseline. Across
-   both frozen boards, 48 of 50 game-model cells reached 100. These are
-   final-attempt and public-set results, not human-like cognition, faster
-   learning, or held-out evidence.
+5. **Failures included.** A source-reading 100 and a contaminated control were
+   voided. A dead planner is reported even though agents repaired around it and
+   kept scoring well. The missing-animation case shows how extensive search can
+   stall under incomplete rules. Read the
+   [game walkthrough and engineering story](https://www.wensenwu.com/thoughts/kepler).
+
+Across both frozen boards, 48 of 50 game-model cells reached 100. These are
+public-set results, not held-out evidence. Executable world models are an
+established approach; the release combines this result with inspectable models,
+trajectories, accounting, and documented failure cases.
 
 ARC Prize re-executed every game in the Opus release board to 100.00. The
 [public final-board trace release](https://huggingface.co/datasets/cveinnt/kepler-arc-agi-3-traces)
@@ -90,7 +94,7 @@ experiment less informative.
 
 The retained Opus release runs used 858,041,926 tokens, 97.37% cache reads,
 and cost $777.72 when their uncached input, cache reads, one-hour cache writes,
-and output are priced at current Opus 5 API rates. This is a list-equivalent
+and output are priced at September 1, 2026 Opus 5 API rates. This is a list-equivalent
 reconstruction, not cash spend or the cost of the full research campaign. It is
 74.0% below the
 $2,986 API-equivalent estimate Retrodict published for Tycho. Tycho does not
@@ -100,7 +104,7 @@ field.
 
 The GPT board used 2,429.1M raw tokens. An earlier footer-based estimate was
 incomplete: provider session records show that the footers omitted most cached-
-input traffic and one long-running workspace. At current GPT-5.6
+input traffic and one long-running workspace. At September 1, 2026 GPT-5.6
 Sol rates the complete board is $1,312.14 list-equivalent. We corrected the
 claim rather than preserving a flattering denominator.
 
@@ -121,13 +125,14 @@ definitions, so ranking them would compare unlike quantities.
 
 ### A perception finding from the last resistant game
 
-One game resisted every text-observation attempt. The agent searched roughly
-410 million configurations under a model that fit more than 4,600 recorded
-transitions and concluded the final level was unsolvable. The missing mechanic
-existed only in transient animation frames. Exposing rendered frames, while
-keeping the model, tools, and harness policy fixed, let the same model find the
-rule in 57 actions. We report this as a single-game within-system intervention,
-not a benchmark-wide causal result.
+On sp80, nineteen text-mode sessions left the final level unsolved. The agent
+reported searching roughly 410 million configurations under incomplete rules.
+A visual continuation inherited its notes and identified a deflection mechanic
+visible during animation. Its final successful attempt used 57 actions, not
+counting discovery. Earlier animation counts also contained clues, so this does
+not establish that images were necessary. The
+[interactive walkthrough](https://www.wensenwu.com/thoughts/kepler) shows the
+retained winning drop and the mechanic the agent had missed.
 
 ### A proposal for evaluation after public-set saturation
 
@@ -146,7 +151,7 @@ result. See
 | Score and human-relative execution | Claude Opus 5 at 100.00 and GPT-5.6 Sol at 95.97, both exact on ARC Prize's official replay. On the Opus board, 181 of 183 completed levels used no more actions than the median-human baseline; two used more. This is final-attempt action efficiency, not discovery efficiency or human-like cognition. |
 | Frozen selection policy | One model, one commit-frozen harness registered before the 25-run release board, one retained run per game, no score-conditioned reruns. The GPT board keeps its same-configuration collapse. |
 | Action accounting without a flattering denominator | 8,256 actions in the retained board runs, 7,292 in the original local scored-level results, and 7,202 on ARC's public replay card. Full campaign logs contain at least 13,688 non-reset actions plus 22 unavailable prefix events, so we do not call 8,256 learning-inclusive or compare it with another system's campaign total. |
-| Lower comparable cost | $777.72 at current Opus 5 API list rates, 74.0% below Retrodict's $2,986 API-equivalent estimate for Tycho. Tycho publishes no cost figure of its own; AVO and VISTA disclose none. |
+| Lower comparable cost | $777.72 at September 1, 2026 Opus 5 API list rates, 74.0% below Retrodict's $2,986 API-equivalent estimate for Tycho. Tycho publishes no cost figure of its own; AVO and VISTA disclose none. |
 | Final-board score convergence | Across the two frozen release configurations, 48 of 50 game-model cells reach 100. This is concentration at the public-set ceiling, not faster learning, causal harness lift, or independent replication. The certify/replay stage's +2.35-point change remains a descriptive stage delta because adjacent changes were not held constant. |
 | Audit regression and incident record | A deterministic code-level suite detects 11 of 13 hand-built threat fixtures and flags none of five benign controls. Separately, a source-reading win and a contaminated control were voided, and a dead planner exposed a tool-integrity blind spot. The suite is not a field sensitivity estimate and cannot detect events the client did not retain. |
 | Reward hacking, disclosed | An agent read 2,172 lines of game source inside its workspace and returned a natural-looking 100.00. That run was voided and quarantined, and it is not part of the release board. |

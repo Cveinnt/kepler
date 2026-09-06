@@ -19,7 +19,7 @@ Sources:
 | System | Public result | Reported actions | Disclosed cost | Run-selection note |
 |---|---:|---:|---:|---|
 | NVIDIA AVO | 100.00 | 6,624 environment actions | not disclosed | general-purpose transfer evaluation |
-| Kepler | **100.00** | **8,256 retained-board-run actions; 7,292 in original local scored-level results; 7,202 on the public replay card; at least 13,688 campaign actions observed** | **$777.72 current API list-equivalent** | one frozen configuration; one retained run per game |
+| Kepler | **100.00** | **8,256 retained-board-run actions; 7,292 in original local scored-level results; 7,202 on the public replay card; at least 13,688 campaign actions observed** | **$777.72 September 1, 2026 API list-equivalent** | one frozen configuration; one retained run per game |
 | VISTA | 100.00 | 7,542 game actions | not disclosed | vision-first harness |
 | Tycho | 100.00 | not reported in compared materials | none disclosed; Retrodict estimates $2,986 API-equivalent | multiple model/policy results |
 | Retrodict | 99.86 | 7,703 campaign actions | $654 | single public board with trace disclosure |
@@ -42,10 +42,11 @@ defensible position is the combination:
 - 8,256 actions in retained board runs, 7,292 in original local scored-level
   results, and 7,202 on the public replay card, with at least 13,688 non-reset
   campaign actions reported separately;
-- $777.72 at current API list rates, 74.0% below Retrodict's $2,986
+- $777.72 at September 1, 2026 API list rates, 74.0% below Retrodict's $2,986
   API-equivalent estimate for Tycho;
 - one frozen configuration with no score-conditioned reruns;
-- zero game priors enforced in CI;
+- CI scanning for literal game identifiers in agent-visible files, not a test
+  for semantic priors or model training exposure;
 - prediction-gated actions and mechanical scored replay;
 - audits that voided a source-reading win and contaminated control;
 - negative results, withdrawn claims, replay seams, and tool-health failures
@@ -59,11 +60,11 @@ defensible position is the combination:
 | Human-relative performance | 181/183 Opus levels at or above median-human action efficiency; two below, with capped gains elsewhere preserving the 100.00 composite |
 | Scored convergence | 7,292 actions in original local scored-level results; 7,202 on the public replay card |
 | Campaign actions | At least 13,688 observed non-reset actions, plus 22 unavailable prefix events |
-| Perfect-score bill | $777.72 current API list-equivalent, 74.0% below Retrodict's $2,986 estimate for Tycho |
+| Release-run cost estimate | $777.72 September 1, 2026 API list-equivalent, 74.0% below Retrodict's $2,986 estimate for Tycho; not a bill or total research spend |
 | Selection | One frozen configuration, one run per game, failures retained |
-| Priors | Zero game-specific priors on agent-visible surfaces, CI-enforced |
+| Priors | No literal game IDs detected in scanned agent-visible files; semantic priors and model training exposure are not excluded |
 | Reaction loop | Prediction on every committed action; first mismatch stops plan |
-| Mechanism evidence | Certify/replay stage +2.35; scoped visual intervention |
+| Mechanism evidence | Descriptive certify/replay stage change +2.35, not isolated causal lift; visual continuation inherited earlier learning |
 | Audits | Source-read and contaminated-control claims invalidated |
 | Negative results | Regression, reward hacking, replay seams, dead planner published |
 

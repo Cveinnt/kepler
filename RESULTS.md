@@ -15,7 +15,7 @@ RHAE implementation from the `arc-agi` toolkit.
 > `runs-v*` strings remain only where they identify an exact internal directory
 > or freeze record. Canonical release facts live in [`release.json`](release.json).
 
-| Kepler 1.0 board | score | exact replay | retained-board-run actions | local scored-level actions | public replay-card actions | provider-record tokens | current API list-equivalent |
+| Kepler 1.0 board | score | exact replay | retained-board-run actions | local scored-level actions | public replay-card actions | provider-record tokens | September 1, 2026 API list-equivalent |
 |---|---:|---|---:|---:|---:|---:|---:|
 | Claude Opus 5 | **100.00** | [91aa2f10](https://arcprize.org/scorecards/91aa2f10-5dc3-4471-80e5-9e8895db5de1) | 8,256 | 7,292 | 7,202 | 858.0M, 97.37% cache reads | **$777.72** |
 | GPT-5.6 Sol (max) | **95.97** | [c9f087f3](https://arcprize.org/scorecards/c9f087f3-b9de-452d-9520-d4d0597b0685) | 35,896 | 8,400 | 8,220 | 2,429.1M, 98.0% cached input | $1,312.14 |
@@ -78,7 +78,7 @@ Chollet's stated condition for a harness result being legitimate is that *"the s
 the cost are clearly reported"*. Release accounting comes from retained local provider-session
 session records, not workspace CLI footers:
 
-| board | uncached input | cached/read input | cache write | output | raw total | current API list-equivalent |
+| board | uncached input | cached/read input | cache write | output | raw total | September 1, 2026 API list-equivalent |
 |---|---:|---:|---:|---:|---:|---:|
 | Claude Opus 5, 100.00 | 11,464 | 835,488,978 | 13,574,918 (1h) | 8,966,566 | 858,041,926 | **$777.72** |
 | GPT-5.6 Sol, 95.97 | 39,262,504 | 2,379,659,648 | 0 | 10,161,281 | 2,429,083,433 | $1,312.14 |
@@ -424,30 +424,33 @@ fresh clean-run-fix board). No score-conditioned reruns entered any board.
 
 ## Visual-observation intervention: sp80 reaches 100.0 (2026-08-28)
 
-The within-system observation intervention has its answer. Same workspace, same model
-(claude-opus-5), same tools, budgets, and audits; one flag (--visual) changed
-the observation channel from text grids to rendered PNG frames (every frame,
-animation frames included, the text ledger provably drops them).
+This observation-channel case study continued the same workspace and model
+(claude-opus-5), inheriting earlier notes and learned models. The --visual flag
+retained rendered animation frames in addition to settled grids and frame counts.
+It was not a matched fresh text-versus-vision experiment.
 
 - 19 text-mode sessions across 6 attempts inferred physics from settled grids +
   animation-frame COUNTS. The learned model fit 4,655 of 4,670 recorded
   transitions, and the agent searched roughly 410 million candidate
   configurations before concluding L6 was "unsolvable under known rules." The
-  remaining animation residual could not be decoded from the text channel.
+  earlier frame counts contained clues the agent had not resolved. The notebook
+  attributes the 15 transition mismatches to game-over flags and discusses
+  animation-length residuals separately; that exact old model has not been rerun.
 - Visual session 20 read the frames and found the missing mechanic within one
   session: a blocked flight DEFLECTS around pieces and resumes course (the
   agent's notes: "the thing 19 sessions missed... water round a rock"), plus two
   visual affordances invisible in the settled grid (cups blink white when unfed;
   the border flashes green on the death side).
-- Result: level 6 in 57 actions; final attempt 4/7/20/73/32/57 vs baselines
+- Result: the final successful attempt on level 6 used 57 actions, excluding discovery;
+  final attempt 4/7/20/73/32/57 vs baselines
   39/58/25/148/96/152, every level at the 1.15 cap; **score 100.0** (result.json,
   runs-v6-validation/opus/sp80).
 
 Provenance: this is an intervention, not a board row. The run resumed the
 certify/replay workspace, inheriting 19 sessions of its own text-mode learning,
 then continued under the visual-observation freeze. It establishes that sp80 is
-solvable by this system and that the observation channel was the binding
-constraint for this run. It does not establish a benchmark-wide effect. The
+solvable by this system. It does not establish visual necessity or a causal
+reduction in discovery cost without a matched fresh text-only control. The
 discovery narrative remains verbatim in the workspace notes.
 
 ## Visual-observation board (launched 2026-08-28)
@@ -475,7 +478,7 @@ Official replay: [c9f087f3](https://arcprize.org/scorecards/c9f087f3-b9de-452d-9
 **Single configuration, Claude Opus 5, frozen at dc4e702 with visual mode,
 all 25 public games, fresh workspaces: composite 100.00.** First 100 in this
 project; achieved the run
-after the modality ablation identified vision as sp80's binding constraint.
+after the visual continuation identified a missing mechanic on sp80.
 Notes: (1) result.json stamps record docs-only later commits (31afb86/9419db9);
 `git diff dc4e702..HEAD -- harness/` is empty, the harness that played every
 game is the frozen one. (2) The board absorbed provider-quota interruptions and
@@ -588,6 +591,6 @@ We do not rank either count against AVO's 6,624
 environment actions, VISTA's 7,542 game actions, or Retrodict's 7,703 campaign
 actions, because those are different denominators. The retained provider record,
 deduplicated by provider message ID, totals 858,041,926 raw tokens, 97.37% cache
-reads, or $777.72 at current API list-equivalent rates. That is 74.0% below the $2,986 API-equivalent
+reads, or $777.72 at September 1, 2026 API list-equivalent rates. That is 74.0% below the $2,986 API-equivalent
 estimate Retrodict published for Tycho; Tycho discloses no cost of its own, and
 neither do AVO or VISTA. Actual execution used Claude subscription quota.

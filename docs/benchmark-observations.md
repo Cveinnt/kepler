@@ -1,20 +1,17 @@
 # What harness saturation reveals about ARC-AGI-3 evaluation
 
 Notes offered to the ARC Prize community, written from the inside of building a
-competitive entry. Not a critique of the benchmark. ARC-AGI-3's
-design is sound enough that seven independent teams converged on the *same* way
-of beating its public set, and that convergence is itself a measurement result
-worth acting on. Everything below is drawn from the public code and scorecards
+competitive entry. Similar public-set scores can conceal different discovery
+methods, budgets and observation channels. Distinguishing those stages would
+make the results more useful. These notes draw on public code and scorecards
 of Tycho, Retrodict, baseline1, arc-skill, GKM, Strands, and our own runs.
 
 ## 1. Several leading harnesses separate learning from scored replay
 
-One strong commonality across the top of the leaderboard is not a
-model, a prompt, or a search algorithm. It is a *segmentation trick* that the
-metric permits and therefore every entry adopts:
-
-- learn the game across an unbounded number of actions and attempts (unscored),
-- then emit a clean, minimal action sequence and **replay it as the scored attempt.**
+Kepler separates learning, final-attempt execution and server verification.
+Learning can include exploration and failed attempts before a short final
+solution. Its scorecard then verifies a replay of that solution. These stages
+answer different questions and should have separate resource accounts.
 
 Tycho ships a "replay viewer" and scores competition-mode replays. Retrodict's
 own words for its scorecard: a *"verified re-execution of the recorded runs, not
@@ -25,10 +22,11 @@ per-level programs and a fail-closed executor replays them.
 
 RHAE scores the final attempt, not superseded attempts. So the rational entry
 can spend thousands of actions learning and a baseline-minimal number scoring.
-This is not cheating. It is a strategy the rules permit. But it means **the public-set RHAE number can measure
-"can a frontier model eventually build a correct world model of this game,"
-not "can an agent play efficiently."** Those are different capabilities, and the
-headline number is now reporting the first while appearing to report the second.
+This is not cheating. It is a strategy the rules permit. But final-attempt
+efficiency does not reveal how efficiently the agent discovered the solution.
+A replayed scorecard also does not prove that the original solver built a world
+model or removed the language model from its final attempt. Direct-interaction
+systems produce replayable traces too.
 
 ## 2. The public set is saturated; the discriminating axis silently became cost
 
@@ -45,8 +43,8 @@ unreported.** Same public set, comparable scores:
 | Tycho | 100.0 | none disclosed; Retrodict estimates ~$2,986 API-equivalent |
 | VISTA | 100.0 | not disclosed |
 | NVIDIA AVO | 100.0 | not disclosed |
-| Kepler, GPT board | 95.97 | $1,312.14 current API list-equivalent |
-| Kepler, Opus board | 100.0 | $777.72 current API list-equivalent |
+| Kepler, GPT board | 95.97 | $1,312.14 September 1, 2026 API list-equivalent |
+| Kepler, Opus board | 100.0 | $777.72 September 1, 2026 API list-equivalent |
 
 A large cost spread at similar scores, and the figures are self-reported or list-equivalent dollars
 with no shared definition. Some include cached input, some estimate, some omit
@@ -54,7 +52,7 @@ tokens entirely. The leaderboard shows a verified score badge and no cost badge,
 so the axis that now carries all the signal is the one nobody is required to
 report comparably.
 
-Kepler's 100.00 bill is 74.0% below the $2,986 API-equivalent estimate that
+Kepler's retained-run API-equivalent estimate is 74.0% below the $2,986 estimate that
 Retrodict published for Tycho. Tycho itself discloses no cost, and neither do
 AVO or VISTA, which is the point of this section: the comparison exists only
 because a third party did the estimating. It is not a claim that Kepler is
@@ -66,10 +64,13 @@ lower-scoring points.
 arc-skill refuses any press without a falsifiable prediction and grades it.
 Retrodict requires a stated `expect` per action. Ours voids a plan on the first
 misprediction. GKM admits programs only after independent replay verification.
-Four teams independently arrived at "the harness must force the agent to state
-and grade a prediction before every action." This is a concrete, transferable finding
-about *how to make a coding agent reliable on interactive tasks* that the
-benchmark neither requires nor measures, but which its top entries all discovered.
+These are related verification mechanisms, not identical contracts or a matched
+reliability experiment. A useful next measurement is what happens after a
+counterexample: how many actions, tokens and seconds pass before a model repair
+survives another test? Kepler's sp80 case motivates that question because large
+searches continued under rules that did not explain all the available evidence.
+We propose measuring this response cost; we have not established a faster rate
+than other systems.
 
 ## Recommendations, offered not asserted
 
