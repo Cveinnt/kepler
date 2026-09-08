@@ -97,10 +97,10 @@ and cost $777.72 when their uncached input, cache reads, one-hour cache writes,
 and output are priced at September 1, 2026 Opus 5 API rates. This is a list-equivalent
 reconstruction, not cash spend or the cost of the full research campaign. It is
 74.0% below the
-$2,986 API-equivalent estimate Retrodict published for Tycho. Tycho does not
-publish a cost figure of its own, and AVO and VISTA disclose none, so this is
-a comparison against one third-party estimate rather than a ranking of the
-field.
+$2,986 API-equivalent estimate Retrodict published for Tycho. [Tycho's own
+paper](https://arxiv.org/html/2607.28287) now reports approximately $2.99k for
+its Opus 5 run, with token accounting and budget curves. These estimates are
+not bills or a controlled harness comparison, and do not rank the whole field.
 
 The GPT board used 2,429.1M raw tokens. An earlier footer-based estimate was
 incomplete: provider session records show that the footers omitted most cached-
@@ -151,7 +151,7 @@ result. See
 | Score and human-relative execution | Claude Opus 5 at 100.00 and GPT-5.6 Sol at 95.97, both exact on ARC Prize's official replay. On the Opus board, 181 of 183 completed levels used no more actions than the median-human baseline; two used more. This is final-attempt action efficiency, not discovery efficiency or human-like cognition. |
 | Frozen selection policy | One model, one commit-frozen harness registered before the 25-run release board, one retained run per game, no score-conditioned reruns. The GPT board keeps its same-configuration collapse. |
 | Action accounting without a flattering denominator | 8,256 actions in the retained board runs, 7,292 in the original local scored-level results, and 7,202 on ARC's public replay card. Full campaign logs contain at least 13,688 non-reset actions plus 22 unavailable prefix events, so we do not call 8,256 learning-inclusive or compare it with another system's campaign total. |
-| Lower comparable cost | $777.72 at September 1, 2026 Opus 5 API list rates, 74.0% below Retrodict's $2,986 API-equivalent estimate for Tycho. Tycho publishes no cost figure of its own; AVO and VISTA disclose none. |
+| Scoped cost comparison | $777.72 at September 1, 2026 Opus 5 API list rates, 74.0% below Retrodict's $2,986 estimate for Tycho. Tycho's own paper reports approximately $2.99k. Different accounting and runs, not a controlled harness comparison. |
 | Final-board score convergence | Across the two frozen release configurations, 48 of 50 game-model cells reach 100. This is concentration at the public-set ceiling, not faster learning, causal harness lift, or independent replication. The certify/replay stage's +2.35-point change remains a descriptive stage delta because adjacent changes were not held constant. |
 | Audit regression and incident record | A deterministic code-level suite detects 11 of 13 hand-built threat fixtures and flags none of five benign controls. Separately, a source-reading win and a contaminated control were voided, and a dead planner exposed a tool-integrity blind spot. The suite is not a field sensitivity estimate and cannot detect events the client did not retain. |
 | Reward hacking, disclosed | An agent read 2,172 lines of game source inside its workspace and returned a natural-looking 100.00. That run was voided and quarantined, and it is not part of the release board. |
