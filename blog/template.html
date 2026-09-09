@@ -140,13 +140,13 @@ nav a:not(.brand):hover{color:var(--accent)}
 }
 
 /* ── hero ───────────────────────────────────────────────────────── */
-header.hero{padding:104px 0 0}
+header.hero{padding:56px 0 0}
 .kicker{font-family:var(--sans);font-size:12.5px;font-weight:600;
   letter-spacing:.08em;text-transform:uppercase;color:var(--accent);
   margin:0 0 26px}
-h1{font-family:var(--serif);font-weight:400;font-size:clamp(46px,7.4vw,82px);
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(46px,6vw,64px);
   line-height:1.02;letter-spacing:-.028em;margin:0;text-wrap:balance}
-.stand{font-size:22.5px;line-height:1.5;color:var(--muted);
+.stand{font-size:20px;line-height:1.5;color:var(--muted);
   margin:28px 0 0;max-width:56ch;text-wrap:pretty}
 .stand strong{color:var(--ink);font-weight:500}
 .cards-row{display:flex;flex-wrap:wrap;gap:10px;margin:40px 0 0;
@@ -344,14 +344,15 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
     <h1>100% on ARC-AGI-3 at one-fourth the cost.</h1>
     <p class="stand"><strong>One frozen Claude Opus 5 configuration, one retained run per
       game across all 25 public games, no score-conditioned reruns.</strong> Cost means $777.72 at September 1, 2026 API rates
-      against Retrodict&rsquo;s $2,986 estimate for Tycho, not a Tycho bill.</p>
+      against Tycho&rsquo;s reported $2,986 full-run total. These are list-equivalent
+      estimates for unmatched runs, not bills or total research costs.</p>
     <ol class="wedges">
+      <li><b>62% fewer output tokens</b>9.0M in Kepler&rsquo;s retained Opus run versus
+        Tycho&rsquo;s reported 23.4M. <a href="https://github.com/Cveinnt/kepler/blob/main/docs/resource-comparison.md">Exact counters and comparison limits</a>.</li>
       <li><b>Short final solutions</b>181 of 183 completed Opus levels used no more
         actions than the median-human baseline in the final attempt. This excludes discovery.</li>
       <li><b>The agent writes a simulator</b>Inspect its rules, predictions, and mistakes.
         The first wrong prediction stops the plan and returns the counterexample.</li>
-      <li><b>One setup, with receipts</b>One frozen configuration, no score-conditioned
-        reruns, exact server replay, and a public 50-run trace corpus.</li>
     </ol>
     <div class="cards-row">
       <a href="https://arcprize.org/scorecards/91aa2f10-5dc3-4471-80e5-9e8895db5de1"><b>100.00</b> · Opus 5 board, server-verified exact</a>
@@ -607,7 +608,8 @@ document.addEventListener("DOMContentLoaded", function () {
         Plot.ruleY([0]),
         Plot.dot(data, {x: "game", y: "actions", stroke: "board", r: 5,
           channels: {levels: "levels", score: "score"},
-          tip: {format: {x: true, y: true, stroke: true, levels: true, score: true}}})
+          tip: {fill: "var(--paper)", stroke: "var(--rule2)",
+            format: {x: true, y: true, stroke: true, levels: true, score: true}}})
       ]
     });
     // Chart 2: score vs actions scatter, the efficiency frontier per game
@@ -620,7 +622,8 @@ document.addEventListener("DOMContentLoaded", function () {
       marks: [
         Plot.dot(data, {x: "actions", y: "score", stroke: "board", r: 5,
           channels: {game: "game", levels: "levels"},
-          tip: {format: {game: true, levels: true, x: true, y: true, stroke: true}}}),
+          tip: {fill: "var(--paper)", stroke: "var(--rule2)",
+            format: {game: true, levels: true, x: true, y: true, stroke: true}}}),
         Plot.text(data.filter(d => d.score < 100), {x: "actions", y: "score", text: "game",
           dy: -10, fill: ACCENT, fontSize: 12})
       ]
@@ -755,7 +758,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="cost">
   <div class="wrap">
     <p class="kicker">04 · What it cost</p>
-    <h2>What a perfect board actually costs, when anyone publishes the number</h2>
+    <h2>Fewer generated tokens, with the cache counted separately</h2>
     <p>Chollet&rsquo;s condition for a harness result being legitimate is that the
       settings and the cost are clearly reported. So: the exact 100.00 Opus board used
       11,464 uncached input, 835.489M cache-read input, 13.575M one-hour cache-write
@@ -769,6 +772,12 @@ document.addEventListener("DOMContentLoaded", function () {
       now reports approximately $2.99k for Opus 5, with token accounting and budget
       curves. These estimates are not bills or a controlled harness comparison,
       and do not rank the whole field.</p>
+    <p>Kepler generated 8,966,566 output tokens versus Tycho&rsquo;s reported
+      23,433,077, a <strong>61.7% reduction</strong>. Total token volume is 36.1%
+      lower. Repricing both fixed token volumes without cache discounts reduces
+      the cost gap from 74.0% to 37.8%; this is a pricing sensitivity calculation,
+      not an uncached rerun. <a href="https://github.com/Cveinnt/kepler/blob/main/docs/resource-comparison.md">Reproduce the arithmetic</a>.
+      These aggregates do not establish faster rule learning.</p>
     <p>Retrodict&rsquo;s 99.86 costs less at $654, and baseline1 reports 99.0 at $400.
       Those are lower-cost, lower-scoring points, so we do not call Kepler cheapest
       overall. The final GPT-5.6 board is $1,312.14 list-equivalent. An earlier draft

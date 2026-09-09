@@ -30,9 +30,11 @@ Five facts define the release:
 
 1. **100.00 with one setup.** One model, one commit-frozen harness, one
    retained run per public game, no score-conditioned reruns.
-2. **$777.72 for the retained release runs.** At September 1, 2026 API rates,
-   that is 74.0% below Retrodict's $2,986 estimate for Tycho. This compares
-   two API-equivalent estimates, not research bills or matched experiments.
+2. **Lower cost and fewer generated tokens in the retained run.** $777.72
+   list-equivalent cost versus Tycho's reported $2,986; 9.0M output tokens
+   versus 23.4M, a 61.7% reduction. These are unmatched retained runs, not
+   research bills or a controlled harness comparison. See the
+   [resource comparison](docs/resource-comparison.md).
 3. **Short final solutions.** On 181 of 183 completed Opus levels, the final
    attempt used no more actions than the median-human baseline. Discovery and
    retries still cost work; this is not a faster-learning result.
