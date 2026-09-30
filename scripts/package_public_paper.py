@@ -32,6 +32,15 @@ page = f'''<!doctype html>
 <meta name="citation_publication_date" content="2026/09/01">
 <meta name="citation_pdf_url" content="https://kepler-harness.vercel.app/paper/kepler.pdf">
 <meta name="description" content="Executable world models, replay evidence, and documented evaluation failures. Public technical report by Wensen Wu.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="{title}">
+<meta property="og:description" content="Executable world models, replay evidence, and documented evaluation failures. Public technical report by Wensen Wu.">
+<meta property="og:url" content="https://kepler-harness.vercel.app/paper/">
+<meta property="og:image" content="https://kepler-harness.vercel.app/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{title}">
+<meta name="twitter:description" content="Executable world models, replay evidence, and documented evaluation failures. Public technical report by Wensen Wu.">
+<meta name="twitter:image" content="https://kepler-harness.vercel.app/og.png">
 <style>body{{max-width:820px;margin:3rem auto;padding:0 1.25rem;font:18px/1.65 system-ui;color:#222;background:#faf9f6}}h1{{font:600 2.3rem/1.15 Georgia,serif}}a{{color:#164d83}}nav{{display:flex;flex-wrap:wrap;gap:1rem}}pre{{padding:1rem;background:#eee;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px}}.meta{{color:#555}}h2{{margin-top:2rem}}</style>
 </head><body>
 <nav><a href="/">Project</a><a href="https://www.wensenwu.com/thoughts/kepler">Engineering essay</a><a href="https://github.com/Cveinnt/kepler">Code</a></nav>
