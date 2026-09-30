@@ -35,9 +35,14 @@ class PageContract(HTMLParser):
         self.fragments: set[str] = set()
         self.images: list[dict[str, str]] = []
         self.canonicals: list[str] = []
+        self.headings: list[str] = []
+        self.in_heading = False
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = {key: value or "" for key, value in attrs}
+        if tag == "h1":
+            self.headings.append("")
+            self.in_heading = True
         if values.get("id"):
             self.ids.add(values["id"])
         if tag == "a" and values.get("href", "").startswith("#"):
@@ -46,6 +51,14 @@ class PageContract(HTMLParser):
             self.images.append(values)
         if tag == "link" and values.get("rel") == "canonical":
             self.canonicals.append(values.get("href", ""))
+
+    def handle_data(self, data: str) -> None:
+        if self.in_heading:
+            self.headings[-1] += data
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "h1":
+            self.in_heading = False
 
 
 def parse_page(text: str) -> PageContract:
@@ -83,7 +96,7 @@ assert HOOK in readme
 assert "Kepler 1.0" in readme
 assert f"\\title{{{TITLE}}}" in paper
 assert "\\author{Wensen Wu" in paper
-assert f'<h1>{HOOK}</h1>' in project_page
+assert parse_page(project_page).headings == [HOOK]
 assert f'<meta name="citation_title" content="{TITLE}">' in project_page
 assert len(PREVIEW_DESCRIPTION) <= 160
 assert project_page.count(f'content="{PREVIEW_DESCRIPTION}"') == 3
@@ -100,7 +113,7 @@ for path, text in {
         f"{path}: broken internal links: {sorted(page.fragments - page.ids)}"
     )
 
-assert generated_page.count(f'<h1>{HOOK}</h1>') == 1
+assert parse_page(generated_page).headings == [HOOK]
 assert f'<meta name="citation_title" content="{TITLE}">' in generated_page
 assert generated_page.count(f'content="{PREVIEW_DESCRIPTION}"') == 3
 for url in (
