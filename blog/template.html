@@ -319,6 +319,46 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
 .bynumbers td{padding:.9rem 1rem;border:1px solid var(--rule,rgba(0,0,0,.12));vertical-align:top}
 .bynumbers b{display:block;font-size:1.6rem;line-height:1.1}
 .bynumbers span{display:block;font-size:.8rem;opacity:.75;margin-top:.25rem}
+
+/* Recorded-flight viewer, integrated with the release page theme. */
+.hero-stage{max-width:1140px;margin:0 auto;padding:0 24px 36px;display:grid;grid-template-columns:1.1fr 1fr;gap:52px;align-items:center}
+.hero-stage h1{font-size:clamp(42px,4.4vw,62px)}
+.hero-stage .stand{margin-top:24px;font-size:22px}
+.hero-scope{font:12px/1.6 var(--sans);color:var(--muted);border-left:2px solid var(--rule2);padding-left:12px;margin:24px 0}
+.hero-links{display:flex;gap:10px;flex-wrap:wrap;font:13px var(--sans)}
+.hero-links a{padding:10px 13px;border:1px solid var(--rule2);text-decoration:none;border-radius:4px}
+.hero-links a:first-child{background:var(--accent);color:var(--paper);border-color:var(--accent)}
+.hero-byline{font:12px var(--sans);color:var(--muted);margin:22px 0 0}
+.release-context{font-size:16px;line-height:1.6;border-block:1px solid var(--rule);padding:16px 0;margin:0 0 25px}
+.release-context summary{font:13px var(--sans);color:var(--accent);cursor:pointer}
+.release-context p{margin:18px 0 0}
+.replay{margin:0;padding:16px;background:var(--card);border:1px solid var(--rule2);border-radius:8px;min-width:0;scroll-margin-top:100px;font-family:var(--sans)}
+.replay-head{display:flex;justify-content:space-between;gap:8px;font:10px var(--mono);color:var(--muted)}
+.replay .modes{display:flex;gap:4px;margin:14px 0 10px}
+.replay button{font:11px/1.4 var(--sans);color:var(--ink);background:var(--paper);border:1px solid var(--rule2);border-radius:3px;padding:8px;cursor:pointer}
+.replay button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.replay button:disabled{opacity:.5;cursor:wait}
+.replay button:focus-visible,.replay input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.replay .modes button{flex:1}
+.replay .board{position:relative;max-width:352px;margin:auto}
+.replay .board img{display:block;width:100%;height:auto;image-rendering:pixelated}
+.replay .frame-chip{position:absolute;right:8px;top:8px;background:#12110fe6;color:#fff;padding:5px 7px;font:10px var(--mono)}
+.replay .transport{display:flex;gap:10px;align-items:center;margin:12px 0}
+.replay .transport button{min-width:60px}
+.replay input{min-width:0;flex:1;accent-color:var(--accent)}
+.replay output{font:10px var(--mono);white-space:nowrap}
+.replay .stops{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.replay .stops button{padding:7px 3px;font-size:10px}
+.replay figcaption{display:flex;flex-direction:column;margin:14px 0 0;min-height:58px;font:12px/1.5 var(--sans);color:var(--muted)}
+.replay figcaption strong{color:var(--ink);font-size:14px;margin-bottom:3px}
+.replay .provenance{font:10px/1.5 var(--sans);color:var(--muted);margin:10px 0 0}
+.replay-links{font:11px var(--sans);margin:10px 0}
+.replay-status{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.replay-status.failed{position:static;width:auto;height:auto;clip:auto;font:12px var(--sans);color:var(--flag)}
+@media(max-width:640px){nav .bar{font-size:12px;gap:10px}}
+@media(max-width:760px){.hero-stage{grid-template-columns:1fr;gap:28px;padding-inline:16px}.hero-stage h1{font-size:44px}.hero-stage .stand{font-size:19px}.hero-stage .kicker{margin-bottom:18px}.hero-scope{margin:18px 0}.replay{max-width:480px;width:100%;justify-self:center}header.hero{padding-top:32px}.hero-byline{margin-top:18px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
 </style>
 </head>
 <body>
@@ -327,7 +367,8 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
   <div class="bar">
     <a class="brand" href="#top">Kepler</a>
     <a href="#number">Results</a>
-    <a href="#see">Finding</a>
+    <a href="#replay">Replay</a>
+    <a href="#see" class="hide-s">Finding</a>
     <a href="#explore" class="hide-s">Explore</a>
     <a href="#method">Method</a>
     <a href="#cost" class="hide-s">Cost</a>
@@ -339,9 +380,29 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
 </nav>
 
 <header class="hero" id="top">
+  <div class="hero-stage">
+    <div class="hero-copy">
+      <p class="kicker">Kepler 1.0 · open source</p>
+      <h1>100% on <span style="white-space:nowrap">ARC-AGI-3</span> at <span style="white-space:nowrap">one-fourth</span> the cost.</h1>
+      <p class="stand">The agent writes a simulator. You can inspect its rules, replay its actions, and see what the score leaves out.</p>
+      <p class="hero-scope">25 public games · final replays after development, not first-exposure generalization. $777.72 vs Tycho’s reported $2,986 at dated list-equivalent rates; unmatched runs, not research costs.</p>
+      <div class="hero-links"><a href="/paper/">Read the paper</a><a href="https://github.com/Cveinnt/kepler">Code</a><a href="#see">Explore the finding</a></div>
+      <p class="hero-byline"><a href="https://www.wensenwu.com/">Wensen Wu</a> · Independent research</p>
+    </div>
+<figure class="replay" id="replay" aria-label="Recorded sp80 flight">
+<div class="replay-head"><span><span class="replay-dot"></span> RETAINED OBSERVATION</span><span>sp80 / event 8324</span></div>
+<div class="modes" role="group" aria-label="Observation view"><button id="motion" aria-pressed="true">All animation frames</button><button id="settled" aria-pressed="false">Settled snapshots</button></div>
+<div class="board"><img id="frame" src="assets/sp80/frame-00.png" width="512" height="512" alt="Recorded sp80 game frame 0: arrangement before the ball drops."><span class="frame-chip" id="frame-chip">FRAME 00 / 20</span></div>
+<div class="transport"><button id="play" disabled aria-label="Play recorded frames">Loading…</button><input id="scrub" type="range" min="0" max="20" value="0" disabled aria-label="Recorded frame"><output id="count" for="scrub">00 / 20</output></div>
+<div class="stops" role="group" aria-label="Key moments"><button disabled data-frame="0" aria-pressed="true">01 · Before</button><button disabled data-frame="6" aria-pressed="false">02 · First goal</button><button disabled data-frame="12" aria-pressed="false">03 · Branching</button><button disabled data-frame="20" aria-pressed="false">04 · Complete</button></div>
+<figcaption><strong id="caption-title">Four goals. One drop.</strong><span id="caption">Scrub the real recording to see the routes that settled observations left out.</span></figcaption>
+<p class="replay-links"><a href="#see">Read the finding</a> · <a href="assets/kepler-sp80-teaser.mp4">Video</a> · <a href="assets/kepler-sp80-teaser.gif">GIF</a></p>
+<p class="provenance">August 28 development run · 21 recorded frames · slowed for inspection.<br>Playback of an existing run; no model inference or simulated prediction.</p>
+<p id="load-status" role="status" class="replay-status">Loading recorded frames</p>
+</figure>
+  </div>
   <div class="wrap">
-    <p class="kicker">Kepler 1.0 · open source · revised September 30, 2026</p>
-    <h1>100% on ARC-AGI-3 at one-fourth the cost.</h1>
+    <details class="release-context"><summary>Release scope and September 30 correction</summary>
     <p><strong>Scores stayed green while the experiment broke.</strong>
       Source leakage, a contaminated control, and a silently replaced planner
       show why score replay, tool health, and protocol integrity need separate checks.
@@ -352,11 +413,11 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
       and final-segment replay setup is not official first-exposure evaluation;
       replay acceptance does not establish compliance with that budget.
       <a href="https://github.com/Cveinnt/kepler/blob/main/docs/evidence-boundaries.md">Evidence and implementation limits</a>.
-      This revision adds no new score or algorithmic result.</p>
-    <p class="stand"><strong>One frozen Claude Opus 5 configuration, one retained run per
+      This revision adds no new score or algorithmic result.</p>    <p class="release-detail"><strong>One frozen Claude Opus 5 configuration, one retained run per
       game across all 25 public games, no score-conditioned reruns.</strong> Cost means $777.72 at September 1, 2026 API rates
       against Tycho&rsquo;s reported $2,986 full-run total. These are list-equivalent
       estimates for unmatched runs, not bills or total research costs.</p>
+    </details>
     <ol class="wedges">
       <li><b>62% fewer output tokens</b>9.0M in Kepler&rsquo;s retained Opus run versus
         Tycho&rsquo;s reported 23.4M. <a href="https://github.com/Cveinnt/kepler/blob/main/docs/resource-comparison.md">Exact counters and comparison limits</a>.</li>
@@ -944,5 +1005,6 @@ python3 traces/audit_integrity.py --traces-dir traces</pre>
   </div>
 </footer>
 
+<script src="assets/replay.js" defer></script>
 </body>
 </html>
