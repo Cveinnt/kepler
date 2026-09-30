@@ -25,7 +25,10 @@ class PublicPaperTests(unittest.TestCase):
             "<h2>Abstract</h2>", "not official first-exposure", "non-archival",
         ):
             self.assertIn(value, page)
-        self.assertIn('href="/paper/"', (ROOT / "blog/site/index.html").read_text())
+        self.assertIn(
+            'href="https://github.com/Cveinnt/kepler/releases/download/v1.0.0/kepler-1.0-paper.pdf"',
+            (ROOT / "blog/site/index.html").read_text(),
+        )
 
     def test_bundle_is_exact_public_source(self):
         source = ROOT / "docs/paper/latex"

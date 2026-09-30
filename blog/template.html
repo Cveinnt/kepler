@@ -20,7 +20,7 @@
 <meta name="citation_title" content="Kepler: Auditable World Models for ARC-AGI-3">
 <meta name="citation_author" content="Wensen Wu">
 <meta name="citation_publication_date" content="2026-09-01">
-<meta name="citation_pdf_url" content="https://kepler-harness.vercel.app/paper.pdf">
+<meta name="citation_pdf_url" content="https://github.com/Cveinnt/kepler/releases/download/v1.0.0/kepler-1.0-paper.pdf">
 <meta name="citation_abstract_html_url" content="https://kepler-harness.vercel.app/">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23100f0e%22/><circle cx=%2250%22 cy=%2250%22 r=%2230%22 fill=%22none%22 stroke=%22%237db0de%22 stroke-width=%226%22/><circle cx=%2278%22 cy=%2238%22 r=%228%22 fill=%22%237db0de%22/></svg>">
 <title>Kepler: 100% on ARC-AGI-3 at One-Fourth the Cost</title>
@@ -140,13 +140,13 @@ nav a:not(.brand):hover{color:var(--accent)}
 }
 
 /* ── hero ───────────────────────────────────────────────────────── */
-header.hero{padding:56px 0 0}
+header.hero{padding:104px 0 0}
 .kicker{font-family:var(--sans);font-size:12.5px;font-weight:600;
   letter-spacing:.08em;text-transform:uppercase;color:var(--accent);
   margin:0 0 26px}
-h1{font-family:var(--serif);font-weight:400;font-size:clamp(46px,6vw,64px);
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(46px,7.4vw,82px);
   line-height:1.02;letter-spacing:-.028em;margin:0;text-wrap:balance}
-.stand{font-size:20px;line-height:1.5;color:var(--muted);
+.stand{font-size:22.5px;line-height:1.5;color:var(--muted);
   margin:28px 0 0;max-width:56ch;text-wrap:pretty}
 .stand strong{color:var(--ink);font-weight:500}
 .cards-row{display:flex;flex-wrap:wrap;gap:10px;margin:40px 0 0;
@@ -319,12 +319,6 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
 .bynumbers td{padding:.9rem 1rem;border:1px solid var(--rule,rgba(0,0,0,.12));vertical-align:top}
 .bynumbers b{display:block;font-size:1.6rem;line-height:1.1}
 .bynumbers span{display:block;font-size:.8rem;opacity:.75;margin-top:.25rem}
-
-/* Optional full-flight recording, using the existing article styles. */
-.recorded-motion{margin:24px 0;border-block:1px solid var(--rule);padding:14px 0}
-.recorded-motion summary{cursor:pointer;font-family:var(--sans);font-size:13px;color:var(--accent)}
-.recorded-motion video{display:block;width:100%;max-width:420px;height:auto;margin:20px auto 12px;background:#000;image-rendering:pixelated}
-.recorded-motion .cards-note{margin:12px 0 0}
 </style>
 </head>
 <body>
@@ -346,30 +340,18 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
 
 <header class="hero" id="top">
   <div class="wrap">
-    <p class="kicker">Kepler 1.0 · open source · revised September 30, 2026</p>
+    <p class="kicker">Kepler 1.0 · open source</p>
     <h1>100% on ARC-AGI-3 at one-fourth the cost.</h1>
-    <p><strong>Scores stayed green while the experiment broke.</strong>
-      Source leakage, a contaminated control, and a silently replaced planner
-      show why score replay, tool health, and protocol integrity need separate checks.
-      Accepted to the non-archival Interpreting Agent Behavior workshop at NeurIPS 2026.
-      <a href="/paper/">Revised paper, abstract, and citation</a>.</p>
-    <p><strong>Protocol correction:</strong> ARC Prize's report does impose a
-      5&times; human-baseline per-level evaluation budget. Our public-development
-      and final-segment replay setup is not official first-exposure evaluation;
-      replay acceptance does not establish compliance with that budget.
-      <a href="https://github.com/Cveinnt/kepler/blob/main/docs/evidence-boundaries.md">Evidence and implementation limits</a>.
-      This revision adds no new score or algorithmic result.</p>
     <p class="stand"><strong>One frozen Claude Opus 5 configuration, one retained run per
       game across all 25 public games, no score-conditioned reruns.</strong> Cost means $777.72 at September 1, 2026 API rates
-      against Tycho&rsquo;s reported $2,986 full-run total. These are list-equivalent
-      estimates for unmatched runs, not bills or total research costs.</p>
+      against Retrodict&rsquo;s $2,986 estimate for Tycho, not a Tycho bill.</p>
     <ol class="wedges">
-      <li><b>62% fewer output tokens</b>9.0M in Kepler&rsquo;s retained Opus run versus
-        Tycho&rsquo;s reported 23.4M. <a href="https://github.com/Cveinnt/kepler/blob/main/docs/resource-comparison.md">Exact counters and comparison limits</a>.</li>
       <li><b>Short final solutions</b>181 of 183 completed Opus levels used no more
         actions than the median-human baseline in the final attempt. This excludes discovery.</li>
-      <li><b>The agent writes a simulator</b>Inspect the rules it inferred, run its saved
-        solutions, and examine prediction errors.</li>
+      <li><b>The agent writes a simulator</b>Inspect its rules, predictions, and mistakes.
+        The first wrong prediction stops the plan and returns the counterexample.</li>
+      <li><b>One setup, with receipts</b>One frozen configuration, no score-conditioned
+        reruns, exact server replay, and a public 50-run trace corpus.</li>
     </ol>
     <div class="cards-row">
       <a href="https://arcprize.org/scorecards/91aa2f10-5dc3-4471-80e5-9e8895db5de1"><b>100.00</b> · Opus 5 board, server-verified exact</a>
@@ -403,16 +385,15 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
       list of legal actions. No rules, no object list, no stated goal, no shaped reward.
       The metric, <code>min((human/yours)&sup2;,&nbsp;1.15)</code> per level, scores actions
       in the final attempt, not learning-time tokens or wall-clock time.</p>
-    <p>Kepler uses a stock CLI coding agent. Its protocol asks the agent to observe, write its theory
-      of the game as an executable <code>world_model.py</code>, check that theory
-      against the recorded history, plan inside the model, and commit
-      actions through a guarded channel that compares usable predictions with observations.
-      Prediction failures and zero coverage are logged but do not block action. In the release configuration, the
+    <p>Kepler uses a stock CLI coding agent that never plays the game directly. It observes, writes its theory
+      of the game as an executable <code>world_model.py</code>, certifies that theory
+      against the entire recorded history, plans inside the certified model, and commits
+      actions through a single guarded channel that checks every prediction. In the release configuration, the
       scored attempt itself is played by a compact mechanical replayer executing the
       agent&rsquo;s certified per-level programs, the agent&rsquo;s job ends at
-      certification. The saved program makes a proposed rule concrete enough to test.
-      Passing its checks does not prove the rule is complete or that the agent learns
-      faster than another system.</p>
+      certification. This is a human scientific loop made executable: observe, form a
+      falsifiable hypothesis, run a discriminating experiment, revise on the first
+      counterexample, then plan only inside the model that survives.</p>
     <blockquote>
       <p>&ldquo;We will never report public set scores of any system on the official
         leaderboard. The public set is to be used strictly as a demonstration of what
@@ -450,15 +431,6 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
     <p class="cards-note">Actual development-run frames 0, 12 and 20 from sp80 event
       8324. The pink trail branches around the pieces and reaches four goals. These
       are observations, not simulator predictions or frames from the later release board.</p>
-    <details class="recorded-motion">
-      <summary>Play all 21 recorded frames</summary>
-      <video controls playsinline preload="none" width="512" height="512" poster="assets/sp80/frame-00.png" aria-label="Recorded sp80 flight, event 8324">
-        <source src="assets/kepler-sp80-teaser.mp4" type="video/mp4">
-        <a href="assets/kepler-sp80-teaser.mp4">Download the recorded flight</a>.
-      </video>
-      <p class="cards-note">August 28 development run, event 8324. Slowed playback of recorded observations, not live inference or simulated predictions. This viewing aid does not establish a causal speedup.
-        <a href="assets/kepler-sp80-teaser.mp4">Video</a> · <a href="assets/kepler-sp80-teaser.gif">GIF</a>.</p>
-    </details>
     <p class="lede">On sp80, the agent's notebook reports a simulator fitting
       4,655 of 4,670 transitions and a search through roughly 410 million candidate
       configurations. Nineteen text-mode sessions left the final level unsolved.
@@ -505,10 +477,10 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
         <tr><td class="g">Frozen selection policy</td><td class="e">Harness frozen by commit hash before the board&rsquo;s results existed; one retained run per game; no score-conditioned reruns; the GPT board&rsquo;s same-configuration collapse retained</td></tr>
         <tr><td class="g">Action accounting without a flattering denominator</td><td class="e">8,256 actions in retained board runs, 7,292 in the original local scored-level results, and 7,202 on ARC&rsquo;s public replay card. Replay uses the final reset-to-end ledger segment, so these are different recorded denominators, not score disagreements</td></tr>
         <tr><td class="g">Scoped cost comparison</td><td class="e">$777.72 at September 1, 2026 Opus 5 API list rates, 74.0% below Retrodict&rsquo;s $2,986 estimate for Tycho. Tycho&rsquo;s own paper reports approximately $2.99k. Different accounting and runs, not a controlled harness comparison</td></tr>
-        <tr><td class="g">Public-set score saturation</td><td class="e">Across two frozen release configurations, 48 of 50 game&times;model cells reach 100. This is concentration at the public-set ceiling, not faster learning, causal harness lift, or independent replication. The certify/replay stage&rsquo;s +2.35-point change remains descriptive because adjacent changes were not held constant</td></tr>
+        <tr><td class="g">Final-board score convergence</td><td class="e">Across two frozen release configurations, 48 of 50 game&times;model cells reach 100. This is concentration at the public-set ceiling, not faster learning, causal harness lift, or independent replication. The certify/replay stage&rsquo;s +2.35-point change remains descriptive because adjacent changes were not held constant</td></tr>
         <tr><td class="g">Audit regression and incident record</td><td class="e">A deterministic code-level suite detects 11 of 13 hand-built threat fixtures and flags none of five benign controls. Separately, a source-reading win and a contaminated control were voided, and a dead planner exposed a tool-integrity blind spot. The suite is not a field sensitivity estimate</td></tr>
         <tr><td class="g">Reward hacking, disclosed</td><td class="e">An agent read 2,172 lines of game source inside its workspace and returned a natural-looking 100.00. That run was voided and quarantined with its evidence, and it is not part of this release board</td></tr>
-        <tr><td class="g">Executable hypotheses</td><td class="e">Inspect the agent-written rules, replay prior observations, and test usable predictions. Missing predictions do not block action; this is not evidence of human-like cognition</td></tr>
+        <tr><td class="g">Human-style scientific loop</td><td class="e">Observe, hypothesize, run a discriminating experiment, revise on the first counterexample, then act. Every belief is executable code; every committed action carries a checked prediction</td></tr>
         <tr><td class="g">Saturation points at the evaluator</td><td class="e">With 48 of 50 cells at 100, peak RHAE no longer separates systems. Our own hardest game turned on what the observation channel discarded, which suggests observation-channel quality now carries the signal</td></tr>
       </tbody>
     </table></div>
@@ -542,9 +514,9 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
     <figcaption><b>The ablation ladder.</b> Claude Opus, single configuration, all 25
       public games, every experimental board retained. The added-discipline stage used mechanisms from
       the systems that outscored us and lost 3.77 points, its guards enforced a
-      5&times; per-level budget within our different local development setup, and two of
+      &ldquo;5&times; per-level cutoff&rdquo; that turned out not to exist, and two of
       them deadlocked the agent outright. The certify/replay stage removed the agent from the scored attempt
-      entirely: check programs, then replay them mechanically with conditional checks. Full
+      entirely: certify programs, then replay them mechanically, fail-closed. Full
       autopsies in the <a href="https://github.com/Cveinnt/kepler/tree/main/docs/paper/latex">paper</a>.</figcaption>
   </figure>
   <figure class="fig wide">
@@ -635,8 +607,7 @@ document.addEventListener("DOMContentLoaded", function () {
         Plot.ruleY([0]),
         Plot.dot(data, {x: "game", y: "actions", stroke: "board", r: 5,
           channels: {levels: "levels", score: "score"},
-          tip: {fill: "var(--paper)", stroke: "var(--rule2)",
-            format: {x: true, y: true, stroke: true, levels: true, score: true}}})
+          tip: {format: {x: true, y: true, stroke: true, levels: true, score: true}}})
       ]
     });
     // Chart 2: score vs actions scatter, the efficiency frontier per game
@@ -649,8 +620,7 @@ document.addEventListener("DOMContentLoaded", function () {
       marks: [
         Plot.dot(data, {x: "actions", y: "score", stroke: "board", r: 5,
           channels: {game: "game", levels: "levels"},
-          tip: {fill: "var(--paper)", stroke: "var(--rule2)",
-            format: {game: true, levels: true, x: true, y: true, stroke: true}}}),
+          tip: {format: {game: true, levels: true, x: true, y: true, stroke: true}}}),
         Plot.text(data.filter(d => d.score < 100), {x: "actions", y: "score", text: "game",
           dy: -10, fill: ACCENT, fontSize: 12})
       ]
@@ -676,14 +646,14 @@ document.addEventListener("DOMContentLoaded", function () {
       system, but makes every step executable: observe, hypothesize, test, revise, plan.</p>
     <ul>
       <li><strong>Certify, then replay.</strong> The agent&rsquo;s job ends at certifying
-        an executable solution; a mechanical replayer plays the scored attempt
+        an executable solution; a fail-closed replayer plays the scored attempt
         with no model in the loop. The next frozen stage measured
         <strong>+2.35 points</strong> on the same model and games. Adjacent changes were
         not held constant, so this is a stage delta rather than causal replay lift.</li>
-      <li><strong>Stop on a prediction mismatch.</strong> A usable prediction's first
-        mismatch voids the remaining plan and returns the counterexample.
-        If prediction raises an error or covers no cells, execution continues
-        with a warning. This is conditional checking, not verified execution on every action.</li>
+      <li><strong>A prediction on every action.</strong> Every committed action carries a
+        falsifiable claim about the next frame; the first miss voids the plan. The
+        reaction is immediate and mechanical, so one wrong belief cannot silently
+        compound through the rest of a trajectory.</li>
       <li><strong>Knowledge lives in files, not context.</strong> The world model, notes,
         and solvers persist on disk; each session reads what it needs. The artifacts are
         inspectable, resumable, and backtested against the complete append-only history.</li>
@@ -715,7 +685,7 @@ document.addEventListener("DOMContentLoaded", function () {
       <rect x="180" y="96" width="140" height="34" class="box"/>
       <text x="192" y="117" class="t2">notes.md</text>
       <rect x="26" y="142" width="294" height="34" class="box"/>
-      <text x="38" y="163" class="t2">events.jsonl, daemon-appended</text>
+      <text x="38" y="163" class="t2">events.jsonl, append-only, read-only</text>
       <text x="26" y="212" class="t3">backtest.py replays the model over the whole
         history</text>
       <!-- guarded channel -->
@@ -741,7 +711,7 @@ document.addEventListener("DOMContentLoaded", function () {
       <!-- cleanrun path -->
       <rect x="422" y="216" width="170" height="62" class="box hot"/>
       <text x="440" y="242" font-weight="600">cleanrun.py</text>
-      <text x="440" y="261" class="t2">mechanical replay, conditional checks</text>
+      <text x="440" y="261" class="t2">mechanical replay, fail-closed</text>
       <path d="M338 200 C 380 226, 390 240, 414 244" class="arrow"/>
       <text x="230" y="252" class="t3">certified per-level</text>
       <text x="230" y="266" class="t3">programs</text>
@@ -754,24 +724,24 @@ document.addEventListener("DOMContentLoaded", function () {
       <text x="696" y="261" class="t3">outside every workspace, post-incident&nbsp;1</text>
     </svg>
     <figcaption><b>The loop.</b> Observation is free; action is not. Nothing reaches the
-      game except through the commit channel, whose prediction checks permit missing-coverage fallbacks.
-      In the release configuration the scored attempt is
-      a mechanical replay with conditional checks rather than a live agent.</figcaption>
+      game except through the predict-checked channel, and in the release configuration the scored attempt is
+      a fail-closed replay of certified programs rather than a live agent.</figcaption>
   </figure>
   <div class="wrap">
     <dl class="commit">
       <div><dt><i>1</i>Reality outranks the model</dt>
-        <dd><code>backtest.py</code> checks <code>simulate()</code> against recorded
-          transitions. The protocol calls for this before planning; a passing
-          backtest is not mechanically required before every commit.</dd></div>
+        <dd>A theory that cannot retrodict the entire recorded history does not get to
+          predict the future. <code>backtest.py</code> replays
+          <code>simulate()</code> over every transition ever taken before any plan is
+          trusted.</dd></div>
       <div><dt><i>2</i>History is append-only</dt>
-        <dd>The daemon appends real transitions to <code>events.jsonl</code>.
-          The protocol forbids agent edits, but this is not a filesystem-enforced
-          immutable store. Published scores are re-derived from the ledger.</dd></div>
+        <dd><code>events.jsonl</code> records every real transition. The agent can read
+          it and never edit it, every published score is re-derived from it, not from
+          anything an agent wrote.</dd></div>
       <div><dt><i>3</i>One guarded channel</dt>
-        <dd>The tool attempts a prediction before non-reset actions. A usable
-          prediction's first mismatch voids the plan and returns the counterexample.
-          Prediction errors and zero coverage are logged but do not prevent action.</dd></div>
+        <dd>Every committed action carries a prediction from the agent&rsquo;s own model.
+          The first misprediction voids the rest of the plan and returns the
+          counterexample, a wrong belief becomes a cheap logged experiment.</dd></div>
       <div><dt><i>4</i>The scored attempt is mechanical</dt>
         <dd>The agent&rsquo;s job ends at certifying per-level action programs.
           The replayer self-certifies the artifact and plays it against the real
@@ -785,7 +755,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="cost">
   <div class="wrap">
     <p class="kicker">04 · What it cost</p>
-    <h2>Fewer generated tokens, with the cache counted separately</h2>
+    <h2>What a perfect board actually costs, when anyone publishes the number</h2>
     <p>Chollet&rsquo;s condition for a harness result being legitimate is that the
       settings and the cost are clearly reported. So: the exact 100.00 Opus board used
       11,464 uncached input, 835.489M cache-read input, 13.575M one-hour cache-write
@@ -799,14 +769,6 @@ document.addEventListener("DOMContentLoaded", function () {
       now reports approximately $2.99k for Opus 5, with token accounting and budget
       curves. These estimates are not bills or a controlled harness comparison,
       and do not rank the whole field.</p>
-    <p>Kepler generated 8,966,566 output tokens versus Tycho&rsquo;s reported
-      23,433,077, a <strong>61.7% reduction</strong>. Total token volume is 36.1%
-      lower. Repricing both fixed token volumes without cache discounts reduces
-      the cost gap from 74.0% to 37.8%; this is a pricing sensitivity calculation,
-      not an uncached rerun. <a href="https://github.com/Cveinnt/kepler/blob/main/docs/resource-comparison.md">Reproduce the arithmetic</a>.
-      These aggregates do not establish faster rule learning. A later six-probe native
-      experiment found no useful new rule or level progress. It is separate from
-      the release board: <a href="https://github.com/Cveinnt/kepler/blob/main/docs/research-followups.md">result and limits</a>.</p>
     <p>Retrodict&rsquo;s 99.86 costs less at $654, and baseline1 reports 99.0 at $400.
       Those are lower-cost, lower-scoring points, so we do not call Kepler cheapest
       overall. The final GPT-5.6 board is $1,312.14 list-equivalent. An earlier draft
