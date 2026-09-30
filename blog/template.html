@@ -320,110 +320,34 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
 .bynumbers b{display:block;font-size:1.6rem;line-height:1.1}
 .bynumbers span{display:block;font-size:.8rem;opacity:.75;margin-top:.25rem}
 
-/* Recorded-flight viewer, integrated with the release page theme. */
-.hero-stage{max-width:1140px;margin:0 auto;padding:0 24px 36px;display:grid;grid-template-columns:1.1fr 1fr;gap:52px;align-items:center}
-.hero-stage h1{font-size:clamp(42px,4.4vw,62px)}
-.hero-stage .stand{margin-top:24px;font-size:22px}
-.hero-scope{font:12px/1.6 var(--sans);color:var(--muted);border-left:2px solid var(--rule2);padding-left:12px;margin:24px 0}
-.hero-links{display:flex;gap:10px;flex-wrap:wrap;font:13px var(--sans)}
-.hero-links a{padding:10px 13px;border:1px solid var(--rule2);text-decoration:none;border-radius:4px}
-.hero-links a:first-child{background:var(--accent);color:var(--paper);border-color:var(--accent)}
-.hero-byline{font:12px var(--sans);color:var(--muted);margin:22px 0 0}
-.release-context{font-size:16px;line-height:1.6;border-block:1px solid var(--rule);padding:16px 0;margin:0 0 25px}
-.release-context summary{font:13px var(--sans);color:var(--accent);cursor:pointer}
-.release-context p{margin:18px 0 0}
-.replay{margin:0;padding:16px;background:var(--card);border:1px solid var(--rule2);border-radius:8px;min-width:0;scroll-margin-top:100px;font-family:var(--sans)}
-.replay-head{display:flex;justify-content:space-between;gap:8px;font:10px var(--mono);color:var(--muted)}
-.replay .modes{display:flex;gap:4px;margin:14px 0 10px}
-.replay button{font:11px/1.4 var(--sans);color:var(--ink);background:var(--paper);border:1px solid var(--rule2);border-radius:3px;padding:8px;cursor:pointer}
-.replay button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--paper)}
-.replay button:disabled{opacity:.5;cursor:wait}
-.replay button:focus-visible,.replay input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.replay .modes button{flex:1}
-.replay .board{position:relative;max-width:352px;margin:auto}
-.replay .board img{display:block;width:100%;height:auto;image-rendering:pixelated}
-.replay .frame-chip{position:absolute;right:8px;top:8px;background:#12110fe6;color:#fff;padding:5px 7px;font:10px var(--mono)}
-.replay .transport{display:flex;gap:10px;align-items:center;margin:12px 0}
-.replay .transport button{min-width:60px}
-.replay input{min-width:0;flex:1;accent-color:var(--accent)}
-.replay output{font:10px var(--mono);white-space:nowrap}
-.replay .stops{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
-.replay .stops button{padding:7px 3px;font-size:10px}
-.replay figcaption{display:flex;flex-direction:column;margin:14px 0 0;min-height:58px;font:12px/1.5 var(--sans);color:var(--muted)}
-.replay figcaption strong{color:var(--ink);font-size:14px;margin-bottom:3px}
-.replay .provenance{font:10px/1.5 var(--sans);color:var(--muted);margin:10px 0 0}
-.replay-links{font:11px var(--sans);margin:10px 0}
-.replay-status{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
-.replay-status.failed{position:static;width:auto;height:auto;clip:auto;font:12px var(--sans);color:var(--flag)}
-@media(max-width:640px){nav .bar{font-size:12px;gap:10px}}
-@media(max-width:760px){.hero-stage{grid-template-columns:1fr;gap:28px;padding-inline:16px}.hero-stage h1{font-size:44px}.hero-stage .stand{font-size:19px}.hero-stage .kicker{margin-bottom:18px}.hero-scope{margin:18px 0}.replay{max-width:480px;width:100%;justify-self:center}header.hero{padding-top:32px}.hero-byline{margin-top:18px}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-
+/* Optional full-flight recording, using the existing article styles. */
+.recorded-motion{margin:24px 0;border-block:1px solid var(--rule);padding:14px 0}
+.recorded-motion summary{cursor:pointer;font-family:var(--sans);font-size:13px;color:var(--accent)}
+.recorded-motion video{display:block;width:100%;max-width:420px;height:auto;margin:20px auto 12px;background:#000;image-rendering:pixelated}
+.recorded-motion .cards-note{margin:12px 0 0}
 </style>
-<link rel="stylesheet" href="assets/design.css">
 </head>
 <body>
 
-<nav aria-label="Site"><div class="bar"><a class="brand" href="#top"><span class="kepler-mark" aria-hidden="true">⌁</span> kepler</a><a href="#what" class="hide-s">Research</a><a href="#replay">Replay</a><a href="#number">Results</a><a href="/paper/">Paper</a><a href="https://github.com/Cveinnt/kepler">Code</a></div></nav>
+<nav aria-label="Site">
+  <div class="bar">
+    <a class="brand" href="#top">Kepler</a>
+    <a href="#number">Results</a>
+    <a href="#see">Finding</a>
+    <a href="#explore" class="hide-s">Explore</a>
+    <a href="#method">Method</a>
+    <a href="#cost" class="hide-s">Cost</a>
+    <a href="#incidents">Incidents</a>
+    <a href="https://huggingface.co/datasets/cveinnt/kepler-arc-agi-3-traces">Traces</a>
+    <a href="https://github.com/Cveinnt/kepler/releases/download/v1.0.0/kepler-1.0-paper.pdf">Paper</a>
+    <a href="https://github.com/Cveinnt/kepler">Code</a>
+  </div>
+</nav>
 
 <header class="hero" id="top">
-<div class="hero-stage"><div class="hero-copy">
-<p class="kicker">Executable world models · ARC-AGI-3</p>
-<h1>kepler</h1>
-<p class="hero-title">World models you can inspect.</p>
-<p class="stand">An agent writes executable rules. Kepler exposes the model, the actions, and the evidence behind the score.</p>
-<div class="hero-links"><a href="/paper/">Read the paper <span aria-hidden="true">↗</span></a><a href="#replay">Explore a run <span aria-hidden="true">↗</span></a></div>
-<p class="hero-byline"><a href="https://www.wensenwu.com/">Wensen Wu</a> · Independent research</p>
-</div><div class="hero-contact-sheet"><!--hero_wall--><p>Recorded observations · 25 public games</p></div></div>
-</header>
-<div class="release-metrics"><div class="metric-row"><div><strong>25</strong><span>public games</span></div><div><strong>50</strong><span>released runs</span></div><div><strong>100.00</strong><span>Opus final replay</span></div></div><p>Public-game experiments after development; not first-exposure generalization. <a href="#number">Results and scope ↗</a></p></div>
-
-<main>
-<section id="see">
-  <div class="wrap replay-section">
-    <p class="kicker">01 / An observation that changed the model</p>
-    <h2>The rule was visible in flight.</h2>
-<p class="replay-intro">A simulator can fit the history and still miss a rule. Inspect the flight that exposed one.</p>
-    <figure class="replay" id="replay" aria-label="Recorded sp80 flight"><div class="replay-head"><span>RETAINED OBSERVATIONS</span><span>sp80 / event 8324</span></div>
-<div class="board"><img id="frame" src="assets/sp80/frame-00.png" width="512" height="512" alt="Recorded sp80 observation, frame 0 of 20."><span class="frame-chip" id="frame-chip">FRAME 00 / 20</span></div>
-<div class="replay-tools"><div class="modes" role="group" aria-label="Observation view"><button id="motion" aria-pressed="true">All animation frames</button><button id="settled" aria-pressed="false">Settled snapshots</button></div>
-<div class="stops" role="group" aria-label="Key moments"><button disabled data-frame="0" aria-pressed="true"><img src="assets/sp80/frame-00.png" width="512" height="512" alt="Recorded frame 0" loading="lazy"><span>Before</span></button><button disabled data-frame="6" aria-pressed="false"><img src="assets/sp80/frame-06.png" width="512" height="512" alt="Recorded frame 6" loading="lazy"><span>First goal</span></button><button disabled data-frame="12" aria-pressed="false"><img src="assets/sp80/frame-12.png" width="512" height="512" alt="Recorded frame 12" loading="lazy"><span>Branching</span></button><button disabled data-frame="20" aria-pressed="false"><img src="assets/sp80/frame-20.png" width="512" height="512" alt="Recorded frame 20" loading="lazy"><span>Complete</span></button></div><div class="transport"><button id="play" disabled aria-label="Play recorded frames">Loading…</button><input id="scrub" type="range" min="0" max="20" value="0" disabled aria-label="Recorded frame"><output id="count" for="scrub">00 / 20</output></div>
-<div class="replay-caption"><strong id="caption-title">Four goals. One drop.</strong><p id="caption">Scrub the recording to follow the routes between settled observations.</p></div>
-<p class="replay-links"><a href="assets/kepler-sp80-teaser.mp4">Download video ↗</a><a href="assets/kepler-sp80-teaser.gif">GIF ↗</a></p></div>
-<figcaption class="provenance">August 28 development run · 21 recorded frames · slowed for inspection. Playback of an existing run, not live inference or a simulated prediction. Snapshot mode is a viewing aid, not a controlled experiment.</figcaption><p id="load-status" role="status" class="replay-status">Loading recorded frames</p></figure>
-    <div class="finding-copy">
-    <details class="frame-evidence"><summary>Three retained observations from the paper</summary><!--sp80_frames--></details>
-    <p class="cards-note">Actual development-run frames 0, 12 and 20 from sp80 event
-      8324. The pink trail branches around the pieces and reaches four goals. These
-      are observations, not simulator predictions or frames from the later release board.</p>
-    <p class="lede">On sp80, the agent's notebook reports a simulator fitting
-      4,655 of 4,670 transitions and a search through roughly 410 million candidate
-      configurations. Nineteen text-mode sessions left the final level unsolved.
-      That was search under incomplete rules, not a proof that the game was impossible.</p>
-    <p>Our text interface saved settled grids and animation-frame counts, but not
-      rendered animation frames. Enabling <code>--visual</code> let a continuation
-      inspect the moving ball while retaining its earlier notes and models. It
-      identified a deflection rule visible during flight. Earlier frame counts
-      also contained clues, so this does not establish that images were necessary.</p>
-    <p>From the agent&rsquo;s own notebook, first session with eyes: <em>&ldquo;19 sessions
-      inferred physics from frame counts and concluded L6 was unsolvable. Session 20 got
-      per-frame PNGs and the game simply shows you everything.&rdquo;</em> Its final
-      successful attempt used 57 actions. That count excludes the earlier discovery.
-      A later fresh visual run rediscovered the game, but we did not run a matched
-      fresh text-only control. This is one game's discovery story, not a measured
-      causal speedup. <a href="https://www.wensenwu.com/thoughts/kepler">Scrub through
-      the winning drop in the engineering walkthrough.</a></p>
-  </div>
-</div>
-</section>
-<div class="research-summary"><div class="wrap"><ol class="wedges">
-      <li><b>62% fewer output tokens</b>9.0M in Kepler&rsquo;s retained Opus run versus
-        Tycho&rsquo;s reported 23.4M. <a href="https://github.com/Cveinnt/kepler/blob/main/docs/resource-comparison.md">Exact counters and comparison limits</a>.</li>
-      <li><b>Short final solutions</b>181 of 183 completed Opus levels used no more
-        actions than the median-human baseline in the final attempt. This excludes discovery.</li>
-      <li><b>The agent writes a simulator</b>Inspect the rules it inferred, run its saved
-        solutions, and examine prediction errors.</li>
-    </ol><details class="release-context"><summary>Release scope and September 30 correction</summary>
+  <div class="wrap">
+    <p class="kicker">Kepler 1.0 · open source · revised September 30, 2026</p>
+    <h1>100% on ARC-AGI-3 at one-fourth the cost.</h1>
     <p><strong>Scores stayed green while the experiment broke.</strong>
       Source leakage, a contaminated control, and a silently replaced planner
       show why score replay, tool health, and protocol integrity need separate checks.
@@ -434,11 +358,41 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
       and final-segment replay setup is not official first-exposure evaluation;
       replay acceptance does not establish compliance with that budget.
       <a href="https://github.com/Cveinnt/kepler/blob/main/docs/evidence-boundaries.md">Evidence and implementation limits</a>.
-      This revision adds no new score or algorithmic result.</p>    <p class="release-detail"><strong>One frozen Claude Opus 5 configuration, one retained run per
+      This revision adds no new score or algorithmic result.</p>
+    <p class="stand"><strong>One frozen Claude Opus 5 configuration, one retained run per
       game across all 25 public games, no score-conditioned reruns.</strong> Cost means $777.72 at September 1, 2026 API rates
       against Tycho&rsquo;s reported $2,986 full-run total. These are list-equivalent
       estimates for unmatched runs, not bills or total research costs.</p>
-    </details></div></div>
+    <ol class="wedges">
+      <li><b>62% fewer output tokens</b>9.0M in Kepler&rsquo;s retained Opus run versus
+        Tycho&rsquo;s reported 23.4M. <a href="https://github.com/Cveinnt/kepler/blob/main/docs/resource-comparison.md">Exact counters and comparison limits</a>.</li>
+      <li><b>Short final solutions</b>181 of 183 completed Opus levels used no more
+        actions than the median-human baseline in the final attempt. This excludes discovery.</li>
+      <li><b>The agent writes a simulator</b>Inspect the rules it inferred, run its saved
+        solutions, and examine prediction errors.</li>
+    </ol>
+    <div class="cards-row">
+      <a href="https://arcprize.org/scorecards/91aa2f10-5dc3-4471-80e5-9e8895db5de1"><b>100.00</b> · Opus 5 board, server-verified exact</a>
+      <a href="https://huggingface.co/datasets/cveinnt/kepler-arc-agi-3-traces"><b>50 runs</b> · final-board ledgers and scorers</a>
+      <a href="https://github.com/Cveinnt/kepler"><b>Open source</b> · code and release record</a>
+    </div>
+    <p class="cards-note">Official ARC Prize scorecards from replaying the recorded action
+      ledgers through the competition API. Experimental history stays in
+      <a href="https://github.com/Cveinnt/kepler/blob/main/RESULTS.md">RESULTS.md</a>;
+      the public package has one release identity.</p>
+    <div class="heroline">
+      <span>ARC-AGI-3 · 25 public games</span>
+      <span>one config, no per-game selection</span>
+      <span>provider-record resource accounting</span>
+    </div>
+  </div>
+  <div class="plate"><!--hero_wall--></div>
+  <p class="plate-cap">Every tile is a real observed frame from a run that scored 100,
+    rendered straight from an <code>events.jsonl</code> ledger, not
+    illustrations.</p>
+</header>
+
+<main>
 
 <!-- ═══════════════ 1 · What it is ═══════════════ -->
 <section id="what">
@@ -488,7 +442,42 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
 </section>
 
 <!-- ═══════════════ 2 · The number and its receipts ═══════════════ -->
-
+<section id="see">
+  <div class="wrap">
+    <p class="kicker">The finding</p>
+    <h2>The missing mechanic was visible in flight</h2>
+    <!--sp80_frames-->
+    <p class="cards-note">Actual development-run frames 0, 12 and 20 from sp80 event
+      8324. The pink trail branches around the pieces and reaches four goals. These
+      are observations, not simulator predictions or frames from the later release board.</p>
+    <details class="recorded-motion">
+      <summary>Play all 21 recorded frames</summary>
+      <video controls playsinline preload="none" width="512" height="512" poster="assets/sp80/frame-00.png" aria-label="Recorded sp80 flight, event 8324">
+        <source src="assets/kepler-sp80-teaser.mp4" type="video/mp4">
+        <a href="assets/kepler-sp80-teaser.mp4">Download the recorded flight</a>.
+      </video>
+      <p class="cards-note">August 28 development run, event 8324. Slowed playback of recorded observations, not live inference or simulated predictions. This viewing aid does not establish a causal speedup.
+        <a href="assets/kepler-sp80-teaser.mp4">Video</a> · <a href="assets/kepler-sp80-teaser.gif">GIF</a>.</p>
+    </details>
+    <p class="lede">On sp80, the agent's notebook reports a simulator fitting
+      4,655 of 4,670 transitions and a search through roughly 410 million candidate
+      configurations. Nineteen text-mode sessions left the final level unsolved.
+      That was search under incomplete rules, not a proof that the game was impossible.</p>
+    <p>Our text interface saved settled grids and animation-frame counts, but not
+      rendered animation frames. Enabling <code>--visual</code> let a continuation
+      inspect the moving ball while retaining its earlier notes and models. It
+      identified a deflection rule visible during flight. Earlier frame counts
+      also contained clues, so this does not establish that images were necessary.</p>
+    <p>From the agent&rsquo;s own notebook, first session with eyes: <em>&ldquo;19 sessions
+      inferred physics from frame counts and concluded L6 was unsolvable. Session 20 got
+      per-frame PNGs and the game simply shows you everything.&rdquo;</em> Its final
+      successful attempt used 57 actions. That count excludes the earlier discovery.
+      A later fresh visual run rediscovered the game, but we did not run a matched
+      fresh text-only control. This is one game's discovery story, not a measured
+      causal speedup. <a href="https://www.wensenwu.com/thoughts/kepler">Scrub through
+      the winning drop in the engineering walkthrough.</a></p>
+  </div>
+</section>
 
 <section id="number">
   <div class="wrap">
@@ -970,6 +959,5 @@ python3 traces/audit_integrity.py --traces-dir traces</pre>
   </div>
 </footer>
 
-<script src="assets/replay.js" defer></script>
 </body>
 </html>

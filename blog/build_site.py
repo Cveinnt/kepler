@@ -100,8 +100,8 @@ def hero_wall(limit: int = 96) -> str:
     cells = "".join(
         f'<img src="{frame_png(g)}" alt="observed frame from {name}" loading="lazy" '
         f'width="64" height="64">' for name, g in tiles)
-    return ('<div class="wall" role="img" aria-label="Recorded observations '
-            f'from winning runs">{cells}</div>')
+    return (f'<div class="wall" role="img" aria-label="{len(tiles)} real observed '
+            f'frames from winning runs">{cells}</div>')
 
 
 
