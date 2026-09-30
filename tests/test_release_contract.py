@@ -96,7 +96,7 @@ assert HOOK in readme
 assert "Kepler 1.0" in readme
 assert f"\\title{{{TITLE}}}" in paper
 assert "\\author{Wensen Wu" in paper
-assert parse_page(project_page).headings == [HOOK]
+assert parse_page(project_page).headings == ["kepler"]
 assert f'<meta name="citation_title" content="{TITLE}">' in project_page
 assert len(PREVIEW_DESCRIPTION) <= 160
 assert project_page.count(f'content="{PREVIEW_DESCRIPTION}"') == 3
@@ -113,7 +113,7 @@ for path, text in {
         f"{path}: broken internal links: {sorted(page.fragments - page.ids)}"
     )
 
-assert parse_page(generated_page).headings == [HOOK]
+assert parse_page(generated_page).headings == ["kepler"]
 assert f'<meta name="citation_title" content="{TITLE}">' in generated_page
 assert generated_page.count(f'content="{PREVIEW_DESCRIPTION}"') == 3
 for url in (
