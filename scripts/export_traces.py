@@ -66,10 +66,11 @@ configs:
 
 Run artifacts from Kepler 1.0, an open-source agent harness for the 25 public
 [ARC-AGI-3](https://arcprize.org/arc-agi/3/) games. A stock CLI coding agent
-encodes its theory of each game as an executable `world_model.py`, certifies it
-against the full recorded interaction history, plans inside the certified
-model, and acts through a guarded channel that voids the plan on the first
-misprediction.
+encodes its theory of each game as an executable `world_model.py` and is
+instructed to check it against recorded history before planning. Usable
+predictions are compared with observations; a mismatch interrupts the plan.
+Simulation errors and zero prediction coverage can permit execution. This is
+conditional checking, not a universal verified-execution guarantee.
 
 [Project page](https://kepler-harness.vercel.app/) ·
 [Code](https://github.com/Cveinnt/kepler) ·
@@ -95,12 +96,13 @@ Token and cost accounting was recovered from provider-side session records
 retained locally on the execution host and deduplicated by provider message ID.
 Those provider records are not part of this dataset; only the captured CLI
 session logs are. They put the Opus campaign at 858,041,926 raw tokens,
-97.37% cache reads, and $777.72 at current API list-equivalent rates. That is
+97.37% cache reads, and $777.72 at September 1, 2026 API list-equivalent rates. That is
 74.0% below the $2,986 API-equivalent estimate Retrodict published for Tycho.
-Tycho discloses no cost of its own, and neither do AVO or VISTA, so this is a
-comparison against one third-party estimate and not a ranking of the field.
+Tycho's later paper reports approximately $2.99k for its Opus 5 run, consistent
+with that earlier estimate. These are unmatched inference-price comparisons,
+not billed charges, total research spending, causal harness effects, or a ranking of the field.
 Retrodict's lower-scoring 99.86 costs less at $654. The GPT board is $1,312.14
-current API list-equivalent.
+September 1, 2026 API list-equivalent.
 
 The retained Opus board runs used 8,256 environment actions, with 7,292 in the
 original local scored-level results and 7,202 on ARC's public replay card. The
@@ -110,6 +112,16 @@ denominators rather than score disagreements. Full campaign logs contain at
 least 13,688 non-reset actions and omit 22 prefix events, so 8,256 is not
 labeled learning-inclusive. None of these counts is ranked against other
 systems, whose action counts cover different stages and definitions.
+
+**Protocol correction, September 30, 2026.** The
+[ARC-AGI-3 report, v2, Section 4.3](https://arxiv.org/html/2603.24621v2)
+imposes a five-times-human-baseline per-level evaluation budget. Our earlier
+denial of that cutoff was incorrect. Kepler's public-development and final
+replay segments do not establish official first-exposure performance; replay
+acceptance does not prove compliance with the evaluation-run budget.
+See [evidence boundaries](https://github.com/Cveinnt/kepler/blob/main/docs/evidence-boundaries.md)
+and the [paper/citation record](https://kepler-harness.vercel.app/paper/).
+This documentation revision adds no runs, score improvements, or new algorithmic result.
 
 **Public-set scores are not a measure of AGI progress.** The ARC-AGI-3
 technical report (§4.3.1) says so explicitly and ships a human-replay harness

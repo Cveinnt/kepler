@@ -1,4 +1,4 @@
-% Kepler; arXiv submission source
+% Kepler public technical report; not an arXiv submission receipt
 \documentclass[11pt]{article}
 
 \usepackage[utf8]{inputenc}
@@ -24,7 +24,7 @@
 \author{Wensen Wu\\
 Independent Researcher}
 
-\date{}
+\date{Public report, revised September 30, 2026}
 
 \begin{document}
 
@@ -32,7 +32,7 @@ Independent Researcher}
 
 
 \begin{abstract}
-ARC-AGI-3 evaluates agents in interactive environments whose rules and objectives must be inferred from observation. We present Kepler, an open-source harness that represents hypotheses as executable world models and validates them through retrospective transition checks and prediction-gated action. Under one frozen Claude Opus 5 configuration, Kepler obtained a server-verified 100.00 RHAE on all 25 public games, with no per-game model selection or score-conditioned reruns. On 181 of 183 completed levels, the final Opus attempt used no more actions than the corresponding median-human baseline. The retained board runs used 8,256 environment actions, of which 7,292 occurred in scored levels. Retained local provider-session records yield 858.0 million tokens, 97.37\% cache reads, and a \$777.72 cost at September 1, 2026 API list-equivalent rates. We also report three evaluation failures: source-code leakage that produced an invalid perfect run, agents reconstructing a removed harness in a control condition, and autonomous repair masking a broken planner. A single-game observation case study showed that animation frames contained task-relevant information absent from settled text grids. Across the final Claude Opus 5 and GPT-5.6 Sol boards, 48 of 50 game--model cells reached 100. These results indicate that public-set score alone has limited discriminative value and motivate first-attempt, cost-conditioned, and verification-aware reporting.
+ARC-AGI-3 evaluates agents in interactive environments whose rules and objectives must be inferred from observation. We present Kepler, an open-source harness that represents hypotheses as executable world models and validates them through retrospective transition checks and conditional prediction checks. Under one frozen Claude Opus 5 configuration, Kepler obtained a server-verified 100.00 RHAE on all 25 public games, with no per-game model selection or score-conditioned reruns. On 181 of 183 completed levels, the final Opus attempt used no more actions than the corresponding median-human baseline. The retained board runs used 8,256 environment actions, of which 7,292 occurred in scored levels. Retained local provider-session records yield 858.0 million tokens, 97.37\% cache reads, and a \$777.72 cost at September 1, 2026 API list-equivalent rates. We also report three evaluation failures: source-code leakage that produced an invalid perfect run, agents reconstructing a removed harness in a control condition, and autonomous repair masking a broken planner. A single-game observation case study showed that animation frames contained task-relevant information absent from settled text grids. Across the final Claude Opus 5 and GPT-5.6 Sol boards, 48 of 50 game--model cells reached 100. These results indicate that public-set score alone has limited discriminative value and motivate first-attempt, cost-conditioned, and verification-aware reporting.
 \end{abstract}
 
 \section{Introduction}\label{sec:intro}
@@ -46,9 +46,11 @@ outside the intended boundary.
 
 ARC-AGI-3~\citep{arcagi3} makes this identification problem concrete. An agent
 receives an unfamiliar visual environment, a set of legal actions, and no rule
-sheet or stated objective. Relative Human Action Efficiency (RHAE) depends on
-actions in the final completed attempt, not on the amount of learning,
-reasoning, or model inference that preceded it. Recent systems reach similar
+sheet or stated objective. Our reported replay scores describe final solution
+execution after public-game development, not first-exposure skill acquisition.
+ARC Prize's evaluation protocol separately limits actions and includes
+first-exposure exploration; replay acceptance does not establish compliance
+with that protocol. Recent systems reach similar
 scores through different observation channels, model-selection rules, and
 replay procedures~\citep{tycho,retrodict,vista,avo,primeagent}. At the top of
 the public set, score alone therefore reveals little about how the system
@@ -57,18 +59,19 @@ learned or whether its trajectory respected the intended experiment.
 Kepler is an independent implementation of the executable-world-model approach
 to this benchmark~\citep{tycho,retrodict,thinharness}. A coding agent writes a
 transition model, the harness checks that model against the complete prior
-history, and every committed action must carry a prediction that is graded
-against the next observation. A mismatch terminates the remaining plan and
-records the counterexample. The protocol evaluates externally committed beliefs
+history, and the commit tool attempts a prediction before non-reset actions.
+A usable prediction is graded against the next observation; a mismatch terminates
+the remaining plan and records the counterexample. Prediction failures and zero
+coverage are logged but do not block execution. The protocol evaluates externally committed beliefs
 and behavior rather than private chain-of-thought.
 
 \pagebreak[3]
 This paper makes three contributions:\nopagebreak
 
 \begin{enumerate}
-  \item We define an executable verification contract for long-horizon agents:
-  append-only evidence, complete-history retrodiction, prediction-gated action,
-  and mechanically certified replay.
+  \item We operationalize an auditable evidence contract for long-horizon agents:
+  append-only evidence, complete-history retrodiction, conditional prediction checks,
+  and mechanical replay, with implementation coverage limits stated explicitly.
   \item We evaluate this contract through named frozen stages and 330
   development and evaluation runs. Trajectory audits identify source access,
   contaminated controls, silent tool replacement, mutable instructions, and
@@ -98,9 +101,9 @@ the evaluation result rather than qualifications to be deferred.
 
 \subsection{The loop: observe, model, certify, plan, commit}\label{sec:loop}
 
-The agent is a stock CLI coding agent in a workspace. It never plays the game directly. The complete instruction file, \texttt{harness/directive.md}, frames the task as experimental physics: hypothesize the mechanism, encode it as an executable program, test it against recorded reality, and plan inside it.
+The agent is a stock CLI coding agent in a workspace. The protocol requires game actions to pass through the provided tools; the launch CLI retains host filesystem access, so this is not a security sandbox. The instruction file, \texttt{harness/directive.md}, frames the task as experimental physics: hypothesize the mechanism, encode it as an executable program, test it against recorded reality, and plan inside it.
 
-Persistent state is three files. \texttt{world\_model.py} is the agent's theory of the game in two layers; state grounding (named finders that turn pixels into objects) and mechanism (\texttt{simulate(grid, action)} written over those objects, not raw pixels). \texttt{notes.md} is a lab notebook with an epistemic discipline: every claim tagged \textbf{checked} (verified against the log) or \textbf{assumed}, and no multi-step plan built on assumed points. \texttt{events.jsonl} is the append-only timeline of every real transition ever taken; ground truth the agent can read but not edit.
+Persistent state is three files. \texttt{world\_model.py} is the agent's theory of the game in two layers: state grounding (named finders that turn pixels into objects) and mechanism (\texttt{simulate(grid, action)} written over those objects). \texttt{notes.md} is a lab notebook whose claims should be tagged \textbf{checked} or \textbf{assumed}. The daemon appends real transitions to \texttt{events.jsonl}. The protocol forbids agent edits to that ledger; this is not a filesystem-enforced immutability guarantee.
 
 Five tools close the loop:
 
@@ -110,33 +113,33 @@ Five tools close the loop:
   \label{tab:tools}
   \begin{tabular}{@{}l p{0.55\linewidth} l@{}}
     \toprule
-    tool & role & cost \\
+    tool & role & game actions \\
     \midrule
     \texttt{observe.py} & read-only view of the current frame, diffs, per-level baselines & free \\
     \texttt{query.py} & compute over state instead of reading it (context thrift) & free \\
-    \texttt{backtest.py} & replay \texttt{simulate} over the \emph{entire} recorded history; a theory that cannot retrodict the past does not get to predict the future & free \\
+    \texttt{backtest.py} & replay \texttt{simulate} over the recorded history; prescribed before planning, not mechanically rerun before each commit & none \\
     \texttt{bfs.py} & plan inside the certified model (agents may also write their own searches) & free \\
-    \texttt{commit.py} & the \textbf{only} channel to the real game & actions \\
+    \texttt{commit.py} & the authorized channel to the real game & charged \\
     \bottomrule
   \end{tabular}
 \end{table}
 
 \subsection{The guarded channel}\label{sec:channel}
 
-\texttt{commit.py} enforces prediction discipline mechanically: every committed action carries a prediction from the agent's own \texttt{simulate}; the action executes, and the first misprediction \textbf{voids the remainder of the plan} and returns the counterexample. This converts a wrong belief into a cheap, logged experiment instead of an expensive pile of wasted actions; and it makes every committed plan a falsifiable statement of the model's current accuracy. Predictions may be partial (\texttt{None} for unclaimed cells; a HUD strip, an animation region), but abstaining everywhere is rejected as vacuous. Three invariants hold the system up: reality outranks the model, history is append-only, and nothing reaches the game except through the predict-checked channel.
+\texttt{commit.py} attempts a prediction from the agent's own \texttt{simulate} before each non-reset action. When a usable prediction disagrees with the resulting observation, the tool \textbf{voids the remainder of the plan} and returns the counterexample. Predictions may be partial (\texttt{None} for unclaimed cells, such as a HUD strip or animation region). If simulation raises an exception, execution proceeds with a warning. If no cells are predicted, execution proceeds and is labeled \texttt{UNVERIFIED}. The channel therefore provides conditional prediction-based interruption, not a guarantee that every action has a valid prediction. Missing prediction coverage can allow a mistaken plan to continue. The append-only transition record permits retrospective inspection, but does not turn those actions into verified execution.
 
 \subsection{Certify, then mechanically execute}\label{sec:certifyreplay}
 
-RHAE scores the final full attempt, which is also the segmentation used by our verifier and the official replay. The winning shape of a game is therefore learn (unscored because it is superseded by the attempt that follows), then speedrun (scored, minimal actions). Early experimental stages trusted the live agent to execute the speedrun it had certified. The release configuration removes the agent from the scored attempt entirely: the agent's job ends at writing \texttt{cleanrun.json}, the full per-level action programs. \texttt{harness/ws\_tools/cleanrun.py}, copied into each workspace as \texttt{tools/cleanrun.py}, then self-certifies the artifact (per-level program lengths within 1.3$\times$ the human baseline; each program simulated to \texttt{level\_up}/\texttt{win} from \emph{recorded} level-start grids when the world model exposes the threaded-state API; absent that API, certification degrades to length checks alone, a weaker guarantee we state rather than hide) and replays it through the daemon, halting on the first cell where the real game falsifies the model. The runner drives up to three certify+execute repair cycles; repairs can only fail closed. The scored attempt is thus a mechanical replay of a certified program; the same architecture we found, by code diff, in the published 99-class harnesses (\S\ref{sec:related}).
+Our verifier and server scorecards operate on final replay segments. This is distinct from the official first-exposure evaluation budget. The release configuration has the agent write \texttt{cleanrun.json}, then uses \texttt{cleanrun.py} to execute its per-level programs without further model decisions. Program lengths are checked against 1.3$\times$ the human baseline. When the model exposes \texttt{init\_state}, \texttt{step\_state}, and \texttt{outcome}, certification also simulates programs and checks click coordinates; without that API, it degrades to length checks. Missing recorded starts may be passed as \texttt{None} to the model. Execution halts on detected prediction mismatches and daemon errors, but missing or empty predictions do not establish verified execution. These are conditional checks, not an unconditional fail-closed certificate. The runner permits up to three repair cycles. We disclose these code-path limits rather than infer stronger guarantees from successful scorecards.
 
-\subsection{Game-agnosticism, enforced}\label{sec:agnostic}
+\subsection{Shared configuration and identifier checks}\label{sec:agnostic}
 
-The directive, tools, and all agent-visible surfaces contain zero game-specific information; no game IDs, no per-game priors. Kepler enforces this as a CI gate: \texttt{scripts/check\_no\_game\_ids.py} scans every agent-visible file and fails the build on a hit. The complete methodology is inspectable in the directive, daemon, runner, workspace tools, and frame renderer.
+The release uses one configuration across games, without game-ID dispatch. A CI gate scans agent-visible files for literal game identifiers and fails on a hit. This check does not prove the absence of encoded game knowledge or model-training exposure. The directive, daemon, runner, workspace tools, and frame renderer are available for inspection.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=\linewidth]{figures/fig2_arch.pdf}
-  \caption{System architecture. The agent starts in a dedicated workspace, while the launch CLI retains host filesystem access; \texttt{commit.py} is the sole authorized channel for game actions and grades a prediction on every action. The certified clean run (red) is executed by \texttt{cleanrun.py} with no model in the loop. Environment implementations reside outside every workspace, and any recorded access to them is audit-flagged (a boundary added after Incident 1, \S\ref{sec:integrity}).}
+  \includegraphics[width=\linewidth]{figures/fig2_arch.png}
+  \caption{System architecture. The agent starts in a dedicated workspace, while the launch CLI retains host filesystem access; \texttt{commit.py} is the sole authorized channel for game actions and grades usable predictions after ordinary commits. The certified clean run (red) is executed by \texttt{cleanrun.py} with no model in the loop. Environment implementations reside outside every workspace, and any recorded access to them is audit-flagged (a boundary added after Incident 1, \S\ref{sec:integrity}).}
   \label{fig:architecture}
 \end{figure}
 
@@ -166,9 +169,9 @@ The release configuration adds recovery-path fixes, rendered-frame observation, 
 
 \subsection{The discipline regression and the false-premise autopsy}\label{sec:disciplineautopsy}
 
-The added-discipline mechanisms were adopted from the systems that outscored us and were \emph{individually} sensible. The board dropped 3.77 points. The autopsy (commit \texttt{e61f9ad}) traced the loss to one wrong premise: \textbf{that the official evaluation cuts a level off at 5$\times$ the human baseline.} It does not. The server scored a 6,881-action run without complaint; 5$\times$ is a score floor, not a wall; and since RHAE scores only the final attempt, efficiency \emph{during learning} is worth nothing. The guards therefore punished exactly the behavior the metric ignores: attempt-reset discipline collapsed sp80 from 82.16 to 14.29, and a single clean-run repair locked in sub-cap executions on five games. Worse, two guards had conditions that were exact complements, covering the entire action space between them and deadlocking the agent (fixed in \texttt{d37660e}; the design rule recorded: no set of guards may be able to cover the whole action space between them).
+The added-discipline stage dropped 3.77 points. Our earlier interpretation incorrectly denied an official 5$\times$ human-baseline cutoff. ARC Prize's technical report (v2, April 17, 2026, \S4.3) explicitly imposes that per-level action budget~\citep{arcagi3}. A server accepting one long replay does not refute an evaluation-run budget. Our local development and final-segment replay procedure did not enforce the same first-exposure protocol. Consequently, these scores must not be read as official-leaderboard first-exposure results. Within our own development setup, attempt-reset discipline coincided with sp80 falling from 82.16 to 14.29. Two guards also had complementary conditions that deadlocked the agent (fixed in \texttt{d37660e}); this is a local implementation failure, not a benchmark-rule defect.
 
-The general lesson we take: on an efficiency-of-the-final-attempt metric, \emph{patience while learning and strictness at the one gate that matters} dominates uniform discipline. The guard-correction stage implemented exactly that; every fraction-based guard demoted to a warning, one absolute 3,000-action hard cap as the sole cost refusal; and recovered 2.50 points.
+The guard-correction stage demoted fraction-based guards to warnings and retained an absolute 3,000-action refusal, recovering 2.50 points in this staged comparison. This is a descriptive result under our development setup, not evidence that relaxed discovery budgets improve a matched official evaluation. Learning actions remain scientifically relevant and must be reported separately from final replay actions.
 
 \subsection{The dead-code gate}\label{sec:deadcode}
 
@@ -240,17 +243,17 @@ We distinguish grades of number and never mix them. The abstract and release hea
   \end{tabular}
 \end{table}
 
-One historical divergence should be stated directly: the superseded visual-replay board scored 94.42 server-side because two of twenty-five traces each contained one off-grid \texttt{ACTION6} click that the local engine clipped during play but the official replay path correctly rejected. This was a harness validation gap, not a server fault. The release configuration refuses out-of-range clicks at commit and certification time, and its 100.00 board replays exactly.
+One historical divergence should be stated directly: the superseded visual-replay board scored 94.42 server-side because two traces contained off-grid \texttt{ACTION6} clicks accepted by the local engine but rejected during server replay. The release adds coordinate checks, although clean-run certification applies them only in the threaded-model branch; this is not universal transport enforcement. The retained 100.00 board nevertheless replayed exactly. A successful replay validates those submitted trajectories, not every possible input or code path.
 
 
-\subsection{Convergence}\label{sec:convergence}
+\subsection{Public-set score saturation}\label{sec:convergence}
 
 Across the two certify/replay boards; one frozen harness (\texttt{eac9af2}), two frontier models; \textbf{43 of 50 games score 100.0}. Under the two Kepler release boards, \textbf{48 of 50 cells score 100.0}, and the Opus board is a single-configuration, server-verified-exact \textbf{100.00}. We call this final-board score convergence: concentration at the evaluator ceiling across two frozen model configurations, not faster learning, independent replication, or held-out generalization.
 
 \begin{figure}[ht]
   \centering
   \includegraphics[width=\linewidth]{figures/fig4_convergence.pdf}
-  \caption{Convergence on the two Kepler release boards (Opus 5 and GPT-5.6, each frozen per model): 48 of 50 cells score 100.0 (blue); the two exceptions, both GPT, are printed; sp80 (discovery) and tn36 (a same-configuration variance collapse, disclosed).}
+  \caption{Score saturation on the two Kepler release boards (Opus 5 and GPT-5.6, each frozen per model): 48 of 50 cells score 100.0 (blue). The two GPT exceptions are sp80 and tn36. This is not a measure of learning speed.}
   \label{fig:heatstrip}
 \end{figure}
 
@@ -259,6 +262,16 @@ Across the two certify/replay boards; one frozen harness (\texttt{eac9af2}), two
 The fourth finding is an observation-channel case study on sp80 (\S\ref{sec:sp80}). Nineteen text-mode sessions did not solve the final level. These sessions shared accumulated notes and models; they are not independent trials. Enabling \texttt{--visual} retained rendered animation frames in addition to settled grids and frame counts. The continuation inherited earlier learning and identified a deflection rule visible during animation. Its final successful attempt on the last level used 57 actions. A later fresh visual run rediscovered the game under the frozen harness, and the release board reproduced the score. Without a matched fresh text-only control, these observations do not establish that vision was necessary or isolate its effect on discovery cost.
 
 \subsection{Cost}\label{sec:cost}
+
+\paragraph{Token volumes and cache sensitivity.}
+The retained Opus runs generated 8,966,566 output tokens versus Tycho's reported
+23,433,077, a 61.7\% reduction. Total token volumes were 858,041,926 versus
+1,343,479,217, a 36.1\% reduction. Repricing the same input volumes without
+cache discounts yields \$4,469.54 versus \$7,186.06, a 37.8\% difference.
+This sensitivity calculation does not simulate changed behavior or latency
+without caching. These unmatched full-run aggregates~\citep{tycho} establish
+neither faster rule discovery nor an isolated harness effect; both exclude
+complete research spend.
 
 The community leaderboard's submission rules make cost a first-class field. We therefore recover usage from retained local provider-session records rather than workspace CLI footers. Claude Code stores thinking, text, and tool-use content blocks from one response as separate transcript rows carrying the same provider message ID and cumulative usage object. We deduplicate by that ID before summing. The exact 100.00 Opus campaign contains \textbf{11,464 uncached input}, \textbf{835,488,978 cache-read input}, \textbf{13,574,918 one-hour cache-write input}, and \textbf{8,966,566 output} tokens: 858,041,926 raw tokens in total, 97.37\% of them cache reads. At September 1, 2026 Opus 5 API rates of \$5/M uncached input, \$0.50/M cache reads, \$10/M one-hour cache writes, and \$25/M output~\citep{anthropicopus5pricing}, this is \textbf{\$777.72 list-equivalent}. Actual execution used Claude subscription quota; the dollar figure is a reproducible API-price comparison, not a billed charge.
 
@@ -295,7 +308,7 @@ Actions expose a different frontier, and a denominator problem. The 100.00 Opus 
   \label{fig:costscatter}
 \end{figure}
 
-\section{Integrity: The Audits That Caught Us}\label{sec:integrity}
+\section{Evaluation integrity and failure cases}\label{sec:integrity}
 
 A score file is just a number an agent might have influenced. RHAE's only agent-controllable input is the action count. We therefore audit six routes by which an \emph{agent} could corrupt a score: reading the answer (game source, engine internals, or metadata), writing its own score, bypassing the guarded channel, editing the append-only ledger, modifying the tools it is scored by, or looking the game up online. Operator-side distortions such as score-conditioned selection and rerun policy are governed separately by the policy in \S\ref{sec:intro}. \texttt{scripts/audit\_integrity.py} scans the retained records for the six agent-side routes. \texttt{scripts/verify\_scores.py} closes the loop from the other side by re-deriving action counts from the raw ledger and asserting the direction that matters: \textbf{no level may be scored with fewer actions than the timeline recorded.} In the public final-board dataset, 50 of 50 runs pass the recorded-evidence audit. Ledger recomputation covers 363 completed levels: 354 counts match exactly, nine are conservative, and none inflate the score. Separately, the historical local archive reports 324 of 330 runs clean; the six flags are the quarantined \S\ref{sec:incident2} control-group workspaces. One agent did what a competent engineer does in an unfamiliar directory: it looked around, read all 2,172 lines of the game it was being scored on, and returned a flawless 100.00 on a game it never modelled. The telemetry looked \emph{better} than honest play: fewer actions, zero mispredictions, and a clean ledger. We had already cited the run as headline evidence that the harness worked. A clean rerun scored 46.91, a 53-point drop. The run is voided and quarantined with evidence (\texttt{incidents/2026-08-05-source-read/}). The structural fix moved environment files outside every workspace, reducing accidental discovery, but did not make them unreadable: the launch CLIs retained host filesystem access, and the audit flags any recorded access. These checks now run before release, but they remain evidence-bounded: they cannot detect an event the client did not retain.
 
@@ -342,10 +355,10 @@ saturated (five entries at ${\ge}99$, four at 100; 48 of our own 50 cells at 100
 the axis that actually separates entries has silently become \emph{cost}, which
 is self-reported with no shared definition and no leaderboard badge; a ${\sim}7\times$
 dollar spread exists among entries within a point of each other. Second,
-prediction-before-action gating (an action carries a falsifiable claim that is
-graded, and a wrong claim is cheap and logged) appears independently in four
-harnesses; a transferable reliability finding the benchmark neither requires
-nor measures. We offer, as users of the benchmark rather than its authors, five
+prediction-based plan interruption appears independently in four harnesses.
+This is a shared design pattern, not evidence of a causal reliability gain;
+Kepler's missing-prediction fallbacks also limit its coverage. We offer, as users
+of the benchmark rather than its authors, five
 concrete adjustments that would let the community leaderboard score the
 capability ARC-AGI-3 was built to probe: (i) a cost-conditioned score (RHAE at a
 fixed budget), not only a peak score; (ii) a standardized token triple (cached
@@ -359,7 +372,7 @@ headline to the held-out sets, which several teams (ourselves included) note the
 public set no longer stands in for. The full write-up, with sources, is in the
 repository.
 
-\subsection{sp80 as an open problem}\label{sec:sp80}
+\subsection{The sp80 observation failure and recovery}\label{sec:sp80}
 
 For most of this project, sp80 was the open problem: below the cap on every board, for us and for Retrodict alike. Our longest text-mode run reached level 5 of 6 with every level at the cap, then spent days on level 6. The agent reported searching roughly $4.1\times10^{8}$ candidate configurations without finding a solution under its learned rules. Its notebook reports a model reproducing 4,655 of 4,670 recorded transitions, leaving 15 mismatches attributed there to game-over flags; an animation-length residual is discussed separately. We have not independently rerun that exact historical model. This was search under an incompletely fitted model, not a proof that the game was unsolvable. Retained animation later exposed a deflection rule, but earlier frame counts also contained distinguishing clues. The case therefore does not establish that images were necessary. We propose measuring missing-mechanic latency from a logged prediction discrepancy to a tested model repair, alongside the actions and inference used over that interval. This would reward responding to counterexamples rather than expanding search under a mistaken rule set.
 
@@ -382,6 +395,28 @@ For most of this project, sp80 was the open problem: below the cap on every boar
 \end{figure}
 
 \subsection{Limits}\label{sec:limits}
+
+\paragraph{Exploratory discovery test.}
+After freezing the release, we tested whether an agent-generated solver's
+rejected transitions identified useful experiments at one S5I5 checkpoint.
+The solver and structured observation were recovered from records preceding
+the historical boundary discovery. A depth-four search with all panel controls
+enabled queued 718 states and rejected 1,369 proposals. Shortest-path and
+endpoint-distance rankings selected six distinct probes across five rejection
+sites. Selection and execution used no additional model call.
+
+The native test used 170 setup actions, 12 probe clicks and five level resets,
+187 actions in total. Every setup observation and reset matched the recorded
+visible state. All six final rejected clicks left the board unchanged: three
+changed no pixel, and three changed only pixel $(63,63)$. No level or game-status
+change occurred. The test established no useful counterexample, learned repair
+or solving advantage. The investigator knew the historical mechanic, visible
+reset equality does not prove hidden-state equality, and construction and
+analysis costs are separate. This negative development result is not an
+independent-case evaluation or a new discovery algorithm. It is separate from
+the release boards and final-board trace dataset.
+
+\paragraph{Scope of the release evidence.}
 
 Model identity is pinned by the session transcripts (\S\ref{sec:boards}). Beyond that: one benchmark; public set only; $n=1$ per cell; repeated development against the same 25 games; board-composite variance of roughly $\pm$1--2 points in our data; much larger per-game variance (one same-configuration GPT rerun moved from 47.6 to 100.0); and quota-shaped runs resumed across provider windows under a disclosed policy. The deepest caveat is inherited from \S\ref{sec:incident2}: whether the harness \emph{causes} the scores, versus the models alone, is unmeasured until a boundary-correct ablation is run. The public set was both development material and evaluation surface, so these results establish neither held-out generalization nor private-set performance. We cannot inspect the providers' training corpora and therefore cannot rule out model-level exposure to the public games.
 
@@ -409,7 +444,7 @@ are not unique to Kepler. Kepler instead evaluates an externally checkable
 contract linking predictions, actions, workspace state, selection, and replay,
 together with the failures exposed when that contract was applied.
 
-\textbf{Tycho} (NIMI-research; arXiv:2607.28287)~\citep{tycho} reports 100.00 with two models and compares four model-use policies under matched budgets. Its paper reports inference costs, budget-prefix curves and model diagnostics; the repository includes configurations, tests, scorecards and aggregate metrics. We adopted (and credit in \texttt{NOTICE}) its partial UNKNOWN-cell predictions, vacuous-coverage rejection, threaded hidden-state planning, consecutive-RESET guard, and 5$\times$-baseline level cutoff. Our discipline regression subsequently falsified treating the last item as an \emph{official-rule} limit (\S\ref{sec:disciplineautopsy}); adopted mechanisms still warrant independent testing.
+\textbf{Tycho} (NIMI-research; arXiv:2607.28287)~\citep{tycho} reports 100.00 with two models and compares four model-use policies under matched budgets. Its paper reports inference costs, budget-prefix curves and model diagnostics; the repository includes configurations, tests, scorecards and aggregate metrics. We adopted (and credit in \texttt{NOTICE}) its partial UNKNOWN-cell predictions, zero-coverage checks, threaded hidden-state planning, consecutive-RESET guard, and 5$\times$-baseline level cutoff. The official budget was real; our local guard regression did not invalidate it (\S\ref{sec:disciplineautopsy}).
 
 \textbf{Twin}~\citep{skoutnev2026twin} also combines agent-written simulators,
 harness-enforced replay validation, checked execution and goal discovery.
@@ -454,22 +489,48 @@ ranking of capability or integrity between the two systems.
 
 \textbf{arc-code} (Berman)~\citep{arccode}; the minimal-scaffold datapoint: stock Claude Code with an 11-line prompt reaches 96.2 pass@1 / 99.3 pass@2 (${\sim}$\$540), while GPT-5.6 Sol under the same scaffold scores \textbf{73.7}. This cuts against attributing Kepler's Claude score entirely to harness design and reinforces the need for a valid control experiment.
 
+\subsection{Failure-to-check map}
+
+\begin{table}[ht]
+\centering
+\small
+\caption{Distinct checks and their evidence boundaries. These are not empirical detector sensitivity estimates.}
+\begin{tabularx}{\linewidth}{@{}p{0.24\linewidth}p{0.28\linewidth}X@{}}
+\toprule
+Failure & Relevant check & Remaining blind spot \\
+\midrule
+Source-reading win & Retained-log access scan & Unlogged or unrecognized access; no filesystem isolation \\
+Contaminated control & Tool-call and filesystem evidence & No causal effect estimate from this comparison \\
+Broken planner & Direct tool smoke tests & Outcome scores alone do not reveal substitution \\
+Prediction mismatch & Conditional plan interruption & Missing predictions can permit execution \\
+Invalid replay input & Coordinate validation and server replay & Certification checks are branch-dependent \\
+Incomplete cost record & Separate action and usage ledgers & Final replay excludes prior discovery; private provider records required \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+These failure classes motivate checks in other agent settings, but empirical
+transfer beyond this benchmark is not established. Grid-level equality checks
+and exact replay rely on discrete observations and sufficiently reproducible
+transitions. Broader systems require domain-specific comparators and explicit
+handling of stochasticity; a syntactic trace check is not semantic validation.
+
 \section{Reproducibility Statement}\label{sec:repro}
 
 The code, official scorecards, release manifest, and verification programs ship in the repository. The \href{https://huggingface.co/datasets/cveinnt/kepler-arc-agi-3-traces}{public companion dataset} contains the two final 25-game boards. After downloading it, both board scores and their ledger consistency can be checked offline:
 
 {\footnotesize\begin{verbatim}
 hf download cveinnt/kepler-arc-agi-3-traces \
-  --repo-type dataset --local-dir traces
+  --type dataset --local-dir traces
 python3 traces/score_trajectories.py traces
 python3 traces/verify_scores.py --traces-dir traces
 python3 traces/audit_integrity.py --traces-dir traces
 python3 scripts/verify.py                     # replay local fixture
-.venv/bin/python scripts/cost_report.py       # token accounting
+.venv/bin/python scripts/cost_report.py       # requires private provider records
 python3 scripts/check_no_game_ids.py          # literal game-ID scan
 \end{verbatim}}
 
-The dataset contains 50 run records and 58,098 environment events in append-only ledgers, along with human baselines, final world models and notebooks, captured CLI output for every final-board workspace, and dependency-free verification programs. Independent score recomputation matches 100.00 for Claude Opus 5 and 95.9672 for GPT-5.6 Sol, and the ledger check covers all 363 completed levels. The integrity scan applies to the published records and its fixed pattern set; it cannot prove that a client retained every event or detect every possible violation. Earlier stages, failures, and superseded runs remain documented in \texttt{RESULTS.md} and the incident archive, but are not part of this final-board dataset. Frozen-harness hashes were registered before the selected boards' results existed. Headline scorecards are c9f087f3 (GPT, exact) and 91aa2f10 (Opus, exact). Bit-for-bit reproduction of live runs is not expected because of sampling and provider drift; score reproduction from a published ledger is mechanical.
+The dataset contains 50 run records and 58,098 environment events in append-only ledgers, along with human baselines, final world models and notebooks, captured CLI output for every final-board workspace, and dependency-free verification programs. Independent score recomputation matches 100.00 for Claude Opus 5 and 95.9672 for GPT-5.6 Sol, and the ledger check covers all 363 completed levels. The integrity scan applies to the published records and its fixed pattern set; it cannot prove that a client retained every event or detect every possible violation. Earlier stages, failures, and superseded runs remain documented in \texttt{RESULTS.md} and the incident archive, but are not part of this final-board dataset. Frozen-harness hashes were registered before the selected boards' results existed. Headline scorecards are c9f087f3 (GPT, exact) and 91aa2f10 (Opus, exact). Bit-for-bit reproduction of live runs is not expected because of sampling and provider drift; score reproduction from a published ledger is mechanical. The corpus includes 95 captured CLI logs with uneven coverage, not a complete account of every internal event. Provider-session records used for token repricing are retained privately and are not in the public export; the cost command therefore requires additional input. The IAB review package was PDF-only, distinct from the already-public dataset. No new logs or private researcher archives are added by this revision.
 
 \section*{Acknowledgments}
 

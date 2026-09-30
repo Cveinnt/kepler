@@ -135,6 +135,8 @@ for path, text in {
         "current standard API",
         "current Opus 5 API",
         "zero-prior CI",
+        "enforce zero game-specific",
+        "contain zero game-specific information",
         "score and a stricter integrity record",
         "We conclude only that transient visual evidence was necessary",
     ):
@@ -160,6 +162,7 @@ launch_surfaces = {
     "docs/paper/latex/main.tex": paper,
     "docs/release-comparison.md": read("docs/release-comparison.md"),
     "docs/benchmark-observations.md": read("docs/benchmark-observations.md"),
+    "docs/research-followups.md": read("docs/research-followups.md"),
     "blog/template.html": project_page,
     "blog/site/index.html": generated_page,
     "scripts/export_traces.py": dataset_card_source,

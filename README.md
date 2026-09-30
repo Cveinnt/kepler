@@ -2,6 +2,18 @@
 
 **100% on ARC-AGI-3 at one-fourth the cost.**
 
+**Scores can stay green while an experiment breaks.** Kepler pairs executable
+world models with replay evidence, tool checks, and documented evaluation failures.
+The paper was accepted to the non-archival Interpreting Agent Behavior workshop
+at NeurIPS 2026, not the NeurIPS main conference. The September 30 public revision
+corrects protocol and enforcement claims; it does not add a new performance result.
+Read the [paper and citation record](https://kepler-harness.vercel.app/paper/)
+and [evidence boundaries](docs/evidence-boundaries.md).
+
+Our scores concern public-development and final replay segments, not official
+first-exposure evaluation. ARC Prize's report does impose a 5× human-baseline
+per-level evaluation budget; server replay acceptance does not disprove it.
+
 Kepler is an open-source agent harness for the 25 public ARC-AGI-3 games. One
 frozen Claude Opus 5 configuration scored **100.00**, with every game
 re-executed to 100 by ARC Prize's official server replay. There was no per-game
@@ -38,9 +50,10 @@ Five facts define the release:
 3. **Short final solutions.** On 181 of 183 completed Opus levels, the final
    attempt used no more actions than the median-human baseline. Discovery and
    retries still cost work; this is not a faster-learning result.
-4. **A simulator you can inspect.** Every committed action carries a prediction from an
-   executable world model. The first mismatch stops the plan and becomes a
-   counterexample. Score replay, trajectory integrity, tool health, selection,
+4. **A simulator you can inspect.** The commit tool attempts a prediction from the
+   executable world model before acting. A usable prediction's first mismatch
+   stops the plan and becomes a counterexample. Prediction failures and zero
+   coverage are logged but do not prevent action. Score replay, trajectory integrity, tool health, selection,
    and resource accounting remain separate checks.
 5. **Failures included.** A source-reading 100 and a contaminated control were
    voided. A dead planner is reported even though agents repaired around it and
@@ -60,6 +73,11 @@ recomputed from their action records.
 
 [Inspect the full evidence matrix](#full-evidence-matrix) or
 [run the verification path](#verify-it).
+
+The release does not establish faster rule discovery or an autonomous
+self-improving harness. A later six-probe native test found no useful new rule
+or level progress; it does not change the release scores or cost totals.
+[Follow-up result and scope](docs/research-followups.md).
 
 ### One result, selected before the score
 
@@ -154,27 +172,29 @@ result. See
 | Frozen selection policy | One model, one commit-frozen harness registered before the 25-run release board, one retained run per game, no score-conditioned reruns. The GPT board keeps its same-configuration collapse. |
 | Action accounting without a flattering denominator | 8,256 actions in the retained board runs, 7,292 in the original local scored-level results, and 7,202 on ARC's public replay card. Full campaign logs contain at least 13,688 non-reset actions plus 22 unavailable prefix events, so we do not call 8,256 learning-inclusive or compare it with another system's campaign total. |
 | Scoped cost comparison | $777.72 at September 1, 2026 Opus 5 API list rates, 74.0% below Retrodict's $2,986 estimate for Tycho. Tycho's own paper reports approximately $2.99k. Different accounting and runs, not a controlled harness comparison. |
-| Final-board score convergence | Across the two frozen release configurations, 48 of 50 game-model cells reach 100. This is concentration at the public-set ceiling, not faster learning, causal harness lift, or independent replication. The certify/replay stage's +2.35-point change remains a descriptive stage delta because adjacent changes were not held constant. |
+| Public-set score saturation | Across the two frozen release configurations, 48 of 50 game-model cells reach 100. This is concentration at the public-set ceiling, not faster learning, causal harness lift, or independent replication. The certify/replay stage's +2.35-point change remains a descriptive stage delta because adjacent changes were not held constant. |
 | Audit regression and incident record | A deterministic code-level suite detects 11 of 13 hand-built threat fixtures and flags none of five benign controls. Separately, a source-reading win and a contaminated control were voided, and a dead planner exposed a tool-integrity blind spot. The suite is not a field sensitivity estimate and cannot detect events the client did not retain. |
 | Reward hacking, disclosed | An agent read 2,172 lines of game source inside its workspace and returned a natural-looking 100.00. That run was voided and quarantined, and it is not part of the release board. |
-| Human-style scientific loop | Observe, hypothesize, run a discriminating experiment, revise on the first counterexample, then act. Every belief is executable code, retrodicted against the full history, and every committed action carries a checked prediction. |
+| Human-style scientific loop | Observe, hypothesize, test, revise, then act. Executable world models support full-history backtests and prediction-based plan interruption. Prediction failures and zero coverage do not block action, so this is not universal verified execution. |
 | Saturation points at the evaluator | With 48 of 50 cells at 100, peak RHAE no longer separates systems. Our own hardest game turned on what the observation channel discarded, which suggests observation-channel and evaluator quality now carry the signal. |
 
 ## How it works
 
 The design deliberately follows a human scientific loop: observe, hypothesize,
 run a discriminating experiment, revise the theory, then act. The difference is
-that every belief becomes executable evidence. The agent records every
-transition, writes an executable world model, and must
-retrodict the interaction history before planning. Every committed action carries
-a prediction; the first mismatch voids the remaining plan and returns the
-counterexample. Once a game is learned, the agent certifies per-level action
-programs. A fail-closed mechanical executor, with no model in the loop, plays the
+that selected hypotheses become executable artifacts. The daemon records
+transitions; the agent writes a model and is instructed to backtest the
+interaction history before planning, not mechanically forced to rerun that
+backtest before every commit. For non-reset actions, the
+commit tool attempts a prediction; a usable prediction's first mismatch voids
+the remaining plan and returns the counterexample. If prediction fails or covers
+no cells, the action still executes with a warning. Once a game is learned, the agent certifies per-level action
+programs. A mechanical executor with conditional checks, with no model in the loop, plays the
 scored attempt.
 
 A CI gate, [`scripts/check_no_game_ids.py`](scripts/check_no_game_ids.py), rejects
-game IDs in agent-visible files. The intent is to enforce zero game-specific
-priors mechanically instead of promising them in prose.
+literal game IDs in agent-visible files. It does not prove the absence of encoded
+game knowledge or model-training exposure.
 
 ## Verify it
 

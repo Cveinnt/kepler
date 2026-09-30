@@ -1,6 +1,7 @@
 cff-version: 1.2.0
 message: >-
-  If you use this software, please cite this release record.
+  If you use Kepler or its evaluation evidence, cite the paper below and specify
+  the software commit or dataset revision used.
 title: "Kepler"
 type: software
 authors:
@@ -20,11 +21,11 @@ abstract: >-
   retained board runs use 8,256 environment actions, with 7,292 in the original
   local scored-level results and 7,202 on the public replay card. Complete
   campaign action accounting is
-  still pending. The provider record costs $777.72 at current API
-  list-equivalent rates. The release includes complete
-  provider-record resource accounting, score-lineage tools, an enforced
-  zero-game-priors check, negative results, and incident reports for two
-  integrity failures caught in our own experiments. A public companion dataset
+  still pending. Retained-run provider usage prices to $777.72 at September 1,
+  2026 API list-equivalent rates, excluding total research spend. The release
+  includes score-lineage tools, a literal game-ID scanner (not proof of zero
+  priors), conditional prediction checks, negative results, and documented
+  evaluation failures. Private provider records are not included. A public companion dataset
   provides 50 final-board run ledgers, human baselines, captured CLI output,
   and standalone verification programs. Earlier development
   stages and incidents remain documented separately in the repository.
@@ -32,6 +33,16 @@ identifiers:
   - type: url
     value: "https://huggingface.co/datasets/cveinnt/kepler-arc-agi-3-traces"
     description: "Kepler 1.0 ARC-AGI-3 final-board trace dataset"
+preferred-citation:
+  type: report
+  title: "Kepler: Auditable World Models for ARC-AGI-3"
+  authors:
+    - family-names: Wu
+      given-names: Wensen
+  year: 2026
+  date-published: "2026-09-01"
+  url: "https://kepler-harness.vercel.app/paper/"
+  notes: "Public technical report, revised September 30, 2026. Accepted to the non-archival Interpreting Agent Behavior workshop at NeurIPS 2026."
 keywords:
   - ARC-AGI-3
   - world models

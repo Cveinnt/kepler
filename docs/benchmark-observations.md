@@ -18,12 +18,16 @@ own words for its scorecard: a *"verified re-execution of the recorded runs, not
 a new attempt."* GKM states plainly that **"at scoring time no model runs"** -
 a frozen `final_path` is sent to the API. arc-skill's scorecard *"was produced
 by replaying the recorded runs."* The Kepler release does the same: an agent certifies
-per-level programs and a fail-closed executor replays them.
+per-level programs and a mechanical executor replays them, with conditional
+prediction checks and coverage gaps described in the paper.
 
-RHAE scores the final attempt, not superseded attempts. So the rational entry
-can spend thousands of actions learning and a baseline-minimal number scoring.
-This is not cheating. It is a strategy the rules permit. But final-attempt
-efficiency does not reveal how efficiently the agent discovered the solution.
+Our final-segment replay scores omit superseded development attempts. This is
+not the official first-exposure evaluation protocol. The
+[ARC-AGI-3 report, v2, Section 4.3](https://arxiv.org/html/2603.24621v2)
+explicitly imposes a five-times-human-baseline action budget per level.
+Replay acceptance does not prove compliance with that budget or establish
+first-exposure efficiency. Our earlier denial of that cutoff was incorrect.
+Final-attempt efficiency does not reveal how efficiently the agent discovered the solution.
 A replayed scorecard also does not prove that the original solver built a world
 model or removed the language model from its final attempt. Direct-interaction
 systems produce replayable traces too.
@@ -40,7 +44,7 @@ unreported.** Same public set, comparable scores:
 |---|---:|---:|
 | baseline1 | 99.0 | $400 |
 | Retrodict | 99.86 | $654 |
-| Tycho | 100.0 | none disclosed; Retrodict estimates ~$2,986 API-equivalent |
+| Tycho | 100.0 | approximately $2,986 API-equivalent, selected Opus 5 full run |
 | VISTA | 100.0 | not disclosed |
 | NVIDIA AVO | 100.0 | not disclosed |
 | Kepler, GPT board | 95.97 | $1,312.14 September 1, 2026 API list-equivalent |
@@ -52,18 +56,21 @@ tokens entirely. The leaderboard shows a verified score badge and no cost badge,
 so the axis that now carries all the signal is the one nobody is required to
 report comparably.
 
-Kepler's retained-run API-equivalent estimate is 74.0% below the $2,986 estimate that
-Retrodict published for Tycho. Tycho itself discloses no cost, and neither do
-AVO or VISTA, which is the point of this section: the comparison exists only
-because a third party did the estimating. It is not a claim that Kepler is
-cheapest at every score, since Retrodict and baseline1 occupy lower-cost,
-lower-scoring points.
+Kepler's retained-run API-equivalent estimate is 74.0% below Tycho's reported
+approximately $2,986 Opus 5 full-run total, consistent with Retrodict's earlier
+estimate. Tycho's first-party counters now allow a more specific comparison:
+Kepler generated 61.7% fewer output tokens. The [resource comparison](resource-comparison.md)
+keeps those unmatched aggregates and the cache-pricing assumptions explicit.
+This is not a complete research-cost comparison or a claim that Kepler is
+cheapest at every score; Retrodict and baseline1 report lower-cost,
+lower-scoring points. The table otherwise retains its original comparison scope.
 
 ## 3. Prediction-before-action emerged as a norm nobody specified
 
 arc-skill refuses any press without a falsifiable prediction and grades it.
-Retrodict requires a stated `expect` per action. Ours voids a plan on the first
-misprediction. GKM admits programs only after independent replay verification.
+Retrodict requires a stated `expect` per action. Kepler stops the remaining plan
+when a usable prediction mismatches; exceptions and zero prediction coverage
+do not block action. GKM admits programs only after independent replay verification.
 These are related verification mechanisms, not identical contracts or a matched
 reliability experiment. A useful next measurement is what happens after a
 counterexample: how many actions, tokens and seconds pass before a model repair
@@ -84,11 +91,10 @@ built to probe, now that harnesses saturate the proxy for it:
 2. **Standardize and require a token triple:** cached input, uncached input, and
    output tokens. Report dollars at stated list prices and wall-clock beside it.
    Add a cost badge beside the score badge.
-3. **Consider a bounded-learning or first-attempt track.** If replay-of-a-clean-
-   trace is the dominant strategy, an explicit track that scores the *first* full
-   attempt (or caps total learning actions) would measure efficient play directly
-   instead of world-model-construction wearing efficiency's clothes. Keep the
-   current track too. The contrast between them is itself informative.
+3. **Distinguish public replay from the existing bounded first-exposure protocol.**
+   Label development exposure, discovery budgets, resets and final-segment
+   selection explicitly. A replay score alone cannot be substituted for the
+   benchmark's existing first-exposure evaluation. These are different measurements.
 4. **Make verification a submission requirement, not an honor system.** Scorecard
    replay plus published traces should be mandatory, because a self-reported score
    cannot distinguish a derived answer from a looked-up one. That is the exact failure our
