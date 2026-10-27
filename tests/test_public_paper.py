@@ -1,5 +1,6 @@
 """Offline publication contract: metadata, source bundle, and served PDF identity."""
 from pathlib import Path
+import html
 import re
 import unittest
 import zipfile
@@ -8,6 +9,23 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class PublicPaperTests(unittest.TestCase):
+    def test_arxiv_citation_consistency(self):
+        bib = (ROOT / "docs/paper/kepler.bib").read_text()
+        self.assertEqual(bib, (ROOT / "blog/site/paper/kepler.bib").read_text())
+        for field in ("eprint = {2610.00834}", "archivePrefix = {arXiv}",
+                      "primaryClass = {cs.AI}", "url = {https://arxiv.org/abs/2610.00834}"):
+            self.assertIn(field, bib)
+        page = (ROOT / "blog/site/paper/index.html").read_text()
+        self.assertIn(html.escape(bib), page)
+        for path in ("blog/site/paper/index.html", "scripts/package_public_paper.py"):
+            text = (ROOT / path).read_text()
+            self.assertIn('href="https://arxiv.org/abs/2610.00834"', text)
+            self.assertIn("v1 submitted September 30, 2026", text)
+            self.assertIn("Scholar indexing is not verified", text)
+            self.assertNotIn("No arXiv identifier", text)
+        citation = (ROOT / "CITATION.cff").read_text().split("preferred-citation:", 1)[1]
+        self.assertIn('url: "https://arxiv.org/abs/2610.00834"', citation)
+
     def test_pdf_identity(self):
         pdf = (ROOT / "docs/paper/latex/main.pdf").read_bytes()
         self.assertTrue(pdf.startswith(b"%PDF"))
@@ -25,10 +43,15 @@ class PublicPaperTests(unittest.TestCase):
             "<h2>Abstract</h2>", "not official first-exposure", "non-archival",
         ):
             self.assertIn(value, page)
-        self.assertIn(
-            'href="https://github.com/Cveinnt/kepler/releases/download/v1.0.0/kepler-1.0-paper.pdf"',
-            (ROOT / "blog/site/index.html").read_text(),
-        )
+        home = (ROOT / "blog/site/index.html").read_text()
+        self.assertIn('href="/paper/"', home)
+        self.assertIn('name="citation_pdf_url" content="https://kepler-harness.vercel.app/paper/kepler.pdf"', home)
+        self.assertNotIn("releases/download/v1.0.0/kepler-1.0-paper.pdf", home)
+        for text in (page, home, (ROOT / "blog/template.html").read_text()):
+            self.assertIn('href="https://arxiv.org/abs/2610.00834"', text)
+            self.assertIn('href="https://iab-agents.github.io/accepted-papers/"', text)
+            self.assertIn('href="https://www.wensenwu.com/about">Vincent Wu</a>', text)
+            self.assertIn('name="citation_author" content="Wensen Wu"', text)
 
     def test_bundle_is_exact_public_source(self):
         source = ROOT / "docs/paper/latex"
