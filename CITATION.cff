@@ -41,8 +41,8 @@ preferred-citation:
       given-names: Wensen
   year: 2026
   date-published: "2026-09-01"
-  url: "https://kepler-harness.vercel.app/paper/"
-  notes: "Public technical report, revised September 30, 2026. Accepted to the non-archival Interpreting Agent Behavior workshop at NeurIPS 2026."
+  url: "https://arxiv.org/abs/2610.00834"
+  notes: "Public technical report, revised September 30, 2026; arXiv:2610.00834 v1 submitted September 30, 2026. Accepted to the non-archival Interpreting Agent Behavior workshop at NeurIPS 2026."
 keywords:
   - ARC-AGI-3
   - world models
