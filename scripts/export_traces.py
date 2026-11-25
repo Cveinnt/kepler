@@ -114,7 +114,7 @@ dataset_info:
 
 By [Vincent Wu (Wensen Wu)](https://www.wensenwu.com/about).
 
-[Kepler paper — arXiv v1, September 30, 2026](https://arxiv.org/abs/2610.00834v1) ·
+[Kepler paper (arXiv v1, September 30, 2026)](https://arxiv.org/abs/2610.00834v1) ·
 [Paper and version record](https://kepler-harness.vercel.app/paper/)
 
 Run artifacts from Kepler 1.0, an open-source agent harness for the 25 public
