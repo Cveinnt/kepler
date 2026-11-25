@@ -60,9 +60,62 @@ configs:
     data_files: runs.jsonl
   - config_name: events
     data_files: events/*/*.jsonl.gz
+dataset_info:
+- config_name: events
+  features:
+  - name: model
+    dtype: string
+  - name: game
+    dtype: string
+  - name: state
+    dtype: string
+  - name: i
+    dtype: int64
+  - name: prev_level
+    dtype: int64
+  - name: level
+    dtype: int64
+  - name: win_levels
+    dtype: int64
+  - name: n_anim_frames
+    dtype: int64
+  - name: prev_grid_changed_cells
+    dtype: int64
+  - name: reset
+    dtype: bool
+  - name: full_reset
+    dtype: bool
+  - name: level_up
+    dtype: bool
+  - name: win
+    dtype: bool
+  - name: game_over
+    dtype: bool
+  - name: ts
+    dtype: float64
+  - name: action
+    struct:
+    - name: name
+      dtype: string
+    - name: x
+      dtype: int64
+    - name: y
+      dtype: int64
+  - name: available_actions
+    list: int64
+  - name: grid
+    list:
+      list: int64
+  - name: grid_stripped
+    dtype: bool
 ---
 
 # Kepler 1.0 ARC-AGI-3 trace corpus
+
+By [Vincent Wu (Wensen Wu)](https://www.wensenwu.com/about).
+
+[Kepler paper — arXiv v1, September 30, 2026](https://arxiv.org/abs/2610.00834v1) ·
+[Paper and version record](https://kepler-harness.vercel.app/paper/)
 
 Run artifacts from Kepler 1.0, an open-source agent harness for the 25 public
 [ARC-AGI-3](https://arcprize.org/arc-agi/3/) games. A stock CLI coding agent
