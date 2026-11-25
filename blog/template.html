@@ -33,7 +33,7 @@
       "@type": "ScholarlyArticle",
       "name": "Kepler: Auditable World Models for ARC-AGI-3",
       "headline": "Kepler: Auditable World Models for ARC-AGI-3",
-      "author": {"@type": "Person", "name": "Wensen Wu"},
+      "author": {"@type": "Person", "@id": "https://www.wensenwu.com/about#person", "name": "Wensen Wu", "alternateName": "Vincent Wu", "url": "https://www.wensenwu.com/about", "sameAs": ["https://www.linkedin.com/in/cveinnt", "https://scholar.google.com/citations?user=9MXpr74AAAAJ&hl=en"]},
       "datePublished": "2026-09-01",
       "url": "https://kepler-harness.vercel.app/",
       "image": "https://kepler-harness.vercel.app/og.png",
@@ -48,7 +48,7 @@
       "name": "Kepler",
       "version": "1.0.0",
       "datePublished": "2026-09-01",
-      "author": {"@type": "Person", "name": "Wensen Wu"},
+      "author": {"@type": "Person", "@id": "https://www.wensenwu.com/about#person", "name": "Wensen Wu", "alternateName": "Vincent Wu", "url": "https://www.wensenwu.com/about", "sameAs": ["https://www.linkedin.com/in/cveinnt", "https://scholar.google.com/citations?user=9MXpr74AAAAJ&hl=en"]},
       "codeRepository": "https://github.com/Cveinnt/kepler",
       "url": "https://kepler-harness.vercel.app/",
       "license": "https://opensource.org/license/mit"
@@ -141,6 +141,7 @@ nav a:not(.brand):hover{color:var(--accent)}
 
 /* ── hero ───────────────────────────────────────────────────────── */
 header.hero{padding:104px 0 0}
+.author-credit{font-family:var(--sans);font-size:14px;color:var(--faint);margin:18px 0 0}
 .kicker{font-family:var(--sans);font-size:12.5px;font-weight:600;
   letter-spacing:.08em;text-transform:uppercase;color:var(--accent);
   margin:0 0 26px}
@@ -342,6 +343,7 @@ footer p{margin:0;font-family:var(--sans);font-size:13.5px;line-height:1.75;
   <div class="wrap">
     <p class="kicker">Kepler 1.0 · open source</p>
     <h1>100% on ARC-AGI-3 at one-fourth the cost.</h1>
+    <p class="author-credit">By <a href="https://www.wensenwu.com/about" rel="author">Vincent Wu (Wensen Wu)</a></p>
     <p class="stand"><strong>One frozen Claude Opus 5 configuration, one retained run per
       game across all 25 public games, no score-conditioned reruns.</strong> Cost means $777.72 at September 1, 2026 API rates
       against Retrodict&rsquo;s $2,986 estimate for Tycho, not a Tycho bill.</p>
